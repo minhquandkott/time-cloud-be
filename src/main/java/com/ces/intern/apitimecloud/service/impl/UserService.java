@@ -16,6 +16,10 @@ public class UserService implements IUserService {
 
     @Override
     public UserDTO save(UserDTO userDTO) {
-        return null;
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(userDTO, User.class);
+        //userDTO = modelMapper.map(user, UserDTO.class);
+        user = userRepository.save(user);
+        return userDTO;
     }
 }
