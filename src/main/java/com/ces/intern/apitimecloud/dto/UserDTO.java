@@ -1,5 +1,7 @@
 package com.ces.intern.apitimecloud.dto;
 
+import com.ces.intern.apitimecloud.model.Role;
+
 public class UserDTO {
     private Integer id;
     private String username;
@@ -8,6 +10,15 @@ public class UserDTO {
     private String address;
     private String avatar;
     private boolean isActived;
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Integer getId() {
         return id;
