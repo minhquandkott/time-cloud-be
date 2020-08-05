@@ -18,8 +18,8 @@ public class UserService implements IUserService {
     public UserDTO save(UserDTO userDTO) {
         ModelMapper modelMapper = new ModelMapper();
         User user = modelMapper.map(userDTO, User.class);
-        //userDTO = modelMapper.map(user, UserDTO.class);
         user = userRepository.save(user);
-        return userDTO;
+        UserDTO responseUser = modelMapper.map(user, UserDTO.class);
+        return responseUser;
     }
 }

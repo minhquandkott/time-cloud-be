@@ -19,14 +19,24 @@ public class User {
     @Column
     private String avatar;
     @Column
-    private boolean isActived;
+    private boolean isActive;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public boolean isActived() {
-        return isActived;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setActived(boolean actived) {
-        isActived = actived;
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Integer getId() {
