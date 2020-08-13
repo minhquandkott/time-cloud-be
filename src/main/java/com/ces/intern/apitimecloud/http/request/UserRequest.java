@@ -1,8 +1,8 @@
-package com.ces.intern.apitimecloud.dto;
+package com.ces.intern.apitimecloud.http.request;
 
 import com.ces.intern.apitimecloud.entity.Role;
 
-public class UserDTO {
+public class UserRequest {
     private Integer id;
     private String username;
     private String password;

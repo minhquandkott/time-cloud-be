@@ -1,4 +1,4 @@
-package com.ces.intern.apitimecloud.model;
+package com.ces.intern.apitimecloud.entity;
 
 import javax.persistence.*;
 
