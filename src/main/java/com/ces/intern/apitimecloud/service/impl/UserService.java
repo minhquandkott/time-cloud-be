@@ -1,7 +1,9 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.UserDTO;
-import com.ces.intern.apitimecloud.model.User;
+import com.ces.intern.apitimecloud.entity.User;
+import com.ces.intern.apitimecloud.http.request.UserRequest;
+import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.service.IUserService;
 import org.modelmapper.ModelMapper;
@@ -15,11 +17,11 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Override
-    public UserDTO save(UserDTO userDTO) {
+    public UserResponse save(UserRequest userRequest) {
         ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userDTO, User.class);
+        User user = modelMapper.map(userRequest, User.class);
         user = userRepository.save(user);
-        UserDTO responseUser = modelMapper.map(user, UserDTO.class);
-        return responseUser;
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+        return userResponse;
     }
 }

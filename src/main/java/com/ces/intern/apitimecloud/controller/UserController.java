@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.controller;
 
-import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.http.request.UserRequest;
+import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +15,8 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping(value ="/user")
-    public UserDTO createUser(@RequestBody UserDTO userDTO)
+    public UserResponse createUser(@RequestBody UserRequest userRequest)
     {
-        return userService.save(userDTO);
+        return userService.save(userRequest);
     }
 }

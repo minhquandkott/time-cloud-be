@@ -1,35 +1,16 @@
-package com.ces.intern.apitimecloud.entity;
+package com.ces.intern.apitimecloud.http.request;
 
-import javax.persistence.*;
+import com.ces.intern.apitimecloud.entity.Role;
 
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserRequest {
     private Integer id;
-    @Column
     private String username;
-    @Column
     private String password;
-    @Column
     private String phoneNumber;
-    @Column
     private String address;
-    @Column
     private String avatar;
-    @Column
-    private boolean isActive;
-    @Enumerated(EnumType.STRING)
+    private boolean isActived;
     private Role role;
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 
     public Role getRole() {
         return role;
@@ -85,5 +66,13 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public boolean isActived() {
+        return isActived;
+    }
+
+    public void setActived(boolean actived) {
+        isActived = actived;
     }
 }
