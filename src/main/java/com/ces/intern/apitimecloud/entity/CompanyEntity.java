@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name="company")
+@Entity
+@Table(name = "company")
 public class CompanyEntity implements Serializable {
 
     private static final long serialVersionUID = -615940442147612868L;
@@ -41,6 +42,11 @@ public class CompanyEntity implements Serializable {
                 cascade = {CascadeType.DETACH, CascadeType.MERGE,
                             CascadeType.PERSIST, CascadeType.REFRESH})
     private List<ProjectEntity> projects;
+
+    @OneToMany(fetch = FetchType.LAZY,
+                mappedBy = "company",
+                cascade = CascadeType.ALL)
+    private List<UserRoleEntity> userRoles;
 
     public CompanyEntity(){}
 
@@ -106,5 +112,21 @@ public class CompanyEntity implements Serializable {
 
     public void setModifyAt(Date modifyAt) {
         this.modifyAt = modifyAt;
+    }
+
+    public List<ProjectEntity> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<ProjectEntity> projects) {
+        this.projects = projects;
+    }
+
+    public List<UserRoleEntity> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRoleEntity> userRoles) {
+        this.userRoles = userRoles;
     }
 }

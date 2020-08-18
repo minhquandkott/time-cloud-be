@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name ="user")
+@Entity
+@Table(name = "user")
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 7559503200327808496L;
 
@@ -56,6 +57,11 @@ public class UserEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "projectId")
     )
     private List<ProjectEntity> projects;
+
+    @OneToMany(fetch = FetchType.LAZY,
+                mappedBy = "user",
+                cascade = CascadeType.ALL)
+    private List<UserRoleEntity> userRoles;
 
     public UserEntity(){}
 
@@ -145,5 +151,13 @@ public class UserEntity implements Serializable {
 
     public void setProjects(List<ProjectEntity> projects) {
         this.projects = projects;
+    }
+
+    public List<UserRoleEntity> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRoleEntity> userRoles) {
+        this.userRoles = userRoles;
     }
 }

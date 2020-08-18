@@ -13,6 +13,8 @@ public class TimeDTO {
     private Date startTime;
     private Date endTime;
     private String description;
+    private UserDTO user;
+    private TaskDTO task;
 
     public TimeDTO(){}
 
@@ -47,4 +49,21 @@ public class TimeDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public TaskDTO getTask() {
+        return task;
+    }
+
+    public void setTask(TaskDTO task) {
+        this.task = task;
+    }
+
 }

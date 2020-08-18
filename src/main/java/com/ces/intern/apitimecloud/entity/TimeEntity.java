@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(name = "time")
+@Entity
+@Table(name = "time")
 public class TimeEntity implements Serializable {
     private static final long serialVersionUID = -8468078557836858453L;
 

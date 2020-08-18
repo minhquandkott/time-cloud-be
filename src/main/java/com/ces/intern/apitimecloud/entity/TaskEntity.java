@@ -6,7 +6,8 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name = "task")
+@Entity
+@Table(name = "task")
 public class TaskEntity implements Serializable {
     private static final long serialVersionUID = 145489298398401000L;
 

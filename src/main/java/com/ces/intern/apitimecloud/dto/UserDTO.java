@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 
 public class UserDTO {
 
@@ -16,6 +17,9 @@ public class UserDTO {
     private String phoneNumber;
     private String avatar;
     private boolean isActive;
+    private List<TimeDTO> times;
+    private List<ProjectDTO> projects;
+    private List<UserRoleDTO> userRoles;
 
     public UserDTO(){}
 
@@ -89,5 +93,29 @@ public class UserDTO {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public List<TimeDTO> getTimes() {
+        return times;
+    }
+
+    public void setTimes(List<TimeDTO> times) {
+        this.times = times;
+    }
+
+    public List<ProjectDTO> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<ProjectDTO> projects) {
+        this.projects = projects;
+    }
+
+    public List<UserRoleDTO> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRoleDTO> userRoles) {
+        this.userRoles = userRoles;
     }
 }
