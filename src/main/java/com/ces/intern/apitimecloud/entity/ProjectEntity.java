@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "project", schema ="public")
 public class ProjectEntity implements Serializable {
-
     private static final long serialVersionUID = 5851584549644561471L;
 
     @Id

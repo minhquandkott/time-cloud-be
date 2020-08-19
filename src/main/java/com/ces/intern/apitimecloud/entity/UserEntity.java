@@ -14,16 +14,16 @@ public class UserEntity implements Serializable {
     @Column(name = "user_id")
     private Integer id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false)
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     private boolean gender;
 
     @Column(name = "address")
@@ -35,7 +35,7 @@ public class UserEntity implements Serializable {
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
     @OneToMany(fetch = FetchType.LAZY,
