@@ -7,33 +7,33 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "task")
+@Table(name = "task", schema = "public")
 public class TaskEntity implements Serializable {
     private static final long serialVersionUID = 145489298398401000L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "taskId")
+    @Column(name = "task_id")
     private Integer id;
 
-    @Column(name = "taskName")
+    @Column(name = "task_name", nullable = false)
     private String name;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at", nullable = false)
     private Date createAt;
 
-    @Column(name = "modifyAt")
+    @Column(name = "modify_at", nullable = false)
     private Date modifyAt;
 
     @ManyToOne(fetch = FetchType.LAZY,
-                cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                            CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "projectId")
+            cascade = {CascadeType.DETACH, CascadeType.MERGE,
+                    CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
     @OneToMany(fetch = FetchType.LAZY,
-                mappedBy = "task",
-                cascade = CascadeType.ALL)
+            mappedBy = "task",
+            cascade = CascadeType.ALL)
     private List<TimeEntity> times;
 
     public TaskEntity(){}

@@ -5,38 +5,38 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "time")
+@Table(name = "time", schema = "public")
 public class TimeEntity implements Serializable {
     private static final long serialVersionUID = -8468078557836858453L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "timeId")
+    @Column(name = "time_id")
     private Integer id;
 
-    @Column(name = "startTime")
+    @Column(name = "start_time", nullable = false)
     private Date startTime;
 
-    @Column(name = "endTime")
+    @Column(name = "end_time", nullable = false)
     private Date endTime;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY,
-                cascade = {
-                        CascadeType.DETACH,CascadeType.MERGE,
-                        CascadeType.PERSIST,CascadeType.REFRESH
-                })
-    @JoinColumn(name = "userId")
+            cascade = {
+                    CascadeType.DETACH,CascadeType.MERGE,
+                    CascadeType.PERSIST,CascadeType.REFRESH
+            })
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY,
-                cascade = {
-                        CascadeType.DETACH,CascadeType.MERGE,
-                        CascadeType.PERSIST,CascadeType.REFRESH
-                })
-    @JoinColumn(name = "taskId")
+            cascade = {
+                    CascadeType.DETACH,CascadeType.MERGE,
+                    CascadeType.PERSIST,CascadeType.REFRESH
+            })
+    @JoinColumn(name = "task_id")
     private TaskEntity task;
 
     public TimeEntity(){}

@@ -5,7 +5,8 @@ public class CompanyRequest {
     private Integer companyId;
     private Integer getCompanyName;
 
-   public CompanyRequest(){}
+    public CompanyRequest() {
+    }
 
     public Integer getCompanyId() {
         return companyId;
