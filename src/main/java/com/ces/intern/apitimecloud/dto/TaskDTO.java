@@ -9,7 +9,6 @@ import java.util.List;
 
 public class TaskDTO {
 
-
     private Integer id;
     private String name;
     private Date createAt;

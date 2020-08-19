@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ProjectDTO {
 
-
     private Integer id;
     private String name;
     private String clientName;

@@ -5,37 +5,36 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
 @Entity
-@Table(name = "project")
+@Table(name = "project", schema ="public")
 public class ProjectEntity implements Serializable {
 
     private static final long serialVersionUID = 5851584549644561471L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="projectId")
+    @Column(name="project_id")
     private Integer id;
 
-    @Column(name="projectName")
+    @Column(name="project_name", nullable = false)
     private String name;
 
-    @Column(name = "clientName")
+    @Column(name = "client_name")
     private String clientName;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at", nullable = false)
     private Date creatAt;
 
-    @Column(name = "createBy")
+    @Column(name = "create_by", nullable = false)
     private Integer createBy;
 
-    @Column(name = "modifyAt")
+    @Column(name = "modify_at", nullable = false)
     private Date modifyAt;
 
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                        CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "companyId")
+                    CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
 
@@ -46,12 +45,12 @@ public class ProjectEntity implements Serializable {
 
 
     @ManyToMany(fetch = FetchType.LAZY,
-                cascade = {CascadeType.DETACH,CascadeType.MERGE,
-                            CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH,CascadeType.MERGE,
+                    CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "project_user",
-            joinColumns = @JoinColumn(name = "projectId"),
-            inverseJoinColumns = @JoinColumn(name = "userId")
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<UserEntity> users;
 

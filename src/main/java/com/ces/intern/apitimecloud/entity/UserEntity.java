@@ -5,16 +5,16 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "public")
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 7559503200327808496L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "uesrId")
+    @Column(name = "user_id")
     private Integer id;
 
-    @Column(name = "userName")
+    @Column(name = "user_name")
     private String name;
 
     @Column(name = "email")
@@ -29,41 +29,42 @@ public class UserEntity implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "idActive")
+    @Column(name = "is_active")
     private boolean isActive;
 
     @OneToMany(fetch = FetchType.LAZY,
-                mappedBy = "user",
-                cascade = {
-                        CascadeType.DETACH,CascadeType.MERGE,
-                        CascadeType.PERSIST,CascadeType.REFRESH
-                })
+            mappedBy = "user",
+            cascade = {
+                    CascadeType.DETACH, CascadeType.MERGE,
+                    CascadeType.PERSIST, CascadeType.REFRESH
+            })
     private List<TimeEntity> times;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.DETACH,CascadeType.MERGE,
-                    CascadeType.PERSIST,CascadeType.REFRESH
+                    CascadeType.DETACH, CascadeType.MERGE,
+                    CascadeType.PERSIST, CascadeType.REFRESH
             })
     @JoinTable(
             name = "project_user",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "projectId")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private List<ProjectEntity> projects;
 
     @OneToMany(fetch = FetchType.LAZY,
-                mappedBy = "user",
-                cascade = CascadeType.ALL)
+            mappedBy = "user",
+            cascade = CascadeType.ALL)
     private List<UserRoleEntity> userRoles;
 
-    public UserEntity(){}
+    public UserEntity() {
+    }
 
     public Integer getId() {
         return id;

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user_company")
+@Table(name = "user_company", schema = "public")
 public class UserRoleEntity {
 
     @EmbeddedId
@@ -17,6 +17,8 @@ public class UserRoleEntity {
                     CascadeType.DETACH,CascadeType.MERGE,
                     CascadeType.PERSIST,CascadeType.REFRESH
             })
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY,
@@ -24,6 +26,8 @@ public class UserRoleEntity {
                     CascadeType.DETACH,CascadeType.MERGE,
                     CascadeType.PERSIST,CascadeType.REFRESH
             })
+    @MapsId("companyId")
+    @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
 
@@ -65,10 +69,10 @@ public class UserRoleEntity {
 
     public static class Id implements Serializable {
         private static final long serialVersionUID = -5535178767632113317L;
-        @Column(name = "userId")
+        @Column(name = "user_id")
         private Integer userId;
 
-        @Column(name = "companyId")
+        @Column(name = "company_id")
         private Integer companyId;
 
         public Integer getUserId() {

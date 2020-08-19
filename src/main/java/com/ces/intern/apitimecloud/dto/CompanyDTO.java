@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class CompanyDTO {
+
     private Integer id;
     private String name;
     private String avatar;
@@ -15,9 +16,7 @@ public class CompanyDTO {
     private List<ProjectDTO> projects;
     private List<UserRoleDTO> userRoles;
 
-
     public CompanyDTO(){}
-
 
     public String getAvatar() {
         return avatar;
