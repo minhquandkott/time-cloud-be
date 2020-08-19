@@ -3,37 +3,30 @@ package com.ces.intern.apitimecloud.http.request;
 import com.ces.intern.apitimecloud.util.Role;
 
 public class UserRequest {
-    private Integer id;
-    private String username;
+    private String name;
+    private String email;
     private String password;
     private String phoneNumber;
     private String address;
     private String avatar;
-    private boolean isActived;
+    private boolean isActive;
+    private boolean gender;
     private Role role;
 
-    public Role getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -68,11 +61,27 @@ public class UserRequest {
         this.avatar = avatar;
     }
 
-    public boolean isActived() {
-        return isActived;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setActived(boolean actived) {
-        isActived = actived;
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

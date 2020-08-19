@@ -2,7 +2,7 @@ package com.ces.intern.apitimecloud.http.response;
 
 public class UserResponse {
     private String password;
-    private String username;
+    private String name;
 
     public String getPassword() {
         return password;
@@ -13,10 +13,10 @@ public class UserResponse {
     }
 
     public String getUsername() {
-        return username;
+        return name;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.name = username;
     }
 }
