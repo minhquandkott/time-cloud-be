@@ -4,9 +4,10 @@ import com.ces.intern.apitimecloud.util.Role;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
-@Table(name = "user_company")
+@Table(name = "user_company", schema = "public")
 public class UserRoleEntity {
 
     @EmbeddedId
@@ -17,6 +18,8 @@ public class UserRoleEntity {
                     CascadeType.DETACH,CascadeType.MERGE,
                     CascadeType.PERSIST,CascadeType.REFRESH
             })
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY,
@@ -24,8 +27,9 @@ public class UserRoleEntity {
                     CascadeType.DETACH,CascadeType.MERGE,
                     CascadeType.PERSIST,CascadeType.REFRESH
             })
+    @MapsId("companyId")
+    @JoinColumn(name = "company_id")
     private CompanyEntity company;
-
 
     private Role role;
 
@@ -63,12 +67,13 @@ public class UserRoleEntity {
         this.role = role;
     }
 
+    @Embeddable
     public static class Id implements Serializable {
         private static final long serialVersionUID = -5535178767632113317L;
-        @Column(name = "userId")
+        @Column(name = "user_id")
         private Integer userId;
 
-        @Column(name = "companyId")
+        @Column(name = "company_id")
         private Integer companyId;
 
         public Integer getUserId() {
@@ -85,6 +90,20 @@ public class UserRoleEntity {
 
         public void setCompanyId(Integer companyId) {
             this.companyId = companyId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Id id = (Id) o;
+            return userId.equals(id.userId) &&
+                    companyId.equals(id.companyId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(userId, companyId);
         }
     }
 }

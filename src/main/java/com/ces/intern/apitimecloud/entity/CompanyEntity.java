@@ -6,17 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "company")
+@Table(name = "company", schema = "public")
 public class CompanyEntity implements Serializable {
 
     private static final long serialVersionUID = -615940442147612868L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="companyId", nullable = false)
+    @Column(name="company_id", nullable = false)
     private Integer id;
 
-    @Column(name="companyName", nullable = false)
+    @Column(name="company_name", nullable = false)
     private String name;
 
     @Column(name="avatar")
@@ -25,27 +25,27 @@ public class CompanyEntity implements Serializable {
     @Column(name="description")
     private String description;
 
-    @Column(name="companyLogo")
+    @Column(name="company_logo")
     private String logo;
 
-    @Column(name="createAt", nullable = false)
+    @Column(name="create_at", nullable = false)
     private Date createAt;
 
-    @Column(name="creatBy", nullable = false)
+    @Column(name="create_by", nullable = false)
     private Integer createBy;
 
-    @Column(name="modifyAt", nullable = false)
+    @Column(name="modify_at", nullable = false)
     private Date modifyAt;
 
     @OneToMany(mappedBy = "company",
-                fetch = FetchType.LAZY,
-                cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                            CascadeType.PERSIST, CascadeType.REFRESH})
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE,
+                    CascadeType.PERSIST, CascadeType.REFRESH})
     private List<ProjectEntity> projects;
 
     @OneToMany(fetch = FetchType.LAZY,
-                mappedBy = "company",
-                cascade = CascadeType.ALL)
+            mappedBy = "company",
+            cascade = CascadeType.ALL)
     private List<UserRoleEntity> userRoles;
 
     public CompanyEntity(){}

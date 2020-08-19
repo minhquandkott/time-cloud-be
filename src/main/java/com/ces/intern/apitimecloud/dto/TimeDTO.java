@@ -8,7 +8,6 @@ import java.util.Date;
 
 public class TimeDTO {
 
-
     private Integer id;
     private Date startTime;
     private Date endTime;
