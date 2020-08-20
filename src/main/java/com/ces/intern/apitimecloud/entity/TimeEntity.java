@@ -14,6 +14,9 @@ public class TimeEntity implements Serializable {
     @Column(name = "time_id")
     private Integer id;
 
+    @EmbeddedId
+    private User_Task_Id user_task_id;
+
     @Column(name = "start_time", nullable = false)
     private Date startTime;
 
@@ -28,6 +31,7 @@ public class TimeEntity implements Serializable {
                     CascadeType.DETACH,CascadeType.MERGE,
                     CascadeType.PERSIST,CascadeType.REFRESH
             })
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
@@ -36,6 +40,7 @@ public class TimeEntity implements Serializable {
                     CascadeType.DETACH,CascadeType.MERGE,
                     CascadeType.PERSIST,CascadeType.REFRESH
             })
+    @MapsId("taskId")
     @JoinColumn(name = "task_id")
     private TaskEntity task;
 
@@ -87,5 +92,34 @@ public class TimeEntity implements Serializable {
 
     public void setTask(TaskEntity task) {
         this.task = task;
+    }
+
+    @Embeddable
+    public static class User_Task_Id implements Serializable{
+        private static final long serialVersionUID = 2634409230448550149L;
+
+        @Column(name = "user_id")
+        private Integer userId;
+
+        @Column(name = "task_id")
+        private Integer taskId;
+
+        public User_Task_Id(){}
+
+        public Integer getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Integer userId) {
+            this.userId = userId;
+        }
+
+        public Integer getTaskId() {
+            return taskId;
+        }
+
+        public void setTaskId(Integer taskId) {
+            this.taskId = taskId;
+        }
     }
 }

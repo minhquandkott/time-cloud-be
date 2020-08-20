@@ -36,23 +36,6 @@ public class ProjectEntity implements Serializable {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
-
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
-            mappedBy = "project")
-    private List<TaskEntity> tasks;
-
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = "project_user",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserEntity> users;
-
     public ProjectEntity(){}
 
     public Integer getId() {
@@ -111,19 +94,4 @@ public class ProjectEntity implements Serializable {
         this.company = company;
     }
 
-    public List<TaskEntity> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<TaskEntity> tasks) {
-        this.tasks = tasks;
-    }
-
-    public List<UserEntity> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserEntity> users) {
-        this.users = users;
-    }
 }

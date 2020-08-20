@@ -14,7 +14,6 @@ public class TaskDTO {
     private Date createAt;
     private Date modifyAt;
     private ProjectDTO project;
-    private List<TimeDTO> times;
 
     public TaskDTO(){}
 
@@ -58,11 +57,4 @@ public class TaskDTO {
         this.project = project;
     }
 
-    public List<TimeDTO> getTimes() {
-        return times;
-    }
-
-    public void setTimes(List<TimeDTO> times) {
-        this.times = times;
-    }
 }
