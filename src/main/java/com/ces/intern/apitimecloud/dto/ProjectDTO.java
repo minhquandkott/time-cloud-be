@@ -16,8 +16,6 @@ public class ProjectDTO {
     private Integer createBy;
     private Date modifyAt;
     private CompanyDTO company;
-    private List<TaskDTO> tasks;
-    private List<UserDTO> users;
 
     public ProjectDTO(){}
 
@@ -77,19 +75,4 @@ public class ProjectDTO {
         this.company = company;
     }
 
-    public List<TaskDTO> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<TaskDTO> tasks) {
-        this.tasks = tasks;
-    }
-
-    public List<UserDTO> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserDTO> users) {
-        this.users = users;
-    }
 }

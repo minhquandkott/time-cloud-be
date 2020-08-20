@@ -38,30 +38,6 @@ public class UserEntity implements Serializable {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "user",
-            cascade = {
-                    CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH
-            })
-    private List<TimeEntity> times;
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH
-            })
-    @JoinTable(
-            name = "project_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private List<ProjectEntity> projects;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "user",
-            cascade = CascadeType.ALL)
-    private List<UserRoleEntity> userRoles;
 
     public UserEntity() {
     }
@@ -138,27 +114,4 @@ public class UserEntity implements Serializable {
         this.avatar = avatar;
     }
 
-    public List<TimeEntity> getTimes() {
-        return times;
-    }
-
-    public void setTimes(List<TimeEntity> times) {
-        this.times = times;
-    }
-
-    public List<ProjectEntity> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<ProjectEntity> projects) {
-        this.projects = projects;
-    }
-
-    public List<UserRoleEntity> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<UserRoleEntity> userRoles) {
-        this.userRoles = userRoles;
-    }
 }

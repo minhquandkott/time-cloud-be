@@ -31,11 +31,6 @@ public class TaskEntity implements Serializable {
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "task",
-            cascade = CascadeType.ALL)
-    private List<TimeEntity> times;
-
     public TaskEntity(){}
 
     public Integer getId() {
@@ -78,11 +73,4 @@ public class TaskEntity implements Serializable {
         this.project = project;
     }
 
-    public List<TimeEntity> getTimes() {
-        return times;
-    }
-
-    public void setTimes(List<TimeEntity> times) {
-        this.times = times;
-    }
 }

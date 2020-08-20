@@ -13,8 +13,6 @@ public class CompanyDTO {
     private String createAt;
     private String createBy;
     private String modifyAt;
-    private List<ProjectDTO> projects;
-    private List<UserRoleDTO> userRoles;
 
     public CompanyDTO(){}
 
@@ -82,20 +80,5 @@ public class CompanyDTO {
         this.modifyAt = modifyAt;
     }
 
-    public List<ProjectDTO> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<ProjectDTO> projects) {
-        this.projects = projects;
-    }
-
-    public List<UserRoleDTO> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<UserRoleDTO> userRoles) {
-        this.userRoles = userRoles;
-    }
 }
 
