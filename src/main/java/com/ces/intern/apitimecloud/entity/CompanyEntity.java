@@ -37,17 +37,6 @@ public class CompanyEntity implements Serializable {
     @Column(name="modify_at", nullable = false)
     private Date modifyAt;
 
-    @OneToMany(mappedBy = "company",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<ProjectEntity> projects;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "company",
-            cascade = CascadeType.ALL)
-    private List<UserRoleEntity> userRoles;
-
     public CompanyEntity(){}
 
     public String getAvatar() {
@@ -114,19 +103,4 @@ public class CompanyEntity implements Serializable {
         this.modifyAt = modifyAt;
     }
 
-    public List<ProjectEntity> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<ProjectEntity> projects) {
-        this.projects = projects;
-    }
-
-    public List<UserRoleEntity> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<UserRoleEntity> userRoles) {
-        this.userRoles = userRoles;
-    }
 }
