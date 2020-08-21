@@ -12,11 +12,11 @@ public class UserResponse {
         this.password = password;
     }
 
-    public String getUsername() {
+    public String getName() {
         return name;
     }
 
-    public void setUsername(String username) {
-        this.name = username;
+    public void setName(String name) {
+        this.name = name;
     }
 }
