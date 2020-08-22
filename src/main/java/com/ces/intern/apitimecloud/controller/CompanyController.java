@@ -59,13 +59,20 @@ public class CompanyController {
         return response;
     }
 
-    @PutMapping
-    public String updateCompany(){
-        return "update";
+    @PutMapping(value = "/{id}")
+    public CompanyResponse updateCompany(@PathVariable Integer id, @RequestBody CompanyRequest request){
+
+        CompanyResponse response = new CompanyResponse();
+
+        CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
+        response = modelMapper.map(companyService.updateCompany(id, company), CompanyResponse.class);
+
+        return response;
     }
 
-    @DeleteMapping
-    public String deleteCompany(){
-        return "delete";
+    @DeleteMapping(value = "/{id}")
+    public String deleteCompany(@PathVariable Integer id){
+        companyService.deleteCompany(id);
+        return "OK";
     }
 }

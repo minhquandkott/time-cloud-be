@@ -3,14 +3,17 @@ package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
-import com.ces.intern.apitimecloud.http.request.CompanyRequest;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.service.CompanyService;
+import org.modelmapper.Condition;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.function.Supplier;
+
 
 
 @Service
@@ -24,6 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
         this.modelMapper = modelMapper;
         this.companyRepository = companyRepository;
     }
+
 
     // _company is entity before save in db
     // company_ is entity get from db
@@ -61,14 +65,24 @@ public class CompanyServiceImpl implements CompanyService {
 
         CompanyDTO returnValue = new CompanyDTO();
 
-        //CompanyEntity
+        CompanyEntity company_ = companyRepository.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("not found Company"));
+        System.out.println(company_);
+        TypeMap<CompanyDTO, CompanyEntity> tm = modelMapper
+                .typeMap(CompanyDTO.class, CompanyEntity.class);
+        tm.setPropertyCondition(Conditions.isNotNull());
+        tm.map(company, company_);
 
+        companyRepository.save(company_);
+        returnValue = modelMapper.map(company_, CompanyDTO.class);
 
         return returnValue;
     }
 
     @Override
-    public void deleteCompany(Integer compayId) {
-
+    public void deleteCompany(Integer companyId) {
+        CompanyEntity company_ = companyRepository.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Not found"));
+        companyRepository.delete(company_);
     }
 }

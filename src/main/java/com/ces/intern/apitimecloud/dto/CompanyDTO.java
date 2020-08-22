@@ -80,5 +80,19 @@ public class CompanyDTO {
     public void setModifyAt(Date modifyAt) {
         this.modifyAt = modifyAt;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", description='" + description + '\'' +
+                ", logo='" + logo + '\'' +
+                ", createAt=" + createAt +
+                ", createBy=" + createBy +
+                ", modifyAt=" + modifyAt +
+                '}';
+    }
 }
 
