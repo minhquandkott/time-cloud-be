@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
+import com.ces.intern.apitimecloud.http.request.CompanyRequest;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,9 @@ public class CompanyServiceImpl implements CompanyService {
         this.companyRepository = companyRepository;
     }
 
+    // _company is entity before save in db
+    // company_ is entity get from db
+
 
     @Override
     public CompanyDTO getCompany(Integer companyId) {
@@ -31,23 +35,36 @@ public class CompanyServiceImpl implements CompanyService {
 
        Optional<CompanyEntity> optional = companyRepository.findById(companyId);
 
-       CompanyEntity company = optional.orElseThrow(() -> new RuntimeException("Not found"));
+       CompanyEntity company_ = optional.orElseThrow(() -> new RuntimeException("Not found"));
 
-        System.out.println(company.getName());
-
-       returnValue = modelMapper.map(company, CompanyDTO.class);
+       returnValue = modelMapper.map(company_, CompanyDTO.class);
 
        return returnValue;
     }
 
     @Override
-    public CompanyDTO createCompany(CompanyDTO companyDTO) {
-        return null;
+    public CompanyDTO createCompany(CompanyDTO company) {
+
+        CompanyDTO returnValue = new CompanyDTO();
+
+        CompanyEntity _company = modelMapper.map(company, CompanyEntity.class);
+
+        CompanyEntity company_ = companyRepository.save(_company);
+
+        returnValue = modelMapper.map(company_, CompanyDTO.class);
+
+        return returnValue;
     }
 
     @Override
-    public CompanyDTO updateCompany(Integer companyId, CompanyDTO companyDTO) {
-        return null;
+    public CompanyDTO updateCompany(Integer companyId, CompanyDTO company) {
+
+        CompanyDTO returnValue = new CompanyDTO();
+
+        //CompanyEntity
+
+
+        return returnValue;
     }
 
     @Override

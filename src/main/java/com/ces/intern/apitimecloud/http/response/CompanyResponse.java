@@ -5,29 +5,36 @@ import org.modelmapper.spi.NamingConvention;
 
 public class CompanyResponse {
 
-    private Integer companyId;
-    private String asdfasdfcompanyName;
+    private Integer id;
+    private String name;
     private String avatar;
     private String description;
-    private String companyLogo;
+    private String logo;
 
     public CompanyResponse(){}
 
-    public Integer getCompanyId() {
-        return companyId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getAsdfasdfcompanyName() {
-        return asdfasdfcompanyName;
-
+    public String getName() {
+        return name;
     }
 
-    public void setAsdfasdfcompanyName(String asdfasdfcompanyName) {
-        this.asdfasdfcompanyName = asdfasdfcompanyName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public String getAvatar() {
@@ -46,11 +53,5 @@ public class CompanyResponse {
         this.description = description;
     }
 
-    public String getCompanyLogo() {
-        return companyLogo;
-    }
 
-    public void setCompanyLogo(String companyLogo) {
-        this.companyLogo = companyLogo;
-    }
 }
