@@ -8,6 +8,9 @@ import com.ces.intern.apitimecloud.service.CompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -26,7 +29,11 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO getCompany(Integer companyId) {
        CompanyDTO returnValue = new CompanyDTO();
 
-       CompanyEntity company = companyRepository.getOne(companyId);
+       Optional<CompanyEntity> optional = companyRepository.findById(companyId);
+
+       CompanyEntity company = optional.orElseThrow(() -> new RuntimeException("Not found"));
+
+        System.out.println(company.getName());
 
        returnValue = modelMapper.map(company, CompanyDTO.class);
 
