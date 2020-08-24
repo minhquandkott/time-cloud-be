@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "time", schema = "public")
@@ -10,8 +11,9 @@ public class TimeEntity implements Serializable {
     private static final long serialVersionUID = -8468078557836858453L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "time_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "time_generator")
+    @SequenceGenerator(name = "time_generator", sequenceName = "time_id_seq", schema = "public", allocationSize = 1)
+    @Column(name = "time_id", unique = true, nullable = false)
     private Integer id;
 
     @EmbeddedId
@@ -94,6 +96,19 @@ public class TimeEntity implements Serializable {
         this.task = task;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimeEntity that = (TimeEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     @Embeddable
     public static class User_Task_Id implements Serializable{
         private static final long serialVersionUID = 2634409230448550149L;
@@ -120,6 +135,20 @@ public class TimeEntity implements Serializable {
 
         public void setTaskId(Integer taskId) {
             this.taskId = taskId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            User_Task_Id that = (User_Task_Id) o;
+            return userId.equals(that.userId) &&
+                    taskId.equals(that.taskId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(userId, taskId);
         }
     }
 }

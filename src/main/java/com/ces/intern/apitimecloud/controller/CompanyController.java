@@ -2,7 +2,7 @@ package com.ces.intern.apitimecloud.controller;
 
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
-import com.ces.intern.apitimecloud.http.request.CompanyRequest;
+import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.http.response.CompanyResponse;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import org.modelmapper.ModelMapper;
@@ -15,14 +15,18 @@ public class CompanyController {
     final private CompanyService companyService;
     final private ModelMapper modelMapper;
 
+
+
     @Autowired
     public CompanyController(CompanyService companyService,
-                             ModelMapper modelMapper){
+                             ModelMapper modelMapper
+                             ){
         this.companyService = companyService;
         this.modelMapper = modelMapper;
+
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public CompanyResponse getCompany(@PathVariable Integer id){
 
         CompanyResponse returnValue = new CompanyResponse();
@@ -32,11 +36,13 @@ public class CompanyController {
         returnValue = modelMapper.map(company, CompanyResponse.class);
 
         return returnValue;
+
     }
 
-    @PostMapping
-    public String createCompany(){
-        return "post";
+    @PostMapping("/{id}")
+    public UserDTO createCompany(@RequestBody UserDTO user, @PathVariable Integer id){
+
+        return null;
     }
 
     @PutMapping

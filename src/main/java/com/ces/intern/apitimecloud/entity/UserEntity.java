@@ -10,8 +10,9 @@ public class UserEntity implements Serializable {
     private static final long serialVersionUID = 7559503200327808496L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_id_seq", allocationSize = 1, schema = "public")
+    @Column(name = "user_id", unique = true, nullable = false)
     private Integer id;
 
     @Column(name = "user_name", nullable = false)

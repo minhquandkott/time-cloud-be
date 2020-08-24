@@ -11,8 +11,9 @@ public class ProjectEntity implements Serializable {
     private static final long serialVersionUID = 5851584549644561471L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="project_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_generator")
+    @SequenceGenerator(name = "project_generator", sequenceName = "project_id_seq", schema = "public", allocationSize = 1)
+    @Column(name="project_id", nullable = false, unique = true)
     private Integer id;
 
     @Column(name="project_name", nullable = false)

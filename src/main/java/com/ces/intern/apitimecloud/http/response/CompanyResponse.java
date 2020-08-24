@@ -1,9 +1,12 @@
 package com.ces.intern.apitimecloud.http.response;
 
+import org.modelmapper.convention.NamingConventions;
+import org.modelmapper.spi.NamingConvention;
+
 public class CompanyResponse {
 
     private Integer companyId;
-    private Integer getCompanyName;
+    private String asdfasdfcompanyName;
     private String avatar;
     private String description;
     private String companyLogo;
@@ -18,12 +21,13 @@ public class CompanyResponse {
         this.companyId = companyId;
     }
 
-    public Integer getGetCompanyName() {
-        return getCompanyName;
+    public String getAsdfasdfcompanyName() {
+        return asdfasdfcompanyName;
+
     }
 
-    public void setGetCompanyName(Integer getCompanyName) {
-        this.getCompanyName = getCompanyName;
+    public void setAsdfasdfcompanyName(String asdfasdfcompanyName) {
+        this.asdfasdfcompanyName = asdfasdfcompanyName;
     }
 
     public String getAvatar() {
