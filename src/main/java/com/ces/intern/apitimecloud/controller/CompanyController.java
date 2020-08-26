@@ -2,7 +2,7 @@ package com.ces.intern.apitimecloud.controller;
 
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
-import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.CompanyRequest;
 import com.ces.intern.apitimecloud.http.response.CompanyResponse;
 import com.ces.intern.apitimecloud.service.CompanyService;
@@ -10,15 +10,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
     final private CompanyService companyService;
     final private ModelMapper modelMapper;
-
-
 
     @Autowired
     public CompanyController(CompanyService companyService,
@@ -30,7 +26,8 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}")
-    public CompanyResponse getCompany(@PathVariable Integer id){
+    @ResponseStatus
+    public CompanyResponse getCompany(@PathVariable Integer id) throws Exception  {
 
         CompanyResponse response = new CompanyResponse();
 
@@ -44,15 +41,12 @@ public class CompanyController {
 
     @PostMapping
     public CompanyResponse createCompany(@RequestBody CompanyRequest request){
+
+        if(request.getName() ==  null) throw new BadRequestException("Missing company name");
+
         CompanyResponse response = new CompanyResponse();
 
         CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
-
-        Date createTime = new Date();
-
-        company.setCreateAt(createTime);
-        company.setModifyAt(createTime);
-        company.setCreateBy(20);
 
         response = modelMapper.map(companyService.createCompany(company), CompanyResponse.class);
 
@@ -72,6 +66,7 @@ public class CompanyController {
 
     @DeleteMapping(value = "/{id}")
     public String deleteCompany(@PathVariable Integer id){
+
         companyService.deleteCompany(id);
         return "OK";
     }
