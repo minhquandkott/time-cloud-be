@@ -5,45 +5,43 @@ import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.UserRepository;
-import com.ces.intern.apitimecloud.service.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-
-import java.util.Optional;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements com.ces.intern.apitimecloud.service.UserService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public UserResponse save(UserRequest userRequest) {
+    public String save(UserRequest userRequest) {
         ModelMapper modelMapper = new ModelMapper();
         UserEntity user = modelMapper.map(userRequest, UserEntity.class);
-        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         user = userRepository.save(user);
+        return "Tạo tài khoản thành công";
+    }
+
+    @Override
+    public UserResponse findUser(Integer id) {
+        UserEntity user = userRepository.getOne(id);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        UserResponse userResponse = modelMapper.map(userDTO, UserResponse.class);
         return userResponse;
     }
 
     @Override
-    public UserDTO findUser(Integer id) {
-        UserEntity user = userRepository.getOne(id);
+    public UserResponse update(UserRequest userRequest, Integer id) {
         ModelMapper modelMapper = new ModelMapper();
-        UserDTO response = modelMapper.map(user, UserDTO.class);
-        return response;
-    }
-
-    @Override
-    public UserDTO update(UserRequest userRequest) {
-        ModelMapper modelMapper = new ModelMapper();
-        UserEntity userEntity = userRepository.getOne(userRequest.getId());
-        userEntity = modelMapper.map(userRequest, UserEntity.class);
+        UserDTO userDTO = modelMapper.map(userRequest, UserDTO.class);
+        userDTO.setId(id);
+        UserEntity userEntity = userRepository.findById(id).get();
+        userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity = userRepository.save(userEntity);
-        UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
-        return userDTO;
+        UserResponse userResponse = modelMapper.map(userDTO, UserResponse.class);
+        return userResponse;
     }
 
     @Override

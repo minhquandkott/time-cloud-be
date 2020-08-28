@@ -3,7 +3,7 @@ package com.ces.intern.apitimecloud.controller;
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
-import com.ces.intern.apitimecloud.service.IUserService;
+import com.ces.intern.apitimecloud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,30 +12,30 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @PostMapping(value ="/")
-    public UserResponse createUser(@RequestBody UserRequest userRequest)
+    public String createUser(@RequestBody UserRequest userRequest)
     {
         return userService.save(userRequest);
     }
 
     @GetMapping("/{id}")
-    public UserDTO findUser(@PathVariable Integer id)
+    public UserResponse findUser(@PathVariable Integer id)
     {
         return userService.findUser(id);
     }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@RequestBody UserRequest userRequest, @PathVariable Integer id)
+    public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable Integer id)
     {
-        userRequest.setId(id);
-        return userService.update(userRequest);
+        return userService.update(userRequest, id);
     }
 
     @DeleteMapping(value = "/")
-    public void deleteUser(@RequestBody int[] ids)
+    public String deleteUser(@RequestBody int[] ids)
     {
         userService.delete(ids);
+        return "Xóa thành công";
     }
 }
