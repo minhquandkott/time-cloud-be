@@ -1,15 +1,11 @@
-package com.ces.intern.apitimecloud.dto;
+package com.ces.intern.apitimecloud.http.response;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.ces.intern.apitimecloud.dto.CompanyDTO;
+
 import java.util.Date;
-import java.util.List;
 
-public class ProjectDTO {
+public class ProjectResponse {
 
-    private Integer id;
     private String name;
     private String clientName;
     private Date creatAt;
@@ -17,15 +13,7 @@ public class ProjectDTO {
     private Date modifyAt;
     private CompanyDTO company;
 
-
-    public ProjectDTO(){}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public ProjectResponse() {
     }
 
     public String getName() {
@@ -75,5 +63,4 @@ public class ProjectDTO {
     public void setCompany(CompanyDTO company) {
         this.company = company;
     }
-
 }
