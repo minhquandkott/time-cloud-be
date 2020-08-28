@@ -13,16 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class TestAPI {
+public class ProjectAPI {
 
 
     private final ProjectService projectService;
     private final ModelMapper modelMapper;
 
 
-    public TestAPI(ProjectService projectService,
-                   ModelMapper modelMapper){
+    public ProjectAPI(ProjectService projectService, ModelMapper modelMapper){
+
         this.projectService = projectService;
+
         this.modelMapper = modelMapper;
     }
 
@@ -55,16 +56,23 @@ public class TestAPI {
 
     @GetMapping("/project/all")
     public List getAllProject(){
+
         List listProjects = projectService.getAllProject();
+
         listProjects.stream().map(t->modelMapper.map(t,ProjectResponse.class));
+
         return listProjects;
     }
 
     @PostMapping("/project/update/{id}")
     public ProjectResponse updateProject(@RequestBody ProjectUpdateRequest projectUpdateRequest, @PathVariable Integer id){
+
         ProjectDTO project = modelMapper.map(projectUpdateRequest,ProjectDTO.class);
+
         ProjectDTO projectDTO = projectService.updateProject(id,project);
+
         ProjectResponse projectResponse = modelMapper.map(projectDTO,ProjectResponse.class);
+
         return  projectResponse;
     }
 
