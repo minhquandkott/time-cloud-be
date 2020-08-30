@@ -1,26 +1,24 @@
-package com.ces.intern.apitimecloud;
+package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
-import com.ces.intern.apitimecloud.http.request.ProjectUpdateRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class ProjectAPI {
+public class ProjectController {
 
 
     private final ProjectService projectService;
     private final ModelMapper modelMapper;
 
 
-    public ProjectAPI(ProjectService projectService, ModelMapper modelMapper){
+    public ProjectController(ProjectService projectService, ModelMapper modelMapper){
 
         this.projectService = projectService;
 
@@ -44,7 +42,7 @@ public class ProjectAPI {
         return response;
     }
 
-    @GetMapping("project/{id}")
+    @GetMapping("/project/{id}")
     public ProjectResponse getProject(@PathVariable Integer id){
 
         ProjectDTO projectDTO = projectService.getProject(id);
@@ -54,7 +52,7 @@ public class ProjectAPI {
         return response;
     }
 
-    @GetMapping("/project/all")
+    @GetMapping("/project")
     public List getAllProject(){
 
         List listProjects = projectService.getAllProject();
@@ -64,10 +62,10 @@ public class ProjectAPI {
         return listProjects;
     }
 
-    @PostMapping("/project/update/{id}")
-    public ProjectResponse updateProject(@RequestBody ProjectUpdateRequest projectUpdateRequest, @PathVariable Integer id){
+    @PutMapping("/project/{id}")
+    public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id){
 
-        ProjectDTO project = modelMapper.map(projectUpdateRequest,ProjectDTO.class);
+        ProjectDTO project = modelMapper.map(projectRequest,ProjectDTO.class);
 
         ProjectDTO projectDTO = projectService.updateProject(id,project);
 

@@ -3,23 +3,22 @@ package com.ces.intern.apitimecloud.http.request;
 public class ProjectRequest {
 
     private String name;
-    private Integer createBy;
+    private String clientName;
 
     public ProjectRequest(){}
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public Integer getCreateBy() {
-        return createBy;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
+
 }
