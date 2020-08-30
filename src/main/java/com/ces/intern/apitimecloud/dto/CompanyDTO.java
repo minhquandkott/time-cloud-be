@@ -1,5 +1,6 @@
 package com.ces.intern.apitimecloud.dto;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,9 +11,9 @@ public class CompanyDTO {
     private String avatar;
     private String description;
     private String logo;
-    private String createAt;
-    private String createBy;
-    private String modifyAt;
+    private Date createAt;
+    private Integer createBy;
+    private Date modifyAt;
 
     public CompanyDTO(){}
 
@@ -56,29 +57,42 @@ public class CompanyDTO {
         this.logo = logo;
     }
 
-    public String getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
-    }
-
-    public String getCreateBy() {
+    public Integer getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(String createBy) {
+    public void setCreateBy(Integer createBy) {
         this.createBy = createBy;
     }
 
-    public String getModifyAt() {
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getModifyAt() {
         return modifyAt;
     }
 
-    public void setModifyAt(String modifyAt) {
+    public void setModifyAt(Date modifyAt) {
         this.modifyAt = modifyAt;
     }
 
+    @Override
+    public String toString() {
+        return "CompanyDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", description='" + description + '\'' +
+                ", logo='" + logo + '\'' +
+                ", createAt=" + createAt +
+                ", createBy=" + createBy +
+                ", modifyAt=" + modifyAt +
+                '}';
+    }
 }
 
