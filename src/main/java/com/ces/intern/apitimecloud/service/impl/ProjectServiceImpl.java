@@ -89,7 +89,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteProject(Integer[] projectIds) {
         for(Integer item:projectIds){
-            projectRepository.deleteById(item);
+            if(projectRepository.existsById(item)) {
+                projectRepository.deleteById(item);
+            } else {
+                throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+item);
+            }
         }
     }
 }
