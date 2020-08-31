@@ -3,10 +3,11 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
-import com.ces.intern.apitimecloud.http.response.ProjectResponse;
+import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
+import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -31,13 +31,15 @@ public class ProjectServiceImpl implements ProjectService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public ProjectDTO createProject(Integer idCompany, ProjectDTO projectDTO) {
+    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO) {
 
-        CompanyEntity company= companyRepository.findById(idCompany).orElseThrow(() -> new RuntimeException("Not Found"));
+        CompanyEntity company= companyRepository.findById(companyId).
+                orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
 
         ProjectEntity projectEntity = modelMapper.map(projectDTO, ProjectEntity.class);
 
         projectEntity.setCompany(company);
+        projectEntity.setCreateBy(1);
         projectEntity.setCreatAt(new Date());
         projectEntity.setModifyAt(new Date());
 
@@ -50,7 +52,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO getProject(Integer projectId) {
-        ProjectEntity projectEntity = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Not Found"));
+        ProjectEntity projectEntity = projectRepository.findById(projectId).
+                orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
         ProjectDTO projectDTO = modelMapper.map(projectEntity,ProjectDTO.class);
         return  projectDTO;
     }
@@ -69,7 +72,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO) {
 
-        ProjectEntity projectEntity = projectRepository.findById(projectId).orElseThrow(()->new RuntimeException("Not Found"));
+        ProjectEntity projectEntity = projectRepository.findById(projectId).
+                orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
         projectEntity.setModifyAt(new Date());
         projectEntity.setName(projectDTO.getName());
