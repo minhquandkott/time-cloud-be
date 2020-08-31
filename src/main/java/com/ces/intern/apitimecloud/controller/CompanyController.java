@@ -5,6 +5,7 @@ import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.CompanyRequest;
 import com.ces.intern.apitimecloud.http.response.CompanyResponse;
+import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CompanyController {
 
     @GetMapping(value = "/{id}")
     @ResponseStatus
-    public CompanyResponse getCompany(@PathVariable Integer id) throws Exception  {
+    public CompanyResponse getCompany(@PathVariable Integer id, @RequestHeader(SecurityContact.HEADER_STRING) String userId ) throws Exception  {
 
         CompanyResponse response = new CompanyResponse();
 

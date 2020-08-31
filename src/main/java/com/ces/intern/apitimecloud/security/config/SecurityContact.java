@@ -6,6 +6,7 @@ public class SecurityContact {
     public static final String HEADER_USERID = "UserId";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
-    public static final String SIGN_UP_URL = "/user/login";
+    public static final String SIGN_IN_URL = "/user/login";
+    public static final String SIGN_UP_URL = "/users";
     public static final String TOKEN_SECRET = "TimeCloudTimeCloudTimeCloudTimeCloud";
 }

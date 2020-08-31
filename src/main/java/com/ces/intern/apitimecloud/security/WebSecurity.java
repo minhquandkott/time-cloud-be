@@ -3,11 +3,14 @@ package com.ces.intern.apitimecloud.security;
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.security.filter.AuthenticationFilter;
 import com.ces.intern.apitimecloud.security.filter.AuthorizationFilter;
+import com.ces.intern.apitimecloud.security.handler.AuthenticationFailureHandler;
 import com.ces.intern.apitimecloud.service.UserService;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
@@ -27,10 +30,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST,SecurityContact.SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(configAuthenticationFilter())
-                .addFilter(new AuthorizationFilter(authenticationManager()));
+                .addFilter(new AuthorizationFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 
     @Override
@@ -40,7 +46,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     protected  AuthenticationFilter configAuthenticationFilter() throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager());
-        authenticationFilter.setFilterProcessesUrl(SecurityContact.SIGN_UP_URL);
+        authenticationFilter.setFilterProcessesUrl(SecurityContact.SIGN_IN_URL);
         return authenticationFilter;
     }
 
