@@ -7,7 +7,11 @@ import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserServiceImpl implements com.ces.intern.apitimecloud.service.UserService {
@@ -50,5 +54,17 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         {
             userRepository.deleteById(item);
         }
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Not Found"));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Not Found"));
+
+        return User.builder().username(user.getEmail()).password(user.getPassword()).roles().build();
     }
 }
