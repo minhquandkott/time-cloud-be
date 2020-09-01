@@ -113,6 +113,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<UserEntity> getMembers(Integer companyId) {
+
         return null;
     }
 
