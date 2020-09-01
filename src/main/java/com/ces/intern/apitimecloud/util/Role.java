@@ -5,11 +5,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role{
-    ADMIN,//full
+    ADMIN(RolePermission.values()),
+    //full
     // ngươi quản lý website
 
 
-    QC,//full_time, read_task, read_project, read_company
+    QC(),
+    //full_time, read_task, read_project, read_company
 
     DESIGNER,//read _task full_time full-user read_project read_company
     DEVELOPER,//read -task full-time full-user read_project read-company

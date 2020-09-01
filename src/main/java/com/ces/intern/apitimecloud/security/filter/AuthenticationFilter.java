@@ -1,7 +1,7 @@
 package com.ces.intern.apitimecloud.security.filter;
 
 import com.ces.intern.apitimecloud.ApplicationContext;
-import com.ces.intern.apitimecloud.entity.UserEntity;
+import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.http.request.UserLoginRequest;
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.UserService;
@@ -63,8 +63,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .compact();
 
         UserService userService = (UserService) ApplicationContext.getBean("userServiceImpl");
-        UserEntity user = userService.findByEmail(email);
+        UserDTO user = userService.findByEmail(email);
         response.setHeader(SecurityContact.HEADER_STRING, SecurityContact.TOKEN_PREFIX+ token);
         response.setHeader(SecurityContact.HEADER_USERID, user.getId()+"");
+        chain.doFilter(request,response);
     }
 }
