@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/companys")
 public class CompanyController {
     final private CompanyService companyService;
     final private ModelMapper modelMapper;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/projects")
 public class ProjectController {
 
 
@@ -30,7 +31,7 @@ public class ProjectController {
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping("/project/{id}")
+    @PostMapping("/{id}")
     public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id){
 
         ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
@@ -42,7 +43,7 @@ public class ProjectController {
         return response;
     }
 
-    @GetMapping("/project/{id}")
+    @GetMapping("/{id}")
     public ProjectResponse getProject(@PathVariable Integer id){
 
         ProjectDTO projectDTO = projectService.getProject(id);
@@ -52,7 +53,7 @@ public class ProjectController {
         return response;
     }
 
-    @GetMapping("/project")
+    @GetMapping("")
     public List getAllProject(){
 
         List listProjects = projectService.getAllProject();
@@ -62,7 +63,7 @@ public class ProjectController {
         return listProjects;
     }
 
-    @PutMapping("/project/{id}")
+    @PutMapping("/{id}")
     public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id){
 
         ProjectDTO project = modelMapper.map(projectRequest,ProjectDTO.class);
@@ -74,7 +75,7 @@ public class ProjectController {
         return  projectResponse;
     }
 
-    @DeleteMapping("/project")
+    @DeleteMapping("")
     public void deleteProject(@RequestBody Integer[] ids){
         projectService.deleteProject(ids);
     }

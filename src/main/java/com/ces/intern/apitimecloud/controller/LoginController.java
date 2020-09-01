@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/user")
 public class LoginController {
 
 
