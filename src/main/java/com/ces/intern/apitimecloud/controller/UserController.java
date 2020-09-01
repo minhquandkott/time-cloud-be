@@ -14,7 +14,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value ="/")
+    @PostMapping(value ="")
     public String createUser(@RequestBody UserRequest userRequest)
     {
         return userService.save(userRequest);
@@ -32,7 +32,7 @@ public class UserController {
         return userService.update(userRequest, id);
     }
 
-    @DeleteMapping(value = "/")
+    @DeleteMapping(value = "")
     public String deleteUser(@RequestBody int[] ids)
     {
         userService.delete(ids);
