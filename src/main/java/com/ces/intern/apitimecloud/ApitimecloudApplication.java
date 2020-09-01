@@ -20,4 +20,9 @@ public class ApitimecloudApplication {
         return modelMapper;
     }
 
+    @Bean
+    public ApplicationContext applicationContext(){
+        return new ApplicationContext();
+    }
+
 }

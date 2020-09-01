@@ -104,4 +104,17 @@ public class CompanyEntity implements Serializable {
         this.modifyAt = modifyAt;
     }
 
+    @Override
+    public String toString() {
+        return "CompanyEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", description='" + description + '\'' +
+                ", logo='" + logo + '\'' +
+                ", createAt=" + createAt +
+                ", createBy=" + createBy +
+                ", modifyAt=" + modifyAt +
+                '}';
+    }
 }

@@ -2,20 +2,20 @@ package com.ces.intern.apitimecloud.controller;
 
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
-import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.http.exception.BadRequestException;
+import com.ces.intern.apitimecloud.http.request.CompanyRequest;
 import com.ces.intern.apitimecloud.http.response.CompanyResponse;
+import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/company")
 public class CompanyController {
     final private CompanyService companyService;
     final private ModelMapper modelMapper;
-
-
 
     @Autowired
     public CompanyController(CompanyService companyService,
@@ -27,31 +27,48 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}")
-    public CompanyResponse getCompany(@PathVariable Integer id){
+    @ResponseStatus
+    public CompanyResponse getCompany(@PathVariable Integer id, @RequestHeader(SecurityContact.HEADER_STRING) String userId ) throws Exception  {
 
-        CompanyResponse returnValue = new CompanyResponse();
+        CompanyResponse response = new CompanyResponse();
 
         CompanyDTO company = companyService.getCompany(id);
 
-        returnValue = modelMapper.map(company, CompanyResponse.class);
+        response = modelMapper.map(company, CompanyResponse.class);
 
-        return returnValue;
+        return response;
 
     }
 
-    @PostMapping("/{id}")
-    public UserDTO createCompany(@RequestBody UserDTO user, @PathVariable Integer id){
+    @PostMapping
+    public CompanyResponse createCompany(@RequestBody CompanyRequest request){
 
-        return null;
+        if(request.getName() ==  null) throw new BadRequestException("Missing company name");
+
+        CompanyResponse response = new CompanyResponse();
+
+        CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
+
+        response = modelMapper.map(companyService.createCompany(company), CompanyResponse.class);
+
+        return response;
     }
 
-    @PutMapping
-    public String updateCompany(){
-        return "update";
+    @PutMapping(value = "/{id}")
+    public CompanyResponse updateCompany(@PathVariable Integer id, @RequestBody CompanyRequest request){
+
+        CompanyResponse response = new CompanyResponse();
+
+        CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
+        response = modelMapper.map(companyService.updateCompany(id, company), CompanyResponse.class);
+
+        return response;
     }
 
-    @DeleteMapping
-    public String deleteCompany(){
-        return "delete";
+    @DeleteMapping(value = "/{id}")
+    public String deleteCompany(@PathVariable Integer id){
+
+        companyService.deleteCompany(id);
+        return "OK";
     }
 }
