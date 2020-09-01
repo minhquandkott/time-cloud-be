@@ -10,14 +10,10 @@ import java.util.Objects;
 public class TimeEntity implements Serializable {
     private static final long serialVersionUID = -8468078557836858453L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "time_generator")
-    @SequenceGenerator(name = "time_generator", sequenceName = "time_id_seq", schema = "public", allocationSize = 1)
-    @Column(name = "time_id", unique = true, nullable = false)
-    private Integer id;
+
 
     @EmbeddedId
-    private User_Task_Id user_task_id;
+    private Id id;
 
     @Column(name = "start_time", nullable = false)
     private Date startTime;
@@ -48,13 +44,7 @@ public class TimeEntity implements Serializable {
 
     public TimeEntity(){}
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Date getStartTime() {
         return startTime;
@@ -96,22 +86,17 @@ public class TimeEntity implements Serializable {
         this.task = task;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TimeEntity that = (TimeEntity) o;
-        return id.equals(that.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
     @Embeddable
-    public static class User_Task_Id implements Serializable{
+    public static class Id implements Serializable{
         private static final long serialVersionUID = 2634409230448550149L;
+
+
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "time_generator")
+        @SequenceGenerator(name = "time_generator", sequenceName = "time_id_seq", schema = "public", allocationSize = 1)
+        @Column(name = "time_id", unique = true, nullable = false)
+        private Integer id;
 
         @Column(name = "user_id")
         private Integer userId;
@@ -119,7 +104,15 @@ public class TimeEntity implements Serializable {
         @Column(name = "task_id")
         private Integer taskId;
 
-        public User_Task_Id(){}
+        public Id(){}
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
 
         public Integer getUserId() {
             return userId;
@@ -141,14 +134,15 @@ public class TimeEntity implements Serializable {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            User_Task_Id that = (User_Task_Id) o;
-            return userId.equals(that.userId) &&
-                    taskId.equals(that.taskId);
+            Id id1 = (Id) o;
+            return id.equals(id1.id) &&
+                    userId.equals(id1.userId) &&
+                    taskId.equals(id1.taskId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(userId, taskId);
+            return Objects.hash(id, userId, taskId);
         }
     }
 }
