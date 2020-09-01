@@ -9,7 +9,6 @@ import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -102,20 +101,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<ProjectDTO> getProjects(Integer companyId) {
-        return null;
-    }
-
-    @Override
     public CompanyEntity getFullInFor(Integer companyId) {
         return null;
     }
 
-    @Override
-    public List<UserEntity> getMembers(Integer companyId) {
-
-        return null;
-    }
 
     @Override
     public List<UserEntity> getMemberByRole(Integer companyId, Integer role) {

@@ -42,7 +42,6 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}")
-    @ResponseStatus
     public CompanyResponse getCompany(@PathVariable Integer id, @RequestHeader(SecurityContact.HEADER_STRING) String userId ) throws Exception  {
 
         CompanyResponse response = new CompanyResponse();

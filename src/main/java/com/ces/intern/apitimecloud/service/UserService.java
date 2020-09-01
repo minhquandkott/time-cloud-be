@@ -13,10 +13,18 @@ import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     public String save(UserRequest userRequest);
+
     public UserResponse findUser(Integer id);
+
     public UserResponse update(UserRequest userRequest, Integer id);
+
     public void delete(int[] ids);
-    public UserEntity findByEmail(String email);
+
+    public UserDTO findByEmail(String email);
+
     public List<UserDTO> getAllByCompanyId(Integer companyId);
+
     public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer role);
+
+    public UserDTO validateUser(String email, String password);
 }
