@@ -5,9 +5,7 @@ import java.util.Date;
 public class TimeRequest {
     private Date startTime;
     private Date endTime;
-    private String descripion;
-    private Integer userId;
-    private Integer taskId;
+    private String description;
 
     public Date getStartTime() {
         return startTime;
@@ -25,27 +23,11 @@ public class TimeRequest {
         this.endTime = endTime;
     }
 
-    public String getDescripion() {
-        return descripion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripion(String descripion) {
-        this.descripion = descripion;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

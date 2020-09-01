@@ -5,7 +5,7 @@ import java.util.Date;
 public class TimeResponse {
     private Date startTime;
     private Date endTime;
-    private String descripion;
+    private String description;
     private Integer userId;
     private Integer taskId;
 
@@ -25,12 +25,12 @@ public class TimeResponse {
         this.endTime = endTime;
     }
 
-    public String getDescripion() {
-        return descripion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripion(String descripion) {
-        this.descripion = descripion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getUserId() {
