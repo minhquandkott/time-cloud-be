@@ -89,6 +89,19 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
+    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer role) {
+        List<UserEntity> userEntities = new ArrayList<>();
+
+        userEntities = userRepository.getAllByCompanyId(companyId);
+        if(userEntities.size() == 0) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+                + " with company " +companyId + " and role " +role);
+
+        return userEntities.stream()
+                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Not Found"));
 

@@ -18,4 +18,5 @@ public interface UserService extends UserDetailsService {
     public void delete(int[] ids);
     public UserEntity findByEmail(String email);
     public List<UserDTO> getAllByCompanyId(Integer companyId);
+    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer role);
 }

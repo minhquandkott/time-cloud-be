@@ -17,11 +17,7 @@ public interface CompanyService {
 
     public void deleteCompany(Integer companyId);
 
-    public List<ProjectDTO> getProjects(Integer companyId);
-
     public CompanyEntity getFullInFor(Integer companyId);
-
-    public List<UserEntity> getMembers(Integer companyId);
 
     public List<UserEntity> getMemberByRole(Integer companyId, Integer role);
 }

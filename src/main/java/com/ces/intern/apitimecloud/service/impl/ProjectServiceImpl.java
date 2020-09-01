@@ -8,6 +8,7 @@ import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -95,5 +97,17 @@ public class ProjectServiceImpl implements ProjectService {
                 throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+item);
             }
         }
+    }
+
+    @Override
+    public List<ProjectDTO> getAllByCompanyId(Integer companyId) {
+        List<ProjectEntity> projectEntities = projectRepository.getAllByCompanyId(companyId);
+
+        if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+                                                                        + " with " + companyId);
+
+        return projectEntities.stream()
+                .map(project  -> modelMapper.map(project, ProjectDTO.class))
+                .collect(Collectors.toList());
     }
 }
