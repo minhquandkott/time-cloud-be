@@ -65,7 +65,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         UserService userService = (UserService) ApplicationContext.getBean("userServiceImpl");
         UserDTO user = userService.findByEmail(email);
         response.setHeader(SecurityContact.HEADER_STRING, SecurityContact.TOKEN_PREFIX+ token);
-        response.setHeader(SecurityContact.HEADER_USERID, user.getId()+"");
         chain.doFilter(request,response);
     }
 }

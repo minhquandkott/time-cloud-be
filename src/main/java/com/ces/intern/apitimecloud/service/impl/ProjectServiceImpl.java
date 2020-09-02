@@ -33,15 +33,16 @@ public class ProjectServiceImpl implements ProjectService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO) {
+    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId) {
 
         CompanyEntity company= companyRepository.findById(companyId).
                 orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
 
         ProjectEntity projectEntity = modelMapper.map(projectDTO, ProjectEntity.class);
 
+        Integer userID = Integer.parseInt(userId);
         projectEntity.setCompany(company);
-        projectEntity.setCreateBy(1);
+        projectEntity.setCreateBy(userID);
         projectEntity.setCreatAt(new Date());
         projectEntity.setModifyAt(new Date());
 

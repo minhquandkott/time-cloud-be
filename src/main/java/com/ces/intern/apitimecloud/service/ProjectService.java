@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO);
+    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId);
 
     public ProjectDTO getProject(Integer projectId);
 
