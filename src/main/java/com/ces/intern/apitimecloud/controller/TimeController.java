@@ -29,12 +29,6 @@ public class TimeController {
         return timeService.find(id);
     }
 
-    @PostMapping(value = "/")
-    public TimeResponse createTime(@RequestHeader("userId") String userId,
-                             @RequestBody TimeRequest timeRequest) {
-        if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");
-        return timeService.save(userId, timeRequest);
-    }
 
     @PutMapping(value = "/{id}")
     public TimeResponse updateTime(@RequestHeader("userId") String userId,

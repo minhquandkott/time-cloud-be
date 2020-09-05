@@ -12,7 +12,9 @@ import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
+import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
+import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.Condition;
 import org.modelmapper.Conditions;
@@ -33,42 +35,44 @@ public class TimeServiceImpl implements TimeService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TimeServiceImpl(UserRepository userRepository,
-                           TaskRepository taskRepository,
+    public TimeServiceImpl( UserRepository userRepository,
+                            TaskRepository taskRepository,
                            TimeRepository timeRepository,
                            ModelMapper modelMapper) {
         this.timeRepository = timeRepository;
-        this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public TimeResponse save(String userID, TimeRequest timeRequest) {
-        TimeEntity timeEntity = new TimeEntity();
-        TimeDTO timeDTO = new TimeDTO();
-        TimeResponse timeResponse = new TimeResponse();
-        timeEntity = modelMapper.map(timeRequest, TimeEntity.class);
-        TaskEntity taskEntity = taskRepository.findById(1).get();
+    public TimeResponse save(String userID, TimeRequest timeRequest, Integer taskId) {
 
-        UserEntity userEntity = userRepository.findById(Integer.parseInt(userID)).get();
+        TimeResponse timeResponse = new TimeResponse();
+        TimeEntity timeEntity = modelMapper.map(timeRequest, TimeEntity.class);
+        TaskEntity taskEntity = taskRepository.findById(taskId).orElseThrow(() ->
+                new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage())) ;
+
+        UserEntity userEntity = userRepository.findById(Integer.parseInt(userID))
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
 
         timeEntity.setUser(userEntity);
         timeEntity.setTask(taskEntity);
 
-        timeRepository.save(timeEntity);
+        TimeEntity time = timeRepository.save(timeEntity);
+        timeResponse = modelMapper.map(time, TimeResponse.class);
 
-        return null;
+        return timeResponse;
     }
 
     @Override
     public TimeResponse find(Integer id) {
 
         TimeEntity timeEntity = timeRepository.findById(id).orElseThrow(() -> new NotFoundException("Khong tim thay"));
-        TimeDTO timeDTO = modelMapper.map(timeEntity, TimeDTO.class);
-        TimeResponse timeResponse = modelMapper.map(timeDTO, TimeResponse.class);
-        timeResponse.setTaskId(timeDTO.getTask().getId());
-        timeResponse.setUserId(timeDTO.getUser().getId());
+
+        TimeResponse timeResponse = modelMapper.map(timeEntity, TimeResponse.class);
+        timeResponse.setTaskId(timeEntity.getTask().getId());
+        timeResponse.setUserId(timeEntity.getUser().getId());
         return timeResponse;
     }
 
@@ -76,26 +80,22 @@ public class TimeServiceImpl implements TimeService {
 
     public TimeResponse update(Integer userId, TimeRequest timeRequest, Integer id) {
 
-//        UserEntity userEntity = userRepository.findById(userId).get();
-//        TaskEntity taskEntity = taskRepository.findById(1).get();
-
         TimeEntity timeEntity = timeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + id));
 
-        
-        //timeEntity = modelMapper.map(timeRequest, TimeEntity.class);
         timeEntity.setEndTime(timeRequest.getEndTime());
         timeEntity.setStartTime(timeRequest.getStartTime());
         timeEntity.setDescription( timeRequest.getDescription());
-        System.out.println("=============");
+
         timeEntity.setTask(timeEntity.getTask());
-        System.out.println("=============");
         timeEntity.setUser(timeEntity.getUser());
+
         timeEntity = timeRepository.save(timeEntity);
-        TimeDTO timeDTO = modelMapper.map(timeEntity, TimeDTO.class);
-        TimeResponse timeResponse = modelMapper.map(timeDTO, TimeResponse.class);
+
+        TimeResponse timeResponse = modelMapper.map(timeEntity, TimeResponse.class);
+
         return timeResponse;
-        // ong xong hongrồi đúng ko, test hết ok r trừ cái này thế chiều ông push lên nhá chiều tôi deploy, ok có cái này nè ông
+
     }
 
     @Override
