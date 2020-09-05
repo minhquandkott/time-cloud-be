@@ -32,11 +32,12 @@ public class ProjectController {
     }
 
     @PostMapping("/{id}")
-    public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id){
+    public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id,
+                                         @RequestHeader("userId") String userId){
 
         ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
 
-        ProjectDTO projectDTO = projectService.createProject(id,project);
+        ProjectDTO projectDTO = projectService.createProject(id,project,userId);
 
         ProjectResponse response = modelMapper.map(projectDTO, ProjectResponse.class);
 
