@@ -8,6 +8,8 @@ import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +35,9 @@ public class TaskController {
 
 
     @GetMapping("/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public TaskResponse getTask(@PathVariable Integer id){
         TaskDTO taskDTO = taskService.getTask(id);
         TaskResponse response = modelMapper.map(taskDTO, TaskResponse.class);
@@ -42,6 +47,9 @@ public class TaskController {
 
 
     @PutMapping("/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public TaskResponse updateTask(@PathVariable Integer id, @RequestBody TaskRequest request){
         TaskDTO taskDTO = modelMapper.map(request,TaskDTO.class);
         taskDTO = taskService.updateTask(id,taskDTO);
@@ -50,6 +58,9 @@ public class TaskController {
     }
 
     @PostMapping(value = "/{id}/times")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public TimeResponse createTime(@RequestHeader("userId") String userId,
                                    @RequestBody TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
@@ -58,6 +69,9 @@ public class TaskController {
     }
 
     @DeleteMapping("")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public void deleteTask(@RequestBody Integer[] ids){
         taskService.deleteTask(ids);
     }

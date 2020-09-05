@@ -16,10 +16,7 @@ import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
-import org.modelmapper.Condition;
-import org.modelmapper.Conditions;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
+import org.modelmapper.*;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,10 +57,17 @@ public class TimeServiceImpl implements TimeService {
         timeEntity.setTask(taskEntity);
 
         TimeEntity time = timeRepository.save(timeEntity);
-        timeResponse = modelMapper.map(time, TimeResponse.class);
 
+        TypeMap<TimeEntity, TimeResponse> tm = modelMapper.getTypeMap(TimeEntity.class, TimeResponse.class);
+        tm.addMappings(mapper -> {
+            mapper.map(src -> src.getUser().getId(), TimeResponse::setUserId);
+            mapper.map(src -> src.getTask().getId(), TimeResponse::setTaskId);
+        });
+        timeResponse = tm.map(time);
         return timeResponse;
     }
+
+
 
     @Override
     public TimeResponse find(Integer id) {

@@ -33,6 +33,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.POST,SecurityContact.SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.POST, SecurityContact.SIGN_IN_URL).permitAll()
                 .anyRequest().authenticated()

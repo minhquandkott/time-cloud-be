@@ -14,6 +14,8 @@ import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +44,9 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public CompanyResponse getCompany(@PathVariable Integer id, @RequestHeader(SecurityContact.HEADER_STRING) String userId ) throws Exception  {
 
         CompanyResponse response = new CompanyResponse();
@@ -55,6 +60,9 @@ public class CompanyController {
     }
 
     @PostMapping
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public CompanyResponse createCompany(@RequestBody CompanyRequest request){
 
         if(request.getName() ==  null) throw new BadRequestException("Missing company name");
@@ -69,6 +77,9 @@ public class CompanyController {
     }
 
     @PutMapping(value = "/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public CompanyResponse updateCompany(@PathVariable Integer id, @RequestBody CompanyRequest request){
 
         CompanyResponse response = new CompanyResponse();
@@ -80,6 +91,9 @@ public class CompanyController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public String deleteCompany(@PathVariable Integer id){
 
         companyService.deleteCompany(id);
@@ -87,6 +101,9 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}/users")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public List<UserResponse> getUsersByCompanyId(@PathVariable Integer id){
 
         List<UserDTO> users =  userService.getAllByCompanyId(id);
@@ -98,6 +115,9 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}/users/{roleId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
     public List<UserResponse> getUsersByCompanyIdAndRole(@PathVariable Integer id, @PathVariable Integer roleId){
 
         List<UserDTO> users =  userService.getAllByCompanyAndRole(id, roleId);
@@ -108,13 +128,14 @@ public class CompanyController {
 
     }
     @GetMapping(value = "/{id}/projects")
-    public List<ProjectResponse> getProject(@PathVariable Integer id){
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
+    public List<ProjectResponse> getProjects(@PathVariable Integer id){
 
         List<ProjectDTO> projects = projectService.getAllByCompanyId(id);
         return projects.stream()
                 .map(project  -> modelMapper.map(project, ProjectResponse.class))
                 .collect(Collectors.toList());
     }
-
-
 }
