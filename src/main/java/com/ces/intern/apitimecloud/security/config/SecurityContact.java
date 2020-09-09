@@ -8,4 +8,5 @@ public class SecurityContact {
     public static final String SIGN_IN_URL = "/login";
     public static final String SIGN_UP_URL = "/users";
     public static final String TOKEN_SECRET = "TimeCloudTimeCloudTimeCloudTimeCloud";
+    public static final String HEADER_USERID = "UserId";
 }

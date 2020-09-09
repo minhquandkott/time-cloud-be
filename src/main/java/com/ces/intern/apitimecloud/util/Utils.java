@@ -16,18 +16,17 @@ import java.util.*;
 
 public class Utils {
 
-    public static String generateJWTToken(UserDTO loginUser){
+    public static List<String> generateJWTToken(UserDTO loginUser){
         UserService userService = (UserService) ApplicationContext.getBean("userServiceImpl");
 
         String token = Jwts.builder()
                 .claim("email", loginUser.getEmail())
-                .claim("userId", loginUser.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityContact.EXPIRATION_TIME))
                 .signWith(Keys.hmacShaKeyFor(SecurityContact.TOKEN_SECRET.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
 
-        return token;
+        return Arrays.asList(token, loginUser.getId()+"");
     }
 
 }

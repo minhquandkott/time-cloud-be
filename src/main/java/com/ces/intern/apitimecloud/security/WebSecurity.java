@@ -1,13 +1,10 @@
 package com.ces.intern.apitimecloud.security;
 
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
-import com.ces.intern.apitimecloud.security.filter.AuthenticationFilter;
 import com.ces.intern.apitimecloud.security.filter.AuthorizationFilter;
-import com.ces.intern.apitimecloud.security.handler.AuthenticationFailureHandler;
 import com.ces.intern.apitimecloud.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -69,6 +66,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList(SecurityContact.HEADER_STRING,SecurityContact.HEADER_USERID));
         final UrlBasedCorsConfigurationSource sourse = new UrlBasedCorsConfigurationSource();
         sourse.registerCorsConfiguration("/**", configuration);
         return sourse;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class LoginController {
@@ -35,9 +36,10 @@ public class LoginController {
         }
         UserDTO loginUser = userService.validateUser(user.getEmail(), user.getPassword());
 
-        String token = Utils.generateJWTToken(loginUser);
+        List<String> info = Utils.generateJWTToken(loginUser);
         HttpHeaders responseHeader = new HttpHeaders();
-        responseHeader.add(SecurityContact.HEADER_STRING, SecurityContact.TOKEN_PREFIX + token);
+        responseHeader.add(SecurityContact.HEADER_STRING, SecurityContact.TOKEN_PREFIX + info.get(0));
+        responseHeader.add(SecurityContact.HEADER_USERID, info.get(1));
 
         return new ResponseEntity<>("OK", responseHeader, HttpStatus.OK);
     }
