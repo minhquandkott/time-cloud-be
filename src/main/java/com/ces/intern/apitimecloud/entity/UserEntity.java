@@ -24,7 +24,7 @@ public class UserEntity implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private boolean gender;
 
     @Column(name = "address")

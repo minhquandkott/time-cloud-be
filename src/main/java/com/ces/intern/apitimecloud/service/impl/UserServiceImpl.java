@@ -38,7 +38,6 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     @Override
     public String save(UserRequest userRequest) {
 
-
         String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
         UserEntity user = modelMapper.map(userRequest, UserEntity.class);
         user.setPassword(encodedPassword);
