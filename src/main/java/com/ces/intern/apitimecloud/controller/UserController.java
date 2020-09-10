@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/projects")
-    public List<ProjectResponse> getProjectByIdUser(@RequestHeader("userId")Integer userId){
+    public List<ProjectResponse> getProjectByIdUser(@PathVariable("id") Integer userId){
         List<ProjectDTO> projects = projectService.getAllByUserId(userId);
         return projects.stream()
                 .map(project  -> modelMapper.map(project, ProjectResponse.class))

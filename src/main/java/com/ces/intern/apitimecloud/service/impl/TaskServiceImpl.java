@@ -37,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+ projectId));
 
         TaskEntity taskEntity = modelMapper.map(taskDTO,TaskEntity.class);
-        //Integer userID = Integer.parseInt(userId);
+
         taskEntity.setName(taskDTO.getName());
         taskEntity.setCreateAt(new Date());
         taskEntity.setModifyAt(new Date());
