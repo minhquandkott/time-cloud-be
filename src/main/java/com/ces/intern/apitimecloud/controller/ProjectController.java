@@ -43,21 +43,7 @@ public class ProjectController {
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
-    public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id,
-                                         @RequestHeader("userId") String userId){
 
-        ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
-
-        ProjectDTO projectDTO = projectService.createProject(id,project,userId);
-
-        ProjectResponse response = modelMapper.map(projectDTO, ProjectResponse.class);
-
-        return response;
-    }
 
     @GetMapping("/{id}")
     @ApiImplicitParams({

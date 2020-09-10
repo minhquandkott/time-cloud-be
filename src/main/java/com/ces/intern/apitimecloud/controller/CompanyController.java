@@ -7,6 +7,7 @@ import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.CompanyRequest;
+import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.response.CompanyResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
@@ -137,5 +138,21 @@ public class CompanyController {
         return projects.stream()
                 .map(project  -> modelMapper.map(project, ProjectResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/{id}/projects")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
+    public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id,
+                                         @RequestHeader("userId") String userId){
+
+        ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
+
+        ProjectDTO projectDTO = projectService.createProject(id,project,userId);
+
+        ProjectResponse response = modelMapper.map(projectDTO, ProjectResponse.class);
+
+        return response;
     }
 }
