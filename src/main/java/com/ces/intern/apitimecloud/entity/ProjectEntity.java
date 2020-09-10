@@ -37,6 +37,8 @@ public class ProjectEntity implements Serializable {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
+
+
     public ProjectEntity(){}
 
     public Integer getId() {

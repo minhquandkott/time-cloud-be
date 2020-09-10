@@ -1,12 +1,22 @@
 package com.ces.intern.apitimecloud.http.response;
 
 public class UserResponse {
+
+    private Integer id;
     private String name;
     private String email;
     private boolean gender;
     private String address;
     private String phoneNumber;
     private String avatar;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

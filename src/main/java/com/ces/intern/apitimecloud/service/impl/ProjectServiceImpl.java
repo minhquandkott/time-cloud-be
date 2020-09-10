@@ -68,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
         Type listType = new TypeToken<List<ProjectDTO>>() {}.getType();
 
         List<ProjectDTO> projectDTOS = modelMapper.map(listProject,listType);
-        projectDTOS.forEach(t  -> System.out.println(t.getName()));
+
         return projectDTOS;
     }
 
@@ -106,6 +106,18 @@ public class ProjectServiceImpl implements ProjectService {
 
         if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                                                                         + " with " + companyId);
+
+        return projectEntities.stream()
+                .map(project  -> modelMapper.map(project, ProjectDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectDTO> getAllByUserId(Integer userId) {
+        List<ProjectEntity> projectEntities = projectRepository.getAllByUserId(userId);
+
+        if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+                + " with " + userId);
 
         return projectEntities.stream()
                 .map(project  -> modelMapper.map(project, ProjectDTO.class))

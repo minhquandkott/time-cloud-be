@@ -18,4 +18,6 @@ public interface ProjectService {
     public void deleteProject(Integer[] projectIds);
 
     public List<ProjectDTO> getAllByCompanyId(Integer companyId);
+
+    public List<ProjectDTO> getAllByUserId(Integer userId);
 }

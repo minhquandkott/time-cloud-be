@@ -3,11 +3,21 @@ package com.ces.intern.apitimecloud.http.response;
 import java.util.Date;
 
 public class TimeResponse {
+
+    private Integer id;
     private Date startTime;
     private Date endTime;
     private String description;
     private Integer userId;
     private Integer taskId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Date getStartTime() {
         return startTime;

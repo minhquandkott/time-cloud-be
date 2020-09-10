@@ -132,4 +132,6 @@ public class ProjectController {
         List<TaskDTO> list = taskService.getAllTaskByProject(id);
         return list.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }
+
+
 }

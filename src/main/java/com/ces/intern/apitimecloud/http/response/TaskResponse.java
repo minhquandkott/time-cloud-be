@@ -6,12 +6,21 @@ import java.util.Date;
 
 public class TaskResponse {
 
+    private Integer id;
     private String name;
     private Date createAt;
     private Date modifyAt;
     private ProjectDTO project;
 
     public TaskResponse() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

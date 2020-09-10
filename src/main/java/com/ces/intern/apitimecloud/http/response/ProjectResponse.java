@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class ProjectResponse {
 
+    private Integer id;
     private String name;
     private String clientName;
     private Date creatAt;
@@ -14,6 +15,14 @@ public class ProjectResponse {
     private CompanyDTO company;
 
     public ProjectResponse() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
