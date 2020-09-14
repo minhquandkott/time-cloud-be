@@ -34,8 +34,8 @@ public class TimeServiceImpl implements TimeService {
     @Autowired
     public TimeServiceImpl( UserRepository userRepository,
                             TaskRepository taskRepository,
-                           TimeRepository timeRepository,
-                           ModelMapper modelMapper) {
+                            TimeRepository timeRepository,
+                            ModelMapper modelMapper) {
         this.timeRepository = timeRepository;
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
@@ -58,11 +58,10 @@ public class TimeServiceImpl implements TimeService {
 
         TimeEntity time = timeRepository.save(timeEntity);
 
-        TypeMap<TimeEntity, TimeResponse> tm = modelMapper.getTypeMap(TimeEntity.class, TimeResponse.class);
-        tm.addMappings(mapper -> {
-            mapper.map(src -> src.getUser().getId(), TimeResponse::setUserId);
-            mapper.map(src -> src.getTask().getId(), TimeResponse::setTaskId);
-        });
+        TypeMap<TimeEntity, TimeResponse> tm = modelMapper.typeMap(TimeEntity.class, TimeResponse.class);
+        tm.addMapping(src -> src.getUser().getId(), TimeResponse::setUserId);
+        tm.addMapping(src -> src.getTask().getId(), TimeResponse::setTaskId);
+
         timeResponse = tm.map(time);
         return timeResponse;
     }
