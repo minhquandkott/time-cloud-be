@@ -71,8 +71,7 @@ public class TimeServiceImpl implements TimeService {
         TimeEntity time = timeRepository.save(timeEntity);
         timeResponse = modelMapper.map(time, TimeResponse.class);
         System.out.println(modelMapper.getTypeMap(TimeEntity.class, TimeResponse.class).getMappings());
-
-
+        
         return timeResponse;
     }
 
