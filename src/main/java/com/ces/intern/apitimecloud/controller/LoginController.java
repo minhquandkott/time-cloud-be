@@ -5,10 +5,12 @@ import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.LoginUserException;
 import com.ces.intern.apitimecloud.http.request.UserLoginRequest;
 import com.ces.intern.apitimecloud.http.response.ErrorResponse;
+import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.Utils;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +25,16 @@ public class LoginController {
 
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
-    public LoginController(UserService userService){
+    public LoginController(UserService userService,
+                           ModelMapper modelMapper){
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest user){
+    public ResponseEntity<UserResponse> login(@RequestBody UserLoginRequest user){
 
         if(user.getEmail() == "" || user.getPassword() == ""){
             throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage());
@@ -40,8 +45,9 @@ public class LoginController {
         HttpHeaders responseHeader = new HttpHeaders();
         responseHeader.add(SecurityContact.HEADER_STRING, SecurityContact.TOKEN_PREFIX + info.get(0));
         responseHeader.add(SecurityContact.HEADER_USERID, info.get(1));
+        UserResponse userResponse = modelMapper.map(loginUser, UserResponse.class);
 
-        return new ResponseEntity<>("OK", responseHeader, HttpStatus.OK);
+        return new ResponseEntity<UserResponse>(userResponse, responseHeader, HttpStatus.OK);
     }
 
     @ExceptionHandler({LoginUserException.class})
