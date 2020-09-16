@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class TimeServiceImpl implements TimeService {
 
@@ -107,5 +111,13 @@ public class TimeServiceImpl implements TimeService {
                     .orElseThrow(() -> new RuntimeException((ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " + item)));
             timeRepository.delete(timeEntity);
         }
+    }
+
+    @Override
+    public List<TimeDTO> getTimesByUserId(Integer userId) {
+        List<TimeEntity> times = timeRepository.getAllByUserId(userId);
+        return times.stream()
+                .map(time -> modelMapper.map(time, TimeDTO.class))
+                .collect(Collectors.toList());
     }
 }
