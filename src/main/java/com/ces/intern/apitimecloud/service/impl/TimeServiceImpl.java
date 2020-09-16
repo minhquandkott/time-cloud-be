@@ -55,14 +55,9 @@ public class TimeServiceImpl implements TimeService {
 
         timeEntity.setUser(userEntity);
         timeEntity.setTask(taskEntity);
-
         TimeEntity time = timeRepository.save(timeEntity);
-
-        TypeMap<TimeEntity, TimeResponse> tm = modelMapper.typeMap(TimeEntity.class, TimeResponse.class);
-        tm.addMapping(src -> src.getUser().getId(), TimeResponse::setUserId);
-        tm.addMapping(src -> src.getTask().getId(), TimeResponse::setTaskId);
-
-        timeResponse = tm.map(time);
+        timeResponse = modelMapper.map(time, TimeResponse.class);
+        System.out.println(modelMapper.getTypeMap(TimeEntity.class, TimeResponse.class).getMappings());
         return timeResponse;
     }
 
@@ -72,10 +67,14 @@ public class TimeServiceImpl implements TimeService {
     public TimeResponse find(Integer id) {
 
         TimeEntity timeEntity = timeRepository.findById(id).orElseThrow(() -> new NotFoundException("Khong tim thay"));
+        TimeResponse timeResponse = new TimeResponse();
+        try {
+            modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+             timeResponse= modelMapper.map(timeEntity, TimeResponse.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        TimeResponse timeResponse = modelMapper.map(timeEntity, TimeResponse.class);
-        timeResponse.setTaskId(timeEntity.getTask().getId());
-        timeResponse.setUserId(timeEntity.getUser().getId());
         return timeResponse;
     }
 

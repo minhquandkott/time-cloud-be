@@ -8,8 +8,8 @@ public class TimeResponse {
     private Date startTime;
     private Date endTime;
     private String description;
-    private Integer userId;
-    private Integer taskId;
+    private UserResponse user;
+    private TaskResponse task;
 
     public Integer getId() {
         return id;
@@ -43,19 +43,19 @@ public class TimeResponse {
         this.description = description;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public UserResponse getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(UserResponse user) {
+        this.user = user;
     }
 
-    public Integer getTaskId() {
-        return taskId;
+    public TaskResponse getTask() {
+        return task;
     }
 
-    public void setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public void setTask(TaskResponse task) {
+        this.task = task;
     }
 }
