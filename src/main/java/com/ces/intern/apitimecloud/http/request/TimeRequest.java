@@ -3,24 +3,24 @@ package com.ces.intern.apitimecloud.http.request;
 import java.util.Date;
 
 public class TimeRequest {
-    private Date startTime;
-    private Date endTime;
+    private Long mileSecondStartTime;
+    private Long mileSecondEndTime;
     private String description;
 
-    public Date getStartTime() {
-        return startTime;
+    public Long getMileSecondStartTime() {
+        return mileSecondStartTime;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setMileSecondStartTime(Long mileSecondStartTime) {
+        this.mileSecondStartTime = mileSecondStartTime;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Long getMileSecondEndTime() {
+        return mileSecondEndTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setMileSecondEndTime(Long mileSecondEndTime) {
+        this.mileSecondEndTime = mileSecondEndTime;
     }
 
     public String getDescription() {

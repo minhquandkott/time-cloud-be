@@ -35,15 +35,15 @@ public class TimeController {
     }
 
 
-    @PutMapping(value = "/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
-    public TimeResponse updateTime(@RequestHeader("userId") String userId,
-                                   @RequestBody TimeRequest timeRequest,
-                                   @PathVariable Integer id) {
-        return timeService.update(Integer.parseInt(userId), timeRequest, id);
-    }
+//    @PutMapping(value = "/{id}")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+//    })
+//    public TimeResponse updateTime(@RequestHeader("userId") String userId,
+//                                   @RequestBody TimeRequest timeRequest,
+//                                   @PathVariable Integer id) {
+//        return timeService.update(Integer.parseInt(userId), timeRequest, id);
+//    }
 
     @DeleteMapping(value = "/")
     @ApiImplicitParams({

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +49,16 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public TimeResponse save(String userID, TimeRequest timeRequest, Integer taskId) {
-
         TimeResponse timeResponse = new TimeResponse();
-        TimeEntity timeEntity = modelMapper.map(timeRequest, TimeEntity.class);
+        TypeMap<TimeRequest, TimeEntity> tm = modelMapper.typeMap(TimeRequest.class, TimeEntity.class);
+        Converter<Long,Date> converter = context -> context.getSource() == null ? null : new Date(context.getSource());
+        tm.addMappings(mapping ->{
+            mapping.using(converter).map(TimeRequest::getMileSecondEndTime, TimeEntity::setEndTime);
+            mapping.using(converter).map(TimeRequest::getMileSecondStartTime, TimeEntity::setStartTime);
+        });
+
+
+        TimeEntity timeEntity = tm.map(timeRequest);
         TaskEntity taskEntity = taskRepository.findById(taskId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage())) ;
 
@@ -62,6 +70,8 @@ public class TimeServiceImpl implements TimeService {
         TimeEntity time = timeRepository.save(timeEntity);
         timeResponse = modelMapper.map(time, TimeResponse.class);
         System.out.println(modelMapper.getTypeMap(TimeEntity.class, TimeResponse.class).getMappings());
+
+
         return timeResponse;
     }
 
@@ -89,8 +99,8 @@ public class TimeServiceImpl implements TimeService {
         TimeEntity timeEntity = timeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + id));
 
-        timeEntity.setEndTime(timeRequest.getEndTime());
-        timeEntity.setStartTime(timeRequest.getStartTime());
+//        timeEntity.setEndTime(timeRequest.getEndTime());
+//        timeEntity.setStartTime(timeRequest.getStartTime());
         timeEntity.setDescription( timeRequest.getDescription());
 
         timeEntity.setTask(timeEntity.getTask());
