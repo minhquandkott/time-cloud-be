@@ -11,7 +11,7 @@ public interface CompanyService {
 
     public CompanyDTO getCompany(Integer companyId);
 
-    public CompanyDTO createCompany(CompanyDTO companyDTO);
+    public CompanyDTO createCompany(CompanyDTO companyDTO, Integer userId);
 
     public CompanyDTO updateCompany(Integer companyId, CompanyDTO companyDTO);
 

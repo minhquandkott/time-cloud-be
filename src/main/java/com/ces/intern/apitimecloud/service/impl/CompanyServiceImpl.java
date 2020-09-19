@@ -2,7 +2,6 @@ package com.ces.intern.apitimecloud.service.impl;
 
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
-import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
@@ -35,47 +34,40 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    // _company is entity before save in db
-    // company_ is entity get from db
 
 
     @Override
     public CompanyDTO getCompany(Integer companyId) {
-       CompanyDTO returnValue = new CompanyDTO();
 
        Optional<CompanyEntity> optional = companyRepository.findById(companyId);
 
        CompanyEntity company_ = optional.orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ) );
 
-       returnValue = modelMapper.map(company_, CompanyDTO.class);
+        CompanyDTO returnValue = modelMapper.map(company_, CompanyDTO.class);
 
        return returnValue;
     }
 
     @Override
-    public CompanyDTO createCompany(CompanyDTO company) {
+    public CompanyDTO createCompany(CompanyDTO company, Integer userId) {
 
         Date createAt = new Date();
 
         company.setCreateAt(createAt);
         company.setModifyAt(createAt);
-        company.setCreateBy(20);
-
-        CompanyDTO returnValue = new CompanyDTO();
+        company.setCreateBy(userId);
 
         CompanyEntity _company = modelMapper.map(company, CompanyEntity.class);
 
         CompanyEntity company_ = companyRepository.save(_company);
 
-        returnValue = modelMapper.map(company_, CompanyDTO.class);
+        CompanyDTO returnValue = modelMapper.map(company_, CompanyDTO.class);
 
         return returnValue;
     }
 
     @Override
     public CompanyDTO updateCompany(Integer companyId, CompanyDTO company) {
-
-        CompanyDTO returnValue = new CompanyDTO();
 
         CompanyEntity company_ = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + companyId));
@@ -88,7 +80,7 @@ public class CompanyServiceImpl implements CompanyService {
         company_.setModifyAt(modifyAt);
 
         companyRepository.save(company_);
-        returnValue = modelMapper.map(company_, CompanyDTO.class);
+        CompanyDTO returnValue = modelMapper.map(company_, CompanyDTO.class);
 
         return returnValue;
     }

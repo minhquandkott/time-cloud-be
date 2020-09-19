@@ -50,11 +50,9 @@ public class CompanyController {
     })
     public CompanyResponse getCompany(@PathVariable Integer id, @RequestHeader(SecurityContact.HEADER_STRING) String userId ) throws Exception  {
 
-        CompanyResponse response = new CompanyResponse();
-
         CompanyDTO company = companyService.getCompany(id);
 
-        response = modelMapper.map(company, CompanyResponse.class);
+        CompanyResponse response = modelMapper.map(company, CompanyResponse.class);
 
         return response;
 
@@ -64,15 +62,14 @@ public class CompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public CompanyResponse createCompany(@RequestBody CompanyRequest request){
+    public CompanyResponse createCompany(@RequestBody CompanyRequest request,
+                                         @RequestHeader("userId") Integer userId){
 
-        if(request.getName() ==  null) throw new BadRequestException("Missing company name");
-
-        CompanyResponse response = new CompanyResponse();
+        if(request.getName() ==  null || userId == null ) throw new BadRequestException("Missing require field (Company name or UserID - header)");
 
         CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
 
-        response = modelMapper.map(companyService.createCompany(company), CompanyResponse.class);
+        CompanyResponse response = modelMapper.map(companyService.createCompany(company, userId), CompanyResponse.class);
 
         return response;
     }
@@ -83,10 +80,9 @@ public class CompanyController {
     })
     public CompanyResponse updateCompany(@PathVariable Integer id, @RequestBody CompanyRequest request){
 
-        CompanyResponse response = new CompanyResponse();
-
         CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
-        response = modelMapper.map(companyService.updateCompany(id, company), CompanyResponse.class);
+
+        CompanyResponse response = modelMapper.map(companyService.updateCompany(id, company), CompanyResponse.class);
 
         return response;
     }
