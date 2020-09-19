@@ -24,7 +24,7 @@ public interface UserService extends UserDetailsService {
 
     public List<UserDTO> getAllByCompanyId(Integer companyId);
 
-    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer role);
+    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, String role);
 
     public UserDTO validateUser(String email, String password);
 }

@@ -115,7 +115,7 @@ public class CompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public List<UserResponse> getUsersByCompanyIdAndRole(@PathVariable Integer id, @PathVariable Integer roleId){
+    public List<UserResponse> getUsersByCompanyIdAndRole(@PathVariable Integer id, @PathVariable String roleId){
 
         List<UserDTO> users =  userService.getAllByCompanyAndRole(id, roleId);
 
@@ -150,5 +150,14 @@ public class CompanyController {
         ProjectResponse response = modelMapper.map(projectDTO, ProjectResponse.class);
 
         return response;
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
+    })
+    @PostMapping("/{companyId}/users/{userId}/add")
+    public UserResponse addUserToCompany(@PathVariable Integer companyId, @PathVariable Integer userId, @RequestBody String role ){
+        UserResponse user = modelMapper.map(companyService.addUserToCompany(userId, companyId, role), UserResponse.class);
+        return user;
     }
 }

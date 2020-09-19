@@ -14,6 +14,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +74,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO) {
 
         ProjectEntity projectEntity = projectRepository.findById(projectId).
@@ -90,6 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void deleteProject(Integer[] projectIds) {
         for(Integer item:projectIds){
             if(projectRepository.existsById(item)) {

@@ -100,7 +100,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
-    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer role) {
+    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, String role) {
         List<UserEntity> userEntities = new ArrayList<>();
 
         userEntities = userRepository.getAllByCompanyId(companyId);

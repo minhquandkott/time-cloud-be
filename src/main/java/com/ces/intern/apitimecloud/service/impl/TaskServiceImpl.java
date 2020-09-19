@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskDTO createTask(Integer projectId, TaskDTO taskDTO, String userId) {
         ProjectEntity project = projectRepository.findById(projectId).
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+ projectId));
@@ -67,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO) {
         TaskEntity taskEntity = taskRepository.findById(projectId).
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ projectId));
@@ -80,6 +83,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void deleteTask(Integer[] ids) {
         for(Integer item:ids){
             if(taskRepository.existsById(item)) {

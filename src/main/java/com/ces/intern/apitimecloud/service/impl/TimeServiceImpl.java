@@ -48,6 +48,7 @@ public class TimeServiceImpl implements TimeService {
     }
 
     @Override
+    @Transactional
     public TimeResponse save(String userID, TimeRequest timeRequest, Integer taskId) {
         TimeResponse timeResponse = new TimeResponse();
         TypeMap<TimeRequest, TimeEntity> tm = modelMapper.typeMap(TimeRequest.class, TimeEntity.class);
@@ -92,29 +93,30 @@ public class TimeServiceImpl implements TimeService {
         return timeResponse;
     }
 
+//    @Override
+//
+//    public TimeResponse update(Integer userId, TimeRequest timeRequest, Integer id) {
+//
+//        TimeEntity timeEntity = timeRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + id));
+//
+////        timeEntity.setEndTime(timeRequest.getEndTime());
+////        timeEntity.setStartTime(timeRequest.getStartTime());
+//        timeEntity.setDescription( timeRequest.getDescription());
+//
+//        timeEntity.setTask(timeEntity.getTask());
+//        timeEntity.setUser(timeEntity.getUser());
+//
+//        timeEntity = timeRepository.save(timeEntity);
+//
+//        TimeResponse timeResponse = modelMapper.map(timeEntity, TimeResponse.class);
+//
+//        return timeResponse;
+//
+//    }
+
     @Override
-
-    public TimeResponse update(Integer userId, TimeRequest timeRequest, Integer id) {
-
-        TimeEntity timeEntity = timeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + id));
-
-//        timeEntity.setEndTime(timeRequest.getEndTime());
-//        timeEntity.setStartTime(timeRequest.getStartTime());
-        timeEntity.setDescription( timeRequest.getDescription());
-
-        timeEntity.setTask(timeEntity.getTask());
-        timeEntity.setUser(timeEntity.getUser());
-
-        timeEntity = timeRepository.save(timeEntity);
-
-        TimeResponse timeResponse = modelMapper.map(timeEntity, TimeResponse.class);
-
-        return timeResponse;
-
-    }
-
-    @Override
+    @Transactional
     public void delete(int[] ids) {
         for(int item: ids) {
             TimeEntity timeEntity = timeRepository.findById(item)

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class UserRoleEntity {
 
     @EmbeddedId
-    private Id id;
+    private Id id = new Id();
 
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {
@@ -31,7 +31,7 @@ public class UserRoleEntity {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
-    private Role role;
+    private String role;
 
     public UserRoleEntity(){}
 
@@ -59,11 +59,11 @@ public class UserRoleEntity {
         this.company = company;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -75,6 +75,7 @@ public class UserRoleEntity {
 
         @Column(name = "company_id")
         private Integer companyId;
+
 
         public Integer getUserId() {
             return userId;

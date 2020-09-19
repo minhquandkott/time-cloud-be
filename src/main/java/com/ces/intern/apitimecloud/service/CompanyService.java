@@ -2,6 +2,7 @@ package com.ces.intern.apitimecloud.service;
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
+import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 
@@ -19,5 +20,7 @@ public interface CompanyService {
 
     public CompanyEntity getFullInFor(Integer companyId);
 
-    public List<UserEntity> getMemberByRole(Integer companyId, Integer role);
+    public List<UserEntity> getMemberByRole(Integer companyId, String role);
+
+    public UserDTO addUserToCompany(Integer userId, Integer companyId, String role);
 }
