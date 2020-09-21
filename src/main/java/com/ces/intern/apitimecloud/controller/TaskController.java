@@ -75,4 +75,10 @@ public class TaskController {
     public void deleteTask(@RequestBody Integer[] ids){
         taskService.deleteTask(ids);
     }
+
+    @GetMapping("/{taskId}/users/{userId}/add")
+    public void addUserToTask(@PathVariable(value = "taskId") Integer taskId, @PathVariable(value = "userId") Integer userId){
+        if(taskId == null || userId == null) throw  new BadRequestException("Missing some require field");
+        taskService.addUserToTask(userId, taskId);
+    }
 }

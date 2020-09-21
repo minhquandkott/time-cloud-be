@@ -58,7 +58,6 @@ public class TimeServiceImpl implements TimeService {
             mapping.using(converter).map(TimeRequest::getMileSecondStartTime, TimeEntity::setStartTime);
         });
 
-
         TimeEntity timeEntity = tm.map(timeRequest);
         TaskEntity taskEntity = taskRepository.findById(taskId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage())) ;
@@ -70,8 +69,6 @@ public class TimeServiceImpl implements TimeService {
         timeEntity.setTask(taskEntity);
         TimeEntity time = timeRepository.save(timeEntity);
         timeResponse = modelMapper.map(time, TimeResponse.class);
-        System.out.println(modelMapper.getTypeMap(TimeEntity.class, TimeResponse.class).getMappings());
-
 
         return timeResponse;
     }
@@ -132,4 +129,5 @@ public class TimeServiceImpl implements TimeService {
                 .map(time -> modelMapper.map(time, TimeDTO.class))
                 .collect(Collectors.toList());
     }
+
 }

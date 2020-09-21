@@ -31,6 +31,7 @@ public class UserRoleEntity {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
+
     private String role;
 
     public UserRoleEntity(){}

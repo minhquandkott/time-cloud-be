@@ -111,13 +111,13 @@ public class CompanyController {
 
     }
 
-    @GetMapping(value = "/{id}/users/{roleId}")
+    @GetMapping(value = "/{companyId}/users/{role}")
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public List<UserResponse> getUsersByCompanyIdAndRole(@PathVariable Integer id, @PathVariable String roleId){
+    public List<UserResponse> getUsersByCompanyIdAndRole(@PathVariable(value = "companyId") Integer companyId, @PathVariable String role){
 
-        List<UserDTO> users =  userService.getAllByCompanyAndRole(id, roleId);
+        List<UserDTO> users =  userService.getAllByCompanyAndRole(companyId, role);
 
         return users.stream()
                 .map(user -> modelMapper.map(user, UserResponse.class))
