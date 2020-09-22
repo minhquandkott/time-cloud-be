@@ -8,12 +8,14 @@ import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
+import com.ces.intern.apitimecloud.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         user.setPassword(encodedPassword);
 
         user = userRepository.save(user);
-        return "Tạo tài khoản thành công";
+        return ResponseMessage.CREATE_SUCCESS;
     }
 
     @Override
@@ -51,8 +53,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         UserEntity user = userRepository.getOne(id);
 
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        UserResponse userResponse = modelMapper.map(userDTO, UserResponse.class);
-        return userResponse;
+        return modelMapper.map(userDTO, UserResponse.class);
     }
 
     @Override
@@ -60,11 +61,13 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
 
         UserDTO userDTO = modelMapper.map(userRequest, UserDTO.class);
         userDTO.setId(id);
-        UserEntity userEntity = userRepository.findById(id).get();
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
         userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity = userRepository.save(userEntity);
-        UserResponse userResponse = modelMapper.map(userDTO, UserResponse.class);
-        return userResponse;
+
+        return modelMapper.map(userDTO, UserResponse.class);
     }
 
     @Override
@@ -81,15 +84,13 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
                 .findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                                                             + " with email " + email));
-        UserDTO returnValue = modelMapper.map(user, UserDTO.class);
-        return returnValue;
+
+        return  modelMapper.map(user, UserDTO.class);
     }
 
     @Override
     public List<UserDTO> getAllByCompanyId(Integer companyId) {
-        List<UserEntity> userEntities = new ArrayList<>();
-
-        userEntities = userRepository.getAllByCompanyId(companyId);
+        List<UserEntity> userEntities = userRepository.getAllByCompanyId(companyId);
         if(userEntities.size() == 0) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                 + " with " +companyId);
 
@@ -101,10 +102,9 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
 
     @Override
     public List<UserDTO> getAllByCompanyAndRole(Integer companyId, String role) {
-        List<UserEntity> userEntities = new ArrayList<>();
 
-        userEntities = userRepository.getAllByCompanyId(companyId);
-        if(userEntities.size() == 0) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+        List<UserEntity> userEntities = userRepository.getAllByCompanyIdAndRole(companyId, role);
+        if(CollectionUtils.isEmpty(userEntities)) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                 + " with company " +companyId + " and role " +role);
 
         return userEntities.stream()
@@ -122,9 +122,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
 
         if(!validate) throw new LoginUserException(ExceptionMessage.USERNAME_PASSWORD_INVALIDATE.getMessage());
 
-        UserDTO returnValue = modelMapper.map(user, UserDTO.class);
-
-        return returnValue;
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override

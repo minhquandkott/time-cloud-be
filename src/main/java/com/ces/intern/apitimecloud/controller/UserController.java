@@ -13,6 +13,7 @@ import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.util.ResponseMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
@@ -75,7 +76,7 @@ public class UserController {
     public String deleteUser(@RequestBody int[] ids)
     {
         userService.delete(ids);
-        return "Xóa thành công";
+        return ResponseMessage.DELETE_SUCCESS;
     }
 
     @GetMapping("/{id}/projects")

@@ -20,8 +20,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query(value = "select * from public.user where user_id in (select user_company.user_id from user_company where company_id =:companyId and role =:role)",
             nativeQuery = true)
-    public List<UserEntity> getAllByByCompanyIdAAndRole(@Param("companyId")Integer companyId, @Param("role") String role);
-
+    public List<UserEntity> getAllByCompanyIdAndRole(@Param("companyId")Integer companyId, @Param("role") String role);
     public Optional<UserEntity> findByEmailAndPassword(String email, String password);
 
 }

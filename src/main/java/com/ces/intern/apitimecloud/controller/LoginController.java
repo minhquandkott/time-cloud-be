@@ -52,7 +52,7 @@ public class LoginController {
     }
 
     @ExceptionHandler({LoginUserException.class})
-    public ResponseEntity<Object> LoginError(Exception ex, HttpServletRequest request){
+    public ResponseEntity<Object> loginError(Exception ex, HttpServletRequest request){
         ErrorResponse response = new ErrorResponse();
         response.setError(ExceptionMessage.USERNAME_PASSWORD_INVALIDATE.getMessage());
         response.setMessage(ex.getMessage());
