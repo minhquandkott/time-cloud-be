@@ -11,7 +11,6 @@ import java.util.List;
 public interface TimeService {
     public TimeResponse save(String userId, TimeRequest timeRequest,Integer taskId);
     public TimeResponse find(Integer id);
-//    public TimeResponse update(Integer userId, TimeRequest timeRequest, Integer id);
     public void delete(int[] ids);
     public List<TimeDTO> getTimesByUserId(Integer userId);
 }
