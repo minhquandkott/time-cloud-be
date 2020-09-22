@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,9 +31,11 @@ public class TaskServiceImpl implements TaskService {
         this.modelMapper = modelMapper;
     }
 
+
     @Override
     @Transactional
     public TaskDTO createTask(Integer projectId, TaskDTO taskDTO, String userId) {
+
         ProjectEntity project = projectRepository.findById(projectId).
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+ projectId));
 
@@ -47,44 +48,49 @@ public class TaskServiceImpl implements TaskService {
 
         taskEntity = taskRepository.save(taskEntity);
 
-        modelMapper.map(taskEntity,taskDTO);
-        return  taskDTO;
+        return  modelMapper.map(taskEntity,TaskDTO.class);
     }
+
 
     @Override
     public TaskDTO getTask(Integer taskId) {
+
         TaskEntity taskEntity = taskRepository.findById(taskId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+taskId));
-        TaskDTO taskDTO = modelMapper.map(taskEntity,TaskDTO.class);
-        return taskDTO;
+
+        return modelMapper.map(taskEntity,TaskDTO.class);
     }
+
 
     @Override
     public List getAllTaskByProject(Integer projectId) {
+
         List<TaskEntity> taskEntities = taskRepository.getAllByProjectId(projectId);
+
         if(taskEntities.size()==0) throw new NotFoundException
                 (ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+projectId);
 
         return taskEntities.stream().map(task -> modelMapper.map(task,TaskDTO.class)).collect(Collectors.toList());
     }
 
+
     @Override
     @Transactional
     public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO) {
+
         TaskEntity taskEntity = taskRepository.findById(projectId).
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ projectId));
 
         taskEntity.setName(taskDTO.getName());
         taskEntity.setModifyAt(new Date());
 
-        taskEntity = taskRepository.save(taskEntity);
-        modelMapper.map(taskEntity,taskDTO);
-        return taskDTO;
+        return modelMapper.map(taskEntity,TaskDTO.class);
     }
 
     @Override
     @Transactional
     public void deleteTask(Integer[] ids) {
+        
         for(Integer item:ids){
             if(taskRepository.existsById(item)) {
                 taskRepository.deleteById(item);

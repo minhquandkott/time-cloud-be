@@ -33,15 +33,18 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ModelMapper modelMapper = new ModelMapper();
 
+
     @Override
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId) {
 
         CompanyEntity company= companyRepository.findById(companyId).
-                orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
+                orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
 
         ProjectEntity projectEntity = modelMapper.map(projectDTO, ProjectEntity.class);
 
         Integer userID = Integer.parseInt(userId);
+
         projectEntity.setCompany(company);
         projectEntity.setCreateBy(userID);
         projectEntity.setCreatAt(new Date());
@@ -49,29 +52,34 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectEntity = projectRepository.save(projectEntity);
 
-        modelMapper.map(projectEntity,projectDTO);
-
-        return projectDTO;
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
+
 
     @Override
     public ProjectDTO getProject(Integer projectId) {
+
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
-        ProjectDTO projectDTO = modelMapper.map(projectEntity,ProjectDTO.class);
-        return  projectDTO;
+
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
+
 
     @Override
     public List getAllProject() {
+
         List listProject = new ArrayList<>();
+
         projectRepository.findAll().forEach(listProject::add);
+
         Type listType = new TypeToken<List<ProjectDTO>>() {}.getType();
 
         List<ProjectDTO> projectDTOS = modelMapper.map(listProject,listType);
 
         return projectDTOS;
     }
+
 
     @Override
     @Transactional
@@ -86,14 +94,14 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectEntity = projectRepository.save(projectEntity);
 
-        modelMapper.map(projectEntity,projectDTO);
-
-        return projectDTO;
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
+
 
     @Override
     @Transactional
     public void deleteProject(Integer[] projectIds) {
+
         for(Integer item:projectIds){
             if(projectRepository.existsById(item)) {
                 projectRepository.deleteById(item);
@@ -102,6 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
     }
+
 
     @Override
     public List<ProjectDTO> getAllByCompanyId(Integer companyId) {
@@ -115,8 +124,10 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public List<ProjectDTO> getAllByUserId(Integer userId) {
+
         List<ProjectEntity> projectEntities = projectRepository.getAllByUserId(userId);
 
         if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()

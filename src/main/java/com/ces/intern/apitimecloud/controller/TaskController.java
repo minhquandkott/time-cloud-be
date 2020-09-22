@@ -33,17 +33,16 @@ public class TaskController {
     }
 
 
-
     @GetMapping("/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public TaskResponse getTask(@PathVariable Integer id){
-        TaskDTO taskDTO = taskService.getTask(id);
-        TaskResponse response = modelMapper.map(taskDTO, TaskResponse.class);
-        return  response;
-    }
 
+        TaskDTO taskDTO = taskService.getTask(id);
+
+        return modelMapper.map(taskDTO, TaskResponse.class);
+    }
 
 
     @PutMapping("/{id}")
@@ -51,11 +50,14 @@ public class TaskController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public TaskResponse updateTask(@PathVariable Integer id, @RequestBody TaskRequest request){
+
         TaskDTO taskDTO = modelMapper.map(request,TaskDTO.class);
+
         taskDTO = taskService.updateTask(id,taskDTO);
-        TaskResponse response = modelMapper.map(taskDTO,TaskResponse.class);
-        return  response;
+
+        return modelMapper.map(taskDTO,TaskResponse.class);
     }
+
 
     @PostMapping(value = "/{id}/times")
     @ApiImplicitParams({
@@ -67,6 +69,7 @@ public class TaskController {
         if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");
         return timeService.save(userId, timeRequest, taskId);
     }
+
 
     @DeleteMapping("")
     @ApiImplicitParams({
