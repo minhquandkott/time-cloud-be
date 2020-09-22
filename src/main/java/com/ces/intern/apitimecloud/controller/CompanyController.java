@@ -52,9 +52,7 @@ public class CompanyController {
 
         CompanyDTO company = companyService.getCompany(id);
 
-        CompanyResponse response = modelMapper.map(company, CompanyResponse.class);
-
-        return response;
+        return modelMapper.map(company, CompanyResponse.class);
 
     }
 
@@ -69,9 +67,7 @@ public class CompanyController {
 
         CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
 
-        CompanyResponse response = modelMapper.map(companyService.createCompany(company, userId), CompanyResponse.class);
-
-        return response;
+        return modelMapper.map(companyService.createCompany(company, userId), CompanyResponse.class);
     }
 
     @PutMapping(value = "/{id}")
@@ -82,9 +78,7 @@ public class CompanyController {
 
         CompanyDTO company = modelMapper.map(request, CompanyDTO.class);
 
-        CompanyResponse response = modelMapper.map(companyService.updateCompany(id, company), CompanyResponse.class);
-
-        return response;
+        return modelMapper.map(companyService.updateCompany(id, company), CompanyResponse.class);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -146,10 +140,7 @@ public class CompanyController {
         ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
 
         ProjectDTO projectDTO = projectService.createProject(id,project,userId);
-
-        ProjectResponse response = modelMapper.map(projectDTO, ProjectResponse.class);
-
-        return response;
+        return modelMapper.map(projectDTO, ProjectResponse.class);
     }
 
     @ApiImplicitParams({
@@ -157,7 +148,7 @@ public class CompanyController {
     })
     @PostMapping("/{companyId}/users/{userId}/add")
     public UserResponse addUserToCompany(@PathVariable Integer companyId, @PathVariable Integer userId, @RequestBody String role ){
-        UserResponse user = modelMapper.map(companyService.addUserToCompany(userId, companyId, role), UserResponse.class);
-        return user;
+
+        return modelMapper.map(companyService.addUserToCompany(userId, companyId, role), UserResponse.class);
     }
 }

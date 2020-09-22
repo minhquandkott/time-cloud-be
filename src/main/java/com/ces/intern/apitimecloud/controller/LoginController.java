@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody UserLoginRequest user){
 
-        if(user.getEmail() == "" || user.getPassword() == ""){
+        if(StringUtils.isEmpty(user.getEmail())|| StringUtils.isEmpty(user.getPassword())){
             throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage());
         }
         UserDTO loginUser = userService.validateUser(user.getEmail(), user.getPassword());
