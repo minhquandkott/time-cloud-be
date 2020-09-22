@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/projects")
@@ -62,11 +63,11 @@ public class ProjectController {
     })
     public List getAllProject(){
 
-        List listProjects = projectService.getAllProject();
+        Stream<ProjectResponse> projects = projectService
+                .getAllProject()
+                .stream().map(project -> modelMapper.map(project,ProjectResponse.class));
 
-        listProjects.stream().map(t->modelMapper.map(t,ProjectResponse.class));
-
-        return listProjects;
+        return projects.collect(Collectors.toList());
     }
 
 
