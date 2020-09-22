@@ -62,7 +62,7 @@ public class TaskController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public TimeResponse createTime(@RequestHeader("userId") String userId,
-                                   @RequestBody TimeRequest timeRequest,
+                                   @RequestBody(required = true) TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
         if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");
         return timeService.save(userId, timeRequest, taskId);
