@@ -99,4 +99,9 @@ public class TaskServiceImpl implements TaskService {
             }
         }
     }
+
+    @Override
+    public void addUserToTask(Integer userId, Integer taskId) {
+        taskRepository.addUserToTask(userId, taskId);
+    }
 }

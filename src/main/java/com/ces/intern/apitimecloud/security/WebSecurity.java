@@ -42,21 +42,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, SecurityContact.SIGN_IN_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                //.addFilter(configAuthenticationFilter())
                 .addFilter(new AuthorizationFilter(authenticationManager()));
 
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(this.userDetailService).passwordEncoder(passwordEncoder);
-//    }
-
-//    protected  AuthenticationFilter configAuthenticationFilter() throws Exception {
-//        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager());
-//        authenticationFilter.setFilterProcessesUrl(SecurityContact.SIGN_IN_URL);
-//        return authenticationFilter;
-//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
