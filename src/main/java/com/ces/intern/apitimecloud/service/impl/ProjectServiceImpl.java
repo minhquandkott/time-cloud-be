@@ -1,12 +1,15 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
+import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
+import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
+import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
 import org.modelmapper.ModelMapper;
@@ -14,9 +17,11 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +34,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private ModelMapper modelMapper = new ModelMapper();
@@ -104,6 +112,13 @@ public class ProjectServiceImpl implements ProjectService {
 
         for(Integer item:projectIds){
             if(projectRepository.existsById(item)) {
+
+                List<TaskDTO> list = taskService.getAllTaskByProject(item);
+
+                Integer[] idArray = list.stream().map(itemOfList->itemOfList.getId()).toArray(Integer[]::new);
+
+                taskService.deleteTask(idArray);
+
                 projectRepository.deleteById(item);
             } else {
                 throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+item);
