@@ -1,12 +1,15 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
+import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
+import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
+import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
 import org.modelmapper.ModelMapper;
@@ -14,9 +17,11 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,17 +36,23 @@ public class ProjectServiceImpl implements ProjectService {
     private CompanyRepository companyRepository;
 
     @Autowired
+    private TaskService taskService;
+
+    @Autowired
     private ModelMapper modelMapper = new ModelMapper();
+
 
     @Override
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId) {
 
         CompanyEntity company= companyRepository.findById(companyId).
-                orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
+                orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
 
         ProjectEntity projectEntity = modelMapper.map(projectDTO, ProjectEntity.class);
 
         Integer userID = Integer.parseInt(userId);
+
         projectEntity.setCompany(company);
         projectEntity.setCreateBy(userID);
         projectEntity.setCreatAt(new Date());
@@ -49,29 +60,34 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectEntity = projectRepository.save(projectEntity);
 
-        modelMapper.map(projectEntity,projectDTO);
-
-        return projectDTO;
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
+
 
     @Override
     public ProjectDTO getProject(Integer projectId) {
+
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
-        ProjectDTO projectDTO = modelMapper.map(projectEntity,ProjectDTO.class);
-        return  projectDTO;
+
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
+
 
     @Override
     public List getAllProject() {
+
         List listProject = new ArrayList<>();
+
         projectRepository.findAll().forEach(listProject::add);
+
         Type listType = new TypeToken<List<ProjectDTO>>() {}.getType();
 
         List<ProjectDTO> projectDTOS = modelMapper.map(listProject,listType);
 
         return projectDTOS;
     }
+
 
     @Override
     @Transactional
@@ -86,22 +102,30 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectEntity = projectRepository.save(projectEntity);
 
-        modelMapper.map(projectEntity,projectDTO);
-
-        return projectDTO;
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
+
 
     @Override
     @Transactional
     public void deleteProject(Integer[] projectIds) {
+
         for(Integer item:projectIds){
             if(projectRepository.existsById(item)) {
+
+                List<TaskDTO> list = taskService.getAllTaskByProject(item);
+
+                Integer[] idArray = list.stream().map(itemOfList->itemOfList.getId()).toArray(Integer[]::new);
+
+                taskService.deleteTask(idArray);
+
                 projectRepository.deleteById(item);
             } else {
                 throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+item);
             }
         }
     }
+
 
     @Override
     public List<ProjectDTO> getAllByCompanyId(Integer companyId) {
@@ -115,8 +139,10 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public List<ProjectDTO> getAllByUserId(Integer userId) {
+
         List<ProjectEntity> projectEntities = projectRepository.getAllByUserId(userId);
 
         if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()

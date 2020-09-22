@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,6 @@ public class ProjectController {
     }
 
 
-
     @GetMapping("/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
@@ -52,10 +52,9 @@ public class ProjectController {
 
         ProjectDTO projectDTO = projectService.getProject(id);
 
-        ProjectResponse response = modelMapper.map(projectDTO,ProjectResponse.class);
-
-        return response;
+        return modelMapper.map(projectDTO,ProjectResponse.class);
     }
+
 
     @GetMapping("")
     @ApiImplicitParams({
@@ -70,6 +69,7 @@ public class ProjectController {
         return listProjects;
     }
 
+
     @PutMapping("/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
@@ -80,10 +80,9 @@ public class ProjectController {
 
         ProjectDTO projectDTO = projectService.updateProject(id,project);
 
-        ProjectResponse projectResponse = modelMapper.map(projectDTO,ProjectResponse.class);
-
-        return  projectResponse;
+        return  modelMapper.map(projectDTO,ProjectResponse.class);
     }
+
 
     @DeleteMapping("")
     @ApiImplicitParams({
@@ -92,6 +91,7 @@ public class ProjectController {
     public void deleteProject(@RequestBody Integer[] ids){
         projectService.deleteProject(ids);
     }
+
 
     @PostMapping("/{id}/tasks")
     @ApiImplicitParams({
@@ -104,10 +104,9 @@ public class ProjectController {
 
         TaskDTO taskDTO = taskService.createTask(id,task,userId);
 
-        TaskResponse response = modelMapper.map(taskDTO, TaskResponse.class);
-
-        return response;
+        return modelMapper.map(taskDTO, TaskResponse.class);
     }
+
 
     @GetMapping("/{id}/tasks")
     @ApiImplicitParams({
@@ -117,6 +116,4 @@ public class ProjectController {
         List<TaskDTO> list = taskService.getAllTaskByProject(id);
         return list.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }
-
-
 }
