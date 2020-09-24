@@ -47,4 +47,8 @@ public class UserEntity implements Serializable {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
+
+    @Embedded
+    private EmbedEntity embedEntity;
+
 }

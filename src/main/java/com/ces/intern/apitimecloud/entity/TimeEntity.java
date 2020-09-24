@@ -46,4 +46,7 @@ public class TimeEntity implements Serializable {
     @JoinColumn(name = "task_id")
     private TaskEntity task;
 
+    @Embedded
+    private EmbedEntity embedEntity;
+
 }
