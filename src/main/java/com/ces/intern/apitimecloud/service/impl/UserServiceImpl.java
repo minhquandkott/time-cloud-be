@@ -29,6 +29,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     private final ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
 
+
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper modelMapper,
                            PasswordEncoder passwordEncoder){
@@ -91,7 +92,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     @Override
     public List<UserDTO> getAllByCompanyId(Integer companyId) {
         List<UserEntity> userEntities = userRepository.getAllByCompanyId(companyId);
-        if(userEntities.size() == 0) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+        if(userEntities.isEmpty()) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                 + " with " +companyId);
 
         return userEntities.stream()

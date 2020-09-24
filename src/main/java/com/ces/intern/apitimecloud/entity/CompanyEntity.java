@@ -38,6 +38,7 @@ public class CompanyEntity implements Serializable {
     @Column(name="modify_at", nullable = false)
     private Date modifyAt;
 
+
     public CompanyEntity(){}
 
     public String getAvatar() {
