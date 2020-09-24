@@ -1,10 +1,17 @@
 package com.ces.intern.apitimecloud.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "project", schema ="public")
 public class ProjectEntity implements Serializable {
@@ -31,68 +38,12 @@ public class ProjectEntity implements Serializable {
     @Column(name = "modify_at", nullable = false)
     private Date modifyAt;
 
+    @Column(name = "modify_by", nullable = false)
+    private Integer modifyBy;
+
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
-
-    public ProjectEntity(){}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public Date getCreatAt() {
-        return creatAt;
-    }
-
-    public void setCreatAt(Date creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getModifyAt() {
-        return modifyAt;
-    }
-
-    public void setModifyAt(Date modifyAt) {
-        this.modifyAt = modifyAt;
-    }
-
-    public CompanyEntity getCompany() {
-        return company;
-    }
-
-    public void setCompany(CompanyEntity company) {
-        this.company = company;
-    }
-
 }
