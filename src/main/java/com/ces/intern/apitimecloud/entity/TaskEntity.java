@@ -1,11 +1,18 @@
 package com.ces.intern.apitimecloud.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "task", schema = "public")
 public class TaskEntity implements Serializable {
@@ -20,58 +27,13 @@ public class TaskEntity implements Serializable {
     @Column(name = "task_name", nullable = false)
     private String name;
 
-    @Column(name = "create_at", nullable = false)
-    private Date createAt;
-
-    @Column(name = "modify_at", nullable = false)
-    private Date modifyAt;
-
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
-    public TaskEntity(){}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getModifyAt() {
-        return modifyAt;
-    }
-
-    public void setModifyAt(Date modifyAt) {
-        this.modifyAt = modifyAt;
-    }
-
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
+    @Embedded
+    private EmbedEntity embedEntity;
 
 }

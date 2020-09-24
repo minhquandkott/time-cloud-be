@@ -1,18 +1,12 @@
 package com.ces.intern.apitimecloud.http.request;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class TaskRequest {
     private String name;
-
-    TaskRequest(){
-
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-
-        this.name = name;
-    }
 }
