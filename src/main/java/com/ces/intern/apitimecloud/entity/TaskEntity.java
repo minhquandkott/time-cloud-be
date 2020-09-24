@@ -27,9 +27,10 @@ public class TaskEntity implements Serializable {
     @Column(name = "task_name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 

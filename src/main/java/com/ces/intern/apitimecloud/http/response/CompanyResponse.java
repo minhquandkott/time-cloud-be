@@ -9,7 +9,7 @@ import org.modelmapper.spi.NamingConvention;
 @Setter
 @Getter
 @NoArgsConstructor
-public class CompanyResponse {
+public class CompanyResponse extends BaseResponse{
 
     private Integer id;
     private String name;

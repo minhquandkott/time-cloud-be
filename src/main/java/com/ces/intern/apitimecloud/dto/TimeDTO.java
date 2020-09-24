@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TimeDTO {
+public class TimeDTO extends BaseDTO {
 
     private Integer id;
     private Date startTime;

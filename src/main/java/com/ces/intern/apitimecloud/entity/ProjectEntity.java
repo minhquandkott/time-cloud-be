@@ -30,9 +30,10 @@ public class ProjectEntity implements Serializable {
     private String clientName;
 
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 

@@ -99,6 +99,7 @@ public class CompanyController {
 
         List<UserDTO> users =  userService.getAllByCompanyId(id);
 
+
         return users.stream()
                 .map(user -> modelMapper.map(user, UserResponse.class))
                 .collect(Collectors.toList());

@@ -17,15 +17,15 @@ import java.util.Date;
 @Embeddable
 public class EmbedEntity {
 
-    @Column(name = "create_at")
+    @Column(name = "create_at", nullable = false)
     private Date createAt;
 
-    @Column(name = "create_by")
+    @Column(name = "create_by", nullable = false)
     private Integer createBy;
 
-    @Column(name = "modify_at")
+    @Column(name = "modify_at", nullable = false)
     private Date modifyAt;
 
-    @Column(name = "modify_by")
+    @Column(name = "modify_by", nullable = false)
     private Integer modifyBy;
 }

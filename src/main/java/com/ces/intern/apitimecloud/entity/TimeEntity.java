@@ -38,11 +38,10 @@ public class TimeEntity implements Serializable {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.DETACH,CascadeType.MERGE,
-                    CascadeType.PERSIST,CascadeType.REFRESH
-            })
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "task_id")
     private TaskEntity task;
 

@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TimeResponse {
+public class TimeResponse extends BaseResponse{
 
     private Integer id;
     private Date startTime;

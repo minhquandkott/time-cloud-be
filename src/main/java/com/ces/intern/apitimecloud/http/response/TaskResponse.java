@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TaskResponse {
+public class TaskResponse extends BaseResponse{
 
     private Integer id;
     private String name;

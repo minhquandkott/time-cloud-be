@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserResponse {
+public class UserResponse extends BaseResponse{
 
     private Integer id;
     private String name;
