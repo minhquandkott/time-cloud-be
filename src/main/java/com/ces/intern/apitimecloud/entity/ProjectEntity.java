@@ -29,21 +29,13 @@ public class ProjectEntity implements Serializable {
     @Column(name = "client_name")
     private String clientName;
 
-    @Column(name = "create_at", nullable = false)
-    private Date creatAt;
-
-    @Column(name = "create_by", nullable = false)
-    private Integer createBy;
-
-    @Column(name = "modify_at", nullable = false)
-    private Date modifyAt;
-
-    @Column(name = "modify_by", nullable = false)
-    private Integer modifyBy;
 
     @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
+
+    @Embedded
+    private EmbedEntity embedEntity;
 }

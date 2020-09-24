@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Id;
 import java.util.Date;
 
 @Getter
@@ -15,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Embeddable
 public class EmbedEntity {
+
     @Column(name = "create_at")
     private Date createAt;
 
