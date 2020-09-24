@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user", schema = "public")
 public class UserEntity implements Serializable {
