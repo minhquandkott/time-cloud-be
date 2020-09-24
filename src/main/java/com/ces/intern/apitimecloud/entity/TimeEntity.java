@@ -1,10 +1,15 @@
 package com.ces.intern.apitimecloud.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "time", schema = "public")
 public class TimeEntity implements Serializable {
@@ -41,56 +46,7 @@ public class TimeEntity implements Serializable {
     @JoinColumn(name = "task_id")
     private TaskEntity task;
 
-
-    public TimeEntity(){}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
-    public TaskEntity getTask() {
-        return task;
-    }
-
-    public void setTask(TaskEntity task) {
-        this.task = task;
-    }
-
+    @Embedded
+    private EmbedEntity embedEntity;
 
 }
