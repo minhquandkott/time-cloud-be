@@ -1,11 +1,18 @@
 package com.ces.intern.apitimecloud.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "company", schema = "public")
 public class CompanyEntity implements Serializable {
 
@@ -38,84 +45,7 @@ public class CompanyEntity implements Serializable {
     @Column(name="modify_at", nullable = false)
     private Date modifyAt;
 
+    @Embedded
+    private EmbedEntity embedEntity;
 
-    public CompanyEntity(){}
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getModifyAt() {
-        return modifyAt;
-    }
-
-    public void setModifyAt(Date modifyAt) {
-        this.modifyAt = modifyAt;
-    }
-
-    @Override
-    public String toString() {
-        return "CompanyEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", description='" + description + '\'' +
-                ", logo='" + logo + '\'' +
-                ", createAt=" + createAt +
-                ", createBy=" + createBy +
-                ", modifyAt=" + modifyAt +
-                '}';
-    }
 }
