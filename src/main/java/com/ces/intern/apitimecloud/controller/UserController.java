@@ -64,9 +64,9 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable Integer id)
+    public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable Integer id, @RequestHeader Integer modifiedBy)
     {
-        return userService.update(userRequest, id);
+        return userService.update(userRequest, id, modifiedBy);
     }
 
     @DeleteMapping(value = "")

@@ -1,12 +1,16 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.dto.UserRoleDTO;
+import com.ces.intern.apitimecloud.entity.EmbedEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
+import com.ces.intern.apitimecloud.entity.UserRoleEntity;
 import com.ces.intern.apitimecloud.http.exception.LoginUserException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.UserRepository;
+import com.ces.intern.apitimecloud.repository.UserRoleRepository;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
@@ -15,9 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,23 +32,37 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private PasswordEncoder passwordEncoder;
+    private UserRoleRepository userRoleRepository;
 
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper modelMapper,
-                           PasswordEncoder passwordEncoder){
+                           PasswordEncoder passwordEncoder,
+                           UserRoleRepository userRoleRepository){
         this.userRepository= userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
+    @Transactional
     public String save(UserRequest userRequest) {
 
         String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
         UserEntity user = modelMapper.map(userRequest, UserEntity.class);
         user.setPassword(encodedPassword);
-
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .createAt(new Date())
+                .createBy(1)
+                .modifyAt(new Date())
+                .modifyBy(1)
+                .build();
+        user.setEmbedEntity(embedEntity);
+        user = userRepository.save(user);
+        user.getEmbedEntity().setCreatedBy(user.getId());
+        user.getEmbedEntity().setModifiedBy(user.getId());
         user = userRepository.save(user);
         return ResponseMessage.CREATE_SUCCESS;
     }
@@ -58,10 +76,12 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
-    public UserResponse update(UserRequest userRequest, Integer id) {
+    public UserResponse update(UserRequest userRequest, Integer id, Integer modifiedBy) {
 
         UserDTO userDTO = modelMapper.map(userRequest, UserDTO.class);
         userDTO.setId(id);
+        userDTO.setModifyAt(new Date());
+        userDTO.setModifiedBy(modifiedBy);
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
@@ -84,19 +104,19 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         UserEntity user = userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
-                                                            + " with email " + email));
+                        + " with email " + email));
 
         return  modelMapper.map(user, UserDTO.class);
     }
 
     @Override
-    public List<UserDTO> getAllByCompanyId(Integer companyId) {
-        List<UserEntity> userEntities = userRepository.getAllByCompanyId(companyId);
+    public List<UserRoleDTO> getAllByCompanyId(Integer companyId) {
+        List<UserRoleEntity> userEntities = userRoleRepository.findAllByIdCompanyId(companyId);
         if(userEntities.isEmpty()) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                 + " with " +companyId);
 
         return userEntities.stream()
-                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class))
+                .map(userEntity -> modelMapper.map(userEntity, UserRoleDTO.class))
                 .collect(Collectors.toList());
 
     }

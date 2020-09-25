@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRoleRepository extends JpaRepository<UserRoleEntity, UserRoleEntity.Id> {
-    public List<UserRoleEntity> findAllByIdCompanyId();
+    public List<UserRoleEntity> findAllByIdCompanyId(Integer companyId);
 }
