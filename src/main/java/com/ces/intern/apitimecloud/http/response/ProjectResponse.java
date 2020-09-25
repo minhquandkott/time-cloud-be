@@ -13,9 +13,5 @@ public class ProjectResponse extends BaseResponse{
     private Integer id;
     private String name;
     private String clientName;
-    private Date creatAt;
-    private Integer createBy;
-    private Date modifyAt;
-    private Integer modifyBy;
     private CompanyDTO company;
 }

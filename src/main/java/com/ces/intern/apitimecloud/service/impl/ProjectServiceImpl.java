@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
+import com.ces.intern.apitimecloud.entity.EmbedEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
@@ -54,9 +55,17 @@ public class ProjectServiceImpl implements ProjectService {
         Integer userID = Integer.parseInt(userId);
 
         projectEntity.setCompany(company);
-        projectEntity.setCreateBy(userID);
-        projectEntity.setCreatAt(new Date());
-        projectEntity.setModifyAt(new Date());
+
+        Date date = new Date();
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .createAt(date)
+                .createBy(userID)
+                .modifyAt(date)
+                .modifyBy(userID)
+                .build();
+
+        projectEntity.setEmbedEntity(embedEntity);
 
         projectEntity = projectRepository.save(projectEntity);
 
@@ -91,14 +100,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO) {
+    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, String userId) {
 
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
-        projectEntity.setModifyAt(new Date());
+        Integer userID = Integer.parseInt(userId);
+
         projectEntity.setName(projectDTO.getName());
         projectEntity.setClientName(projectDTO.getClientName());
+
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .modifyBy(userID)
+                .modifyAt(new Date())
+                .build();
+
+        projectEntity.setEmbedEntity(embedEntity);
 
         projectEntity = projectRepository.save(projectEntity);
 

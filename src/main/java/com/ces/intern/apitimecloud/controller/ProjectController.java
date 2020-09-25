@@ -75,11 +75,12 @@ public class ProjectController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id){
+    public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id
+            ,@RequestHeader("userId") String userId){
 
         ProjectDTO project = modelMapper.map(projectRequest,ProjectDTO.class);
 
-        ProjectDTO projectDTO = projectService.updateProject(id,project);
+        ProjectDTO projectDTO = projectService.updateProject(id,project,userId);
 
         return  modelMapper.map(projectDTO,ProjectResponse.class);
     }

@@ -12,7 +12,7 @@ public interface TaskService {
 
     public List getAllTaskByProject(Integer projectId);
 
-    public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO);
+    public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, String userId);
 
     public void deleteTask(Integer[] ids);
 
