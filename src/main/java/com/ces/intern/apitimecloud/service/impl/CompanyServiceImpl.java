@@ -3,9 +3,7 @@ package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
-import com.ces.intern.apitimecloud.entity.CompanyEntity;
-import com.ces.intern.apitimecloud.entity.UserEntity;
-import com.ces.intern.apitimecloud.entity.UserRoleEntity;
+import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
@@ -18,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -33,15 +32,18 @@ public class CompanyServiceImpl implements CompanyService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
 
+
     @Autowired
     public CompanyServiceImpl(ModelMapper modelMapper,
                               CompanyRepository companyRepository,
                               UserRepository userRepository,
-                              UserRoleRepository userRoleRepository){
+                              UserRoleRepository userRoleRepository
+                              ){
         this.modelMapper = modelMapper;
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+
     }
 
 
@@ -52,7 +54,9 @@ public class CompanyServiceImpl implements CompanyService {
 
        Optional<CompanyEntity> optional = companyRepository.findById(companyId);
 
-       CompanyEntity company = optional.orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ) );
+       CompanyEntity company = optional
+               .orElseThrow(()
+                       -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ) );
 
        return modelMapper.map(company, CompanyDTO.class);
     }
@@ -61,20 +65,24 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public CompanyDTO createCompany(CompanyDTO company, Integer userId) {
 
-        Date createAt = new Date();
-        company.setCreateAt(createAt);
-        company.setModifyAt(createAt);
-        company.setCreateBy(userId);
-
+        Date date = new Date();
         CompanyEntity companyEntity = modelMapper.map(company, CompanyEntity.class);
 
-        companyRepository.save(companyEntity);
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + userId));
+        EmbedEntity embedEntity = new EmbedEntity(date, userId, date, userId);
 
-        UserRoleEntity userRole = new UserRoleEntity();
-        userRole.setUser(user);
-        userRole.setCompany(companyEntity);
-        userRole.setRole(Role.CEO.getRole());
+        companyEntity.setEmbedEntity(embedEntity);
+        companyRepository.save(companyEntity);
+        UserEntity userEntity = userRepository
+                .findById(userId)
+                .orElseThrow(() ->
+                        new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "user with" + userId));
+
+        UserRoleEntity userRole = UserRoleEntity
+                .builder()
+                .user(userEntity)
+                .role(Role.ADMIN.getRoleEntity())
+                .company(companyEntity)
+                .build();
 
         userRoleRepository.save(userRole);
 
@@ -84,7 +92,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public CompanyDTO updateCompany(Integer companyId, CompanyDTO company) {
+    public CompanyDTO updateCompany(Integer companyId, CompanyDTO company, Integer userId) {
 
         CompanyEntity companyEntity = companyRepository.findById(companyId)
                 .orElseThrow(() ->
@@ -94,7 +102,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .typeMap(CompanyDTO.class, CompanyEntity.class);
         tm.setPropertyCondition(Conditions.isNotNull());
         tm.map(company, companyEntity);
-        companyEntity.setModifyAt(new Date());
+        companyEntity.getEmbedEntity().setModifyAt(new Date());
+        companyEntity.getEmbedEntity().setModifiedBy(userId);
 
         companyRepository.save(companyEntity);
 
@@ -120,24 +129,5 @@ public class CompanyServiceImpl implements CompanyService {
         return null;
     }
 
-    @Override
-    @Transactional
-    public UserDTO addUserToCompany(Integer userId, Integer companyId, String role) {
 
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                    new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + userId));
-
-        CompanyEntity company = companyRepository.findById(companyId)
-                .orElseThrow(() ->
-                    new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ) );
-        UserRoleEntity  userRole = new UserRoleEntity();
-        userRole.setUser(user);
-        userRole.setCompany(company);
-        userRole.setRole(role);
-
-        userRoleRepository.save(userRole);
-
-        return modelMapper.map(user, UserDTO.class);
-    }
 }

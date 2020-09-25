@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
+import com.ces.intern.apitimecloud.entity.EmbedEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
@@ -14,7 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.persistence.Embedded;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -25,22 +27,27 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+    private final CompanyRepository companyRepository;
+    private final TaskService taskService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private CompanyRepository companyRepository;
-
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private ModelMapper modelMapper = new ModelMapper();
+    public ProjectServiceImpl(ProjectRepository projectRepository,
+                              CompanyRepository companyRepository,
+                              TaskService taskService,
+                              ModelMapper modelMapper){
+        this.projectRepository = projectRepository;
+        this.companyRepository = companyRepository;
+        this.taskService = taskService;
+        this.modelMapper = modelMapper;
+    }
 
 
     @Override
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId) {
 
+        EmbedEntity em  = new EmbedEntity();
         CompanyEntity company= companyRepository.findById(companyId).
                 orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
