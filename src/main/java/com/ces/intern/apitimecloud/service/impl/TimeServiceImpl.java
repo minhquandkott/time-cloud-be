@@ -44,7 +44,7 @@ public class TimeServiceImpl implements TimeService {
     @Transactional
     public TimeResponse save(String userId, TimeRequest timeRequest, Integer taskId) {
         TypeMap<TimeRequest, TimeEntity> tm = modelMapper.typeMap(TimeRequest.class, TimeEntity.class);
-        Converter<Long,Date> converter = context -> context.getSource() == null ? null : new Date(context.getSource());
+        Converter<Long,Date> converter = (context) -> context.getSource() == null ? null : new Date(context.getSource());
         tm.addMappings(mapping ->{
             mapping.using(converter).map(TimeRequest::getMileSecondEndTime, TimeEntity::setEndTime);
             mapping.using(converter).map(TimeRequest::getMileSecondStartTime, TimeEntity::setStartTime);

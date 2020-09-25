@@ -14,7 +14,7 @@ public interface CompanyService {
 
     public CompanyDTO createCompany(CompanyDTO companyDTO, Integer userId);
 
-    public CompanyDTO updateCompany(Integer companyId, CompanyDTO companyDTO);
+    public CompanyDTO updateCompany(Integer companyId, CompanyDTO companyDTO,Integer userId);
 
     public void deleteCompany(Integer companyId);
 
@@ -22,5 +22,5 @@ public interface CompanyService {
 
     public List<UserEntity> getMemberByRole(Integer companyId, String role);
 
-    public UserDTO addUserToCompany(Integer userId, Integer companyId, String role);
+
 }

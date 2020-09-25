@@ -13,17 +13,18 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
+@Builder
 public class EmbedEntity {
 
     @Column(name = "create_at", nullable = false)
     private Date createAt;
 
-    @Column(name = "create_by", nullable = false)
-    private Integer createBy;
+    @Column(name = "created_by", nullable = false)
+    private Integer createdBy;
 
     @Column(name = "modify_at", nullable = false)
     private Date modifyAt;
 
-    @Column(name = "modify_by", nullable = false)
-    private Integer modifyBy;
+    @Column(name = "modified_by", nullable = false)
+    private Integer modifiedBy;
 }

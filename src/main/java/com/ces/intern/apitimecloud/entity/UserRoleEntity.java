@@ -1,15 +1,18 @@
 package com.ces.intern.apitimecloud.entity;
 
 import com.ces.intern.apitimecloud.util.Role;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "user_company", schema = "public")
 public class UserRoleEntity {
 
@@ -32,7 +35,7 @@ public class UserRoleEntity {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
-    @ManyToOne( cascade = {
+    @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
@@ -41,6 +44,8 @@ public class UserRoleEntity {
 
     @Embedded
     private EmbedEntity embedEntity;
+
+
 
     @Embeddable
     @Getter
