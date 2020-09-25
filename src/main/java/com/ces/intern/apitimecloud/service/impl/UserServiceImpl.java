@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.entity.EmbedEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.LoginUserException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
@@ -15,9 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,12 +40,24 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
+    @Transactional
     public String save(UserRequest userRequest) {
 
         String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
         UserEntity user = modelMapper.map(userRequest, UserEntity.class);
         user.setPassword(encodedPassword);
-
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .createAt(new Date())
+                .createBy(1)
+                .modifyAt(new Date())
+                .modifyBy(1)
+                .build();
+        user.setEmbedEntity(embedEntity);
+        //user = modelMapper.map(embedEntity, UserEntity.class);
+        user = userRepository.save(user);
+        user.getEmbedEntity().setCreateBy(user.getId());
+        user.getEmbedEntity().setModifyBy(user.getId());
         user = userRepository.save(user);
         return ResponseMessage.CREATE_SUCCESS;
     }
@@ -62,6 +75,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
 
         UserDTO userDTO = modelMapper.map(userRequest, UserDTO.class);
         userDTO.setId(id);
+        userDTO.setModifyAt(new Date());
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
@@ -84,7 +98,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         UserEntity user = userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
-                                                            + " with email " + email));
+                        + " with email " + email));
 
         return  modelMapper.map(user, UserDTO.class);
     }
