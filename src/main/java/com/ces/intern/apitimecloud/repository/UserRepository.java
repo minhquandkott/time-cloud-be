@@ -14,9 +14,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     public Optional<UserEntity> findByEmail(String email);
 
-    @Query(value = "select * from public.user where user_id in (select user_company.user_id from user_company where company_id =:companyId)",
-            nativeQuery = true)
-    public List<UserEntity> getAllByCompanyId(@Param("companyId") Integer companyId);
+//    @Query(value = "select * from public.user where user_id in (select user_company.user_id from user_company where company_id =:companyId)",
+//            nativeQuery = true)
+//    public List<UserEntity> getAllByCompanyId(@Param("companyId") Integer companyId);
 
     @Query(value = "select * from public.user where user_id in (select user_company.user_id from user_company where company_id =:companyId and role =:role)",
             nativeQuery = true)

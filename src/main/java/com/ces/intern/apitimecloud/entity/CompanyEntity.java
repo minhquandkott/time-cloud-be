@@ -36,15 +36,6 @@ public class CompanyEntity implements Serializable {
     @Column(name="company_logo")
     private String logo;
 
-    @Column(name="create_at", nullable = false)
-    private Date createAt;
-
-    @Column(name="create_by", nullable = false)
-    private Integer createBy;
-
-    @Column(name="modify_at", nullable = false)
-    private Date modifyAt;
-
     @Embedded
     private EmbedEntity embedEntity;
 

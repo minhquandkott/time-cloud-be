@@ -1,17 +1,16 @@
 package com.ces.intern.apitimecloud.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "role" , schema = "public")
 public class RoleEntity {
@@ -21,4 +20,5 @@ public class RoleEntity {
 
     @Column(name = "role_name")
     private String name;
+
 }
