@@ -97,13 +97,11 @@ public class TaskServiceImpl implements TaskService {
 
         taskEntity.setName(taskDTO.getName());
 
-        EmbedEntity embedEntity = EmbedEntity
-                .builder()
-                .modifiedBy(userID)
-                .modifyAt(new Date())
-                .build();
+        taskEntity.getEmbedEntity()
+                .setModifiedBy(userID);
 
-        taskEntity.setEmbedEntity(embedEntity);
+        taskEntity.getEmbedEntity()
+                .setModifyAt(new Date());
 
         taskEntity = taskRepository.save(taskEntity);
 

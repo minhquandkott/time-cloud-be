@@ -110,13 +110,8 @@ public class ProjectServiceImpl implements ProjectService {
         projectEntity.setName(projectDTO.getName());
         projectEntity.setClientName(projectDTO.getClientName());
 
-        EmbedEntity embedEntity = EmbedEntity
-                .builder()
-                .modifiedBy(userID)
-                .modifyAt(new Date())
-                .build();
-
-        projectEntity.setEmbedEntity(embedEntity);
+        projectEntity.getEmbedEntity().setModifyAt(new Date());
+        projectEntity.getEmbedEntity().setModifiedBy(userID);
 
         projectEntity = projectRepository.save(projectEntity);
 
