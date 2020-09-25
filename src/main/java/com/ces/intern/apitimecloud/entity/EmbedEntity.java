@@ -9,10 +9,10 @@ import java.util.Date;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-@Builder
 public class EmbedEntity {
 
     @Column(name = "create_at", nullable = false)

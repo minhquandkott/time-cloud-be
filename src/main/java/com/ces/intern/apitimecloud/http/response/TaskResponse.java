@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 
 @Getter
 @Setter
@@ -14,10 +13,6 @@ public class TaskResponse extends BaseResponse{
 
     private Integer id;
     private String name;
-    private Date createAt;
-    private Date modifyAt;
-    private Integer createBy;
-    private Integer modifyBy;
     private ProjectDTO project;
 
 }

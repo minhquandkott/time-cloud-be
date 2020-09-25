@@ -11,10 +11,8 @@ import com.ces.intern.apitimecloud.service.TimeService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tasks")
@@ -24,6 +22,7 @@ public class TaskController {
     private ModelMapper modelMapper;
     private TimeService timeService;
 
+    @Autowired
     public TaskController(TaskService taskService,
                           ModelMapper modelMapper,
                           TimeService timeService){
@@ -49,11 +48,12 @@ public class TaskController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public TaskResponse updateTask(@PathVariable Integer id, @RequestBody TaskRequest request){
+    public TaskResponse updateTask(@PathVariable Integer id, @RequestBody TaskRequest request
+                                    ,@RequestHeader("userId") String userId){
 
         TaskDTO taskDTO = modelMapper.map(request,TaskDTO.class);
 
-        taskDTO = taskService.updateTask(id,taskDTO);
+        taskDTO = taskService.updateTask(id,taskDTO, userId);
 
         return modelMapper.map(taskDTO,TaskResponse.class);
     }

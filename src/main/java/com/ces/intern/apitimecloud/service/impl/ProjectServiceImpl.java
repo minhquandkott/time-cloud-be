@@ -8,22 +8,17 @@ import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
-import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Embedded;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +46,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId) {
 
-        EmbedEntity em  = new EmbedEntity();
         CompanyEntity company= companyRepository.findById(companyId).
                 orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
@@ -61,9 +55,17 @@ public class ProjectServiceImpl implements ProjectService {
         Integer userID = Integer.parseInt(userId);
 
         projectEntity.setCompany(company);
-        projectEntity.setCreateBy(userID);
-        projectEntity.setCreatAt(new Date());
-        projectEntity.setModifyAt(new Date());
+
+        Date date = new Date();
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .createAt(date)
+                .createdBy(userID)
+                .modifyAt(date)
+                .modifiedBy(userID)
+                .build();
+
+        projectEntity.setEmbedEntity(embedEntity);
 
         projectEntity = projectRepository.save(projectEntity);
 
@@ -98,14 +100,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO) {
+    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, String userId) {
 
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
-        projectEntity.setModifyAt(new Date());
+        Integer userID = Integer.parseInt(userId);
+
         projectEntity.setName(projectDTO.getName());
         projectEntity.setClientName(projectDTO.getClientName());
+
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .modifiedBy(userID)
+                .modifyAt(new Date())
+                .build();
+
+        projectEntity.setEmbedEntity(embedEntity);
 
         projectEntity = projectRepository.save(projectEntity);
 
