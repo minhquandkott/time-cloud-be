@@ -47,7 +47,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, String userId) {
 
-        EmbedEntity em  = new EmbedEntity();
         CompanyEntity company= companyRepository.findById(companyId).
                 orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
@@ -57,9 +56,17 @@ public class ProjectServiceImpl implements ProjectService {
         Integer userID = Integer.parseInt(userId);
 
         projectEntity.setCompany(company);
-        projectEntity.setCreateBy(userID);
-        projectEntity.setCreatAt(new Date());
-        projectEntity.setModifyAt(new Date());
+
+        Date date = new Date();
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .createAt(date)
+                .createdBy(userID)
+                .modifyAt(date)
+                .modifiedBy(userID)
+                .build();
+
+        projectEntity.setEmbedEntity(embedEntity);
 
         projectEntity = projectRepository.save(projectEntity);
 
@@ -94,14 +101,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO) {
+    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, String userId) {
 
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
-        projectEntity.setModifyAt(new Date());
+        Integer userID = Integer.parseInt(userId);
+
         projectEntity.setName(projectDTO.getName());
         projectEntity.setClientName(projectDTO.getClientName());
+
+        projectEntity.getEmbedEntity().setModifyAt(new Date());
+        projectEntity.getEmbedEntity().setModifiedBy(userID);
 
         projectEntity = projectRepository.save(projectEntity);
 

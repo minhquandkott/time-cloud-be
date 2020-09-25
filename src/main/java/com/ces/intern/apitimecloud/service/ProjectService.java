@@ -13,7 +13,7 @@ public interface ProjectService {
 
     public List getAllProject();
 
-    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO);
+    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, String userId);
 
     public void deleteProject(Integer[] projectIds);
 
