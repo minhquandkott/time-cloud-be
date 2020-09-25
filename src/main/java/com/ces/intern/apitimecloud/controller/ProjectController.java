@@ -11,9 +11,10 @@ import com.ces.intern.apitimecloud.service.TaskService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,7 +28,7 @@ public class ProjectController {
     private final ModelMapper modelMapper;
     private final TaskService taskService;
 
-
+    @Autowired
     public ProjectController(ProjectService projectService,
                              ModelMapper modelMapper,
                              TaskService taskService){

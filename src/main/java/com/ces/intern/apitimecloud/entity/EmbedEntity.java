@@ -13,7 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-@Builder
 public class EmbedEntity {
 
     @Column(name = "create_at", nullable = false)

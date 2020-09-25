@@ -51,9 +51,9 @@ public class TaskServiceImpl implements TaskService {
         EmbedEntity embedEntity = EmbedEntity
                 .builder()
                 .createAt(date)
-                .createBy(userID)
+                .createdBy(userID)
                 .modifyAt(date)
-                .modifyBy(userID)
+                .modifiedBy(userID)
                 .build();
 
         taskEntity.setEmbedEntity(embedEntity);
@@ -99,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
 
         EmbedEntity embedEntity = EmbedEntity
                 .builder()
-                .modifyBy(userID)
+                .modifiedBy(userID)
                 .modifyAt(new Date())
                 .build();
 

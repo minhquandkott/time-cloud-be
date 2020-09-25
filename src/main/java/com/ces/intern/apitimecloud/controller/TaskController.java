@@ -11,10 +11,8 @@ import com.ces.intern.apitimecloud.service.TimeService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tasks")
@@ -24,6 +22,7 @@ public class TaskController {
     private ModelMapper modelMapper;
     private TimeService timeService;
 
+    @Autowired
     public TaskController(TaskService taskService,
                           ModelMapper modelMapper,
                           TimeService timeService){
