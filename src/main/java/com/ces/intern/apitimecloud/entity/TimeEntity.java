@@ -1,5 +1,6 @@
 package com.ces.intern.apitimecloud.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "time", schema = "public")
 public class TimeEntity implements Serializable {
     private static final long serialVersionUID = -8468078557836858453L;

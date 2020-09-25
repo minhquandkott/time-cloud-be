@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.service;
 
 import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.dto.UserRoleDTO;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
@@ -16,13 +17,13 @@ public interface UserService extends UserDetailsService {
 
     public UserResponse findUser(Integer id);
 
-    public UserResponse update(UserRequest userRequest, Integer id);
+    public UserResponse update(UserRequest userRequest, Integer id, Integer modifiedBy);
 
     public void delete(int[] ids);
 
     public UserDTO findByEmail(String email);
 
-    public List<UserDTO> getAllByCompanyId(Integer companyId);
+    public List<UserRoleDTO> getAllByCompanyId(Integer companyId);
 
     public List<UserDTO> getAllByCompanyAndRole(Integer companyId, String role);
 

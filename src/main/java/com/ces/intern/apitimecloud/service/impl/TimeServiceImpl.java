@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.TimeDTO;
+import com.ces.intern.apitimecloud.entity.EmbedEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
 import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
@@ -59,6 +60,14 @@ public class TimeServiceImpl implements TimeService {
 
         timeEntity.setUser(userEntity);
         timeEntity.setTask(taskEntity);
+        EmbedEntity embedEntity = EmbedEntity
+                .builder()
+                .createAt(new Date())
+                .createBy(Integer.parseInt(userId))
+                .modifyAt(new Date())
+                .modifyBy(Integer.parseInt(userId))
+                .build();
+        timeEntity.setEmbedEntity(embedEntity);
         TimeEntity time = timeRepository.save(timeEntity);
         return modelMapper.map(time, TimeResponse.class);
     }
