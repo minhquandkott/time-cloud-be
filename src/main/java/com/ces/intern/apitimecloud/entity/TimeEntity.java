@@ -1,9 +1,7 @@
 package com.ces.intern.apitimecloud.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,16 +10,13 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Builder
 @Table(name = "time", schema = "public")
-public class TimeEntity implements Serializable {
+@AttributeOverride(name = "id", column = @Column(name = "time_id"))
+@SequenceGenerator(name = "generator", sequenceName = "time_id_seq", schema = "public", allocationSize = 1)
+public class TimeEntity extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -8468078557836858453L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "time_generator")
-    @SequenceGenerator(name = "time_generator", sequenceName = "time_id_seq", schema = "public", allocationSize = 1)
-    @Column(name = "time_id", unique = true, nullable = false)
-    private Integer id;
+
 
     @Column(name = "start_time")
     private Date startTime;
@@ -46,8 +41,5 @@ public class TimeEntity implements Serializable {
     })
     @JoinColumn(name = "task_id")
     private TaskEntity task;
-
-    @Embedded
-    private EmbedEntity embedEntity;
 
 }

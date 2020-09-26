@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 
-public class UserCompanyResponse extends BaseResponse {
+public class UserRoleResponse extends BaseResponse {
     private UserResponse userResponse;
 
     private CompanyResponse companyResponse;

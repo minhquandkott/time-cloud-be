@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
+import com.ces.intern.apitimecloud.entity.BaseEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.entity.UserRoleEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
@@ -13,10 +14,13 @@ import com.ces.intern.apitimecloud.service.UserRoleService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.Role;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
+@Service
 public class UserRoleServiceImpl implements UserRoleService {
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
@@ -46,7 +50,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     @Transactional
-    public UserDTO addUserToCompany(Integer userId, Integer companyId, String role) {
+    public UserDTO addUserToCompany(Integer userId, Integer companyId) {
 
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() ->
@@ -55,14 +59,11 @@ public class UserRoleServiceImpl implements UserRoleService {
         CompanyEntity company = companyRepository.findById(companyId)
                 .orElseThrow(() ->
                         new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ) );
-        UserRoleEntity userRole = UserRoleEntity
-                .builder()
-                .user(user)
-                .company(company)
-                .role(Role.MEMBER.getRoleEntity())
-                .build();
 
-        userRoleRepository.save(userRole);
+        Date date = new Date();
+
+        UserRoleEntity userRoleEntity = new UserRoleEntity(user, company, Role.MEMBER.getRoleEntity());
+        userRoleEntity.setBasicInfo (date, userId, date, userId);
 
         return modelMapper.map(user, UserDTO.class);
     }

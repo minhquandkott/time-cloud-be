@@ -1,7 +1,7 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.TimeDTO;
-import com.ces.intern.apitimecloud.entity.EmbedEntity;
+import com.ces.intern.apitimecloud.entity.BaseEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
 import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
@@ -43,7 +43,7 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     @Transactional
-    public TimeResponse save(String userId, TimeRequest timeRequest, Integer taskId) {
+    public TimeResponse save(Integer userId, TimeRequest timeRequest, Integer taskId) {
         TypeMap<TimeRequest, TimeEntity> tm = modelMapper.typeMap(TimeRequest.class, TimeEntity.class);
         Converter<Long,Date> converter = (context) -> context.getSource() == null ? null : new Date(context.getSource());
         tm.addMappings(mapping ->{
@@ -55,20 +55,15 @@ public class TimeServiceImpl implements TimeService {
         TaskEntity taskEntity = taskRepository.findById(taskId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage())) ;
 
-        UserEntity userEntity = userRepository.findById(Integer.parseInt(userId))
+        UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
 
         timeEntity.setUser(userEntity);
         timeEntity.setTask(taskEntity);
-        EmbedEntity embedEntity = EmbedEntity
-                .builder()
-                .createAt(new Date())
-                .createBy(Integer.parseInt(userId))
-                .modifyAt(new Date())
-                .modifyBy(Integer.parseInt(userId))
-                .build();
-        timeEntity.setEmbedEntity(embedEntity);
+        Date date = new Date();
+        timeEntity.setBasicInfo(date, userId, date, userId);
         TimeEntity time = timeRepository.save(timeEntity);
+
         return modelMapper.map(time, TimeResponse.class);
     }
 

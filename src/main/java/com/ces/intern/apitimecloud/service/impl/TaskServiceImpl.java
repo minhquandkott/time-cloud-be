@@ -1,7 +1,6 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.TaskDTO;
-import com.ces.intern.apitimecloud.entity.EmbedEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
@@ -35,28 +34,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskDTO createTask(Integer projectId, TaskDTO taskDTO, String userId) {
+    public TaskDTO createTask(Integer projectId, TaskDTO taskDTO, Integer userId) {
 
-        ProjectEntity project = projectRepository.findById(projectId).
+        ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+ projectId));
 
         TaskEntity taskEntity = modelMapper.map(taskDTO,TaskEntity.class);
 
         Date date = new Date();
-        Integer userID = Integer.parseInt(userId);
-
-        taskEntity.setName(taskDTO.getName());
-        taskEntity.setProject(project);
-
-        EmbedEntity embedEntity = EmbedEntity
-                .builder()
-                .createAt(date)
-                .createdBy(userID)
-                .modifyAt(date)
-                .modifiedBy(userID)
-                .build();
-
-        taskEntity.setEmbedEntity(embedEntity);
+        taskEntity.setBasicInfo(date, userId, date, userId);
+        taskEntity.setProject(projectEntity);
 
         taskEntity = taskRepository.save(taskEntity);
 
@@ -88,20 +75,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, String userId) {
+    public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, Integer userId) {
 
         TaskEntity taskEntity = taskRepository.findById(projectId).
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ projectId));
 
-        Integer userID = Integer.parseInt(userId);
-
         taskEntity.setName(taskDTO.getName());
 
-        taskEntity.getEmbedEntity()
-                .setModifiedBy(userID);
+        taskEntity.setModifiedBy(userId);
 
-        taskEntity.getEmbedEntity()
-                .setModifyAt(new Date());
+        taskEntity.setModifyAt(new Date());
 
         taskEntity = taskRepository.save(taskEntity);
 

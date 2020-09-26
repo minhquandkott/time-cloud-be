@@ -77,7 +77,7 @@ public class ProjectController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id
-            ,@RequestHeader("userId") String userId){
+            ,@RequestHeader("userId") Integer userId){
 
         ProjectDTO project = modelMapper.map(projectRequest,ProjectDTO.class);
 
@@ -101,7 +101,7 @@ public class ProjectController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public TaskResponse createTask(@RequestBody TaskRequest request, @PathVariable Integer id,
-                                   @RequestHeader("userId") String userId){
+                                   @RequestHeader("userId") Integer userId){
 
         TaskDTO task = modelMapper.map(request,TaskDTO.class);
 

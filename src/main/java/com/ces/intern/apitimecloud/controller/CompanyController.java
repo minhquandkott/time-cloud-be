@@ -4,6 +4,7 @@ package com.ces.intern.apitimecloud.controller;
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.dto.UserRoleDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.entity.UserRoleEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
@@ -12,6 +13,7 @@ import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.response.CompanyResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
+import com.ces.intern.apitimecloud.http.response.UserRoleResponse;
 import com.ces.intern.apitimecloud.repository.UserRoleRepository;
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.CompanyService;
@@ -102,13 +104,13 @@ public class CompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public List<UserResponse> getUsersByCompanyId(@PathVariable Integer id){
+    public List<UserRoleResponse> getUsersByCompanyId(@PathVariable Integer id){
 
-        List<UserDTO> users =  userService.getAllByCompanyId(id);
+        List<UserRoleDTO> users =  userService.getAllByCompanyId(id);
 
 
         return users.stream()
-                .map(user -> modelMapper.map(user, UserResponse.class))
+                .map(user -> modelMapper.map(user, UserRoleResponse.class))
                 .collect(Collectors.toList());
 
     }
@@ -143,7 +145,7 @@ public class CompanyController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id,
-                                         @RequestHeader("userId") String userId){
+                                         @RequestHeader("userId") Integer userId){
 
         ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
 
@@ -155,8 +157,8 @@ public class CompanyController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     @PostMapping("/{companyId}/users/{userId}/add")
-    public UserResponse addUserToCompany(@PathVariable Integer companyId, @PathVariable Integer userId, @RequestBody String role ){
+    public UserResponse addUserToCompany(@PathVariable Integer companyId, @PathVariable Integer userId ){
 
-        return modelMapper.map(userRoleService.addUserToCompany(userId, companyId, role), UserResponse.class);
+        return modelMapper.map(userRoleService.addUserToCompany(userId, companyId), UserResponse.class);
     }
 }

@@ -14,5 +14,5 @@ public interface UserRoleService {
 
     public UserRoleDTO addRoleUserInCompany(Integer userId, Integer companyId, Integer roleId);
 
-    public UserDTO addUserToCompany(Integer userId, Integer companyId, String role);
+    public UserDTO addUserToCompany(Integer userId, Integer companyId);
 }

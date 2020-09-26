@@ -1,23 +1,23 @@
 package com.ces.intern.apitimecloud.entity;
 
-import com.ces.intern.apitimecloud.util.Role;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Builder
-@Table(name = "user_company", schema = "public")
-public class UserRoleEntity {
+@Table(name = "company_user", schema = "public")
+public class UserRoleEntity  implements Serializable{
+
+    private static final long serialVersionUID = 2710222671666735997L;
 
     @EmbeddedId
-    private Id id = new Id();
+    private EmbedId embedId = new EmbedId();
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
@@ -39,19 +39,40 @@ public class UserRoleEntity {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
+    @MapsId("roleId")
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    @Embedded
-    private EmbedEntity embedEntity;
+    public UserRoleEntity(UserEntity user, CompanyEntity company, RoleEntity role) {
+        this.user = user;
+        this.company = company;
+        this.role = role;
+    }
 
+    @Column(name = "create_at", nullable = false)
+    private Date createAt;
 
+    @Column(name = "created_by", nullable = false)
+    private Integer createdBy;
+
+    @Column(name = "modify_at", nullable = false)
+    private Date modifyAt;
+
+    @Column(name = "modified_by", nullable = false)
+    private Integer modifiedBy;
+
+    public void setBasicInfo(Date createAt, Integer createdBy, Date modifyAt, Integer modifiedBy){
+        this.createAt = createAt;
+        this.createdBy = createdBy;
+        this.modifyAt = modifyAt;
+        this.modifiedBy = modifiedBy;
+    }
 
     @Embeddable
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class Id implements Serializable {
+    public static class EmbedId implements Serializable {
         private static final long serialVersionUID = -5535178767632113317L;
         @Column(name = "user_id")
         private Integer userId;
@@ -66,7 +87,7 @@ public class UserRoleEntity {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Id id = (Id) o;
+            EmbedId id = (EmbedId) o;
             return userId.equals(id.userId) &&
                     companyId.equals(id.companyId) &&
                     roleId.equals(id.roleId);

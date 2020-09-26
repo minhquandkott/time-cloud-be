@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tasks")
 public class TaskController {
 
-    private TaskService taskService;
-    private ModelMapper modelMapper;
-    private TimeService timeService;
+    private final TaskService taskService;
+    private final ModelMapper modelMapper;
+    private final TimeService timeService;
 
     @Autowired
     public TaskController(TaskService taskService,
@@ -49,7 +49,7 @@ public class TaskController {
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
     public TaskResponse updateTask(@PathVariable Integer id, @RequestBody TaskRequest request
-                                    ,@RequestHeader("userId") String userId){
+                                    ,@RequestHeader("userId") Integer userId){
 
         TaskDTO taskDTO = modelMapper.map(request,TaskDTO.class);
 
@@ -63,7 +63,7 @@ public class TaskController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
     })
-    public TimeResponse createTime(@RequestHeader("userId") String userId,
+    public TimeResponse createTime(@RequestHeader("userId") Integer userId,
                                    @RequestBody(required = true) TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
         if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");

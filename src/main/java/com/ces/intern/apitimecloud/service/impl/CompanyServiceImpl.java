@@ -2,8 +2,10 @@ package com.ces.intern.apitimecloud.service.impl;
 
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
-import com.ces.intern.apitimecloud.dto.UserDTO;
-import com.ces.intern.apitimecloud.entity.*;
+import com.ces.intern.apitimecloud.entity.CompanyEntity;
+import com.ces.intern.apitimecloud.entity.BaseEntity;
+import com.ces.intern.apitimecloud.entity.UserEntity;
+import com.ces.intern.apitimecloud.entity.UserRoleEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
@@ -46,9 +48,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 
-
-
-
     @Override
     public CompanyDTO getCompany(Integer companyId) {
 
@@ -68,23 +67,19 @@ public class CompanyServiceImpl implements CompanyService {
         Date date = new Date();
         CompanyEntity companyEntity = modelMapper.map(company, CompanyEntity.class);
 
-        EmbedEntity embedEntity = new EmbedEntity(date, userId, date, userId);
+        companyEntity.setBasicInfo(date, userId, date, userId);
 
-        companyEntity.setEmbedEntity(embedEntity);
         companyRepository.save(companyEntity);
         UserEntity userEntity = userRepository
                 .findById(userId)
                 .orElseThrow(() ->
                         new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "user with" + userId));
 
-        UserRoleEntity userRole = UserRoleEntity
-                .builder()
-                .user(userEntity)
-                .role(Role.ADMIN.getRoleEntity())
-                .company(companyEntity)
-                .build();
+        UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity, companyEntity, Role.ADMIN.getRoleEntity());
 
-        userRoleRepository.save(userRole);
+        userRoleEntity.setBasicInfo(date, userId, date, userId);
+
+        userRoleRepository.save(userRoleEntity);
 
         return  modelMapper.map(companyEntity, CompanyDTO.class);
     }
@@ -102,8 +97,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .typeMap(CompanyDTO.class, CompanyEntity.class);
         tm.setPropertyCondition(Conditions.isNotNull());
         tm.map(company, companyEntity);
-        companyEntity.getEmbedEntity().setModifyAt(new Date());
-        companyEntity.getEmbedEntity().setModifiedBy(userId);
+        companyEntity.setModifyAt(new Date());
+        companyEntity.setModifiedBy(userId);
 
         companyRepository.save(companyEntity);
 
