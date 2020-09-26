@@ -5,6 +5,7 @@ import com.ces.intern.apitimecloud.entity.ProjectEntity;
 
 import java.util.List;
 
+
 public interface ProjectService {
 
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId);
@@ -20,4 +21,6 @@ public interface ProjectService {
     public List<ProjectDTO> getAllByCompanyId(Integer companyId);
 
     public List<ProjectDTO> getAllByUserId(Integer userId);
+
+    public void addUserToProject(Integer userId, Integer projectId);
 }

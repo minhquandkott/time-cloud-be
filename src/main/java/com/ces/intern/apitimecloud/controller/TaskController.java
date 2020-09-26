@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tasks")
+//@ApiImplicitParams({@ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")}) use for each method
 public class TaskController {
 
     private final TaskService taskService;
@@ -33,9 +34,6 @@ public class TaskController {
 
 
     @GetMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public TaskResponse getTask(@PathVariable Integer id){
 
         TaskDTO taskDTO = taskService.getTask(id);
@@ -45,9 +43,6 @@ public class TaskController {
 
 
     @PutMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public TaskResponse updateTask(@PathVariable Integer id, @RequestBody TaskRequest request
                                     ,@RequestHeader("userId") Integer userId){
 
@@ -60,9 +55,6 @@ public class TaskController {
 
 
     @PostMapping(value = "/{id}/times")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public TimeResponse createTime(@RequestHeader("userId") Integer userId,
                                    @RequestBody(required = true) TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
@@ -72,14 +64,11 @@ public class TaskController {
 
 
     @DeleteMapping("")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public void deleteTask(@RequestBody Integer[] ids){
         taskService.deleteTask(ids);
     }
 
-    @GetMapping("/{taskId}/users/{userId}/add")
+    @PostMapping("/{taskId}/users/{userId}")
     public void addUserToTask(@PathVariable(value = "taskId") Integer taskId, @PathVariable(value = "userId") Integer userId){
         if(taskId == null || userId == null) throw  new BadRequestException("Missing some require field");
         taskService.addUserToTask(userId, taskId);

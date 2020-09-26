@@ -119,11 +119,11 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
-    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, String role) {
+    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer roleId) {
 
-        List<UserEntity> userEntities = userRepository.getAllByCompanyIdAndRole(companyId, role);
+        List<UserEntity> userEntities = userRepository.getAllByCompanyIdAndRole(companyId, roleId);
         if(CollectionUtils.isEmpty(userEntities)) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
-                + " with company " +companyId + " and role " +role);
+                + " with company " +companyId + " and role " +roleId);
 
         return userEntities.stream()
                 .map(userEntity -> modelMapper.map(userEntity, UserDTO.class))

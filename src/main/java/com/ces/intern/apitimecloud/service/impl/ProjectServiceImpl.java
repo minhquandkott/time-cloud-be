@@ -3,7 +3,6 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
-import com.ces.intern.apitimecloud.entity.BaseEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
@@ -15,8 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +35,8 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectServiceImpl(ProjectRepository projectRepository,
                               CompanyRepository companyRepository,
                               TaskService taskService,
-                              ModelMapper modelMapper){
+                              ModelMapper modelMapper
+                             ){
         this.projectRepository = projectRepository;
         this.companyRepository = companyRepository;
         this.taskService = taskService;
@@ -44,6 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
+    @Transactional
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId) {
 
         CompanyEntity company= companyRepository.findById(companyId).
@@ -53,12 +55,11 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectEntity projectEntity = modelMapper.map(projectDTO, ProjectEntity.class);
 
         projectEntity.setCompany(company);
-
         Date date = new Date();
-
         projectEntity.setBasicInfo(date, userId, date, userId);
 
         projectEntity = projectRepository.save(projectEntity);
+        this.addUserToProject(userId, projectEntity.getId());
 
         return modelMapper.map(projectEntity,ProjectDTO.class);
     }
@@ -153,5 +154,10 @@ public class ProjectServiceImpl implements ProjectService {
         return projectEntities.stream()
                 .map(project  -> modelMapper.map(project, ProjectDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addUserToProject(Integer userId, Integer projectId) {
+        projectRepository.addUserToProject(userId, projectId);
     }
 }

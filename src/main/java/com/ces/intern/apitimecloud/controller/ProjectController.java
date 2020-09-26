@@ -8,6 +8,7 @@ import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
+import com.ces.intern.apitimecloud.util.ResponseMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/projects")
+//@ApiImplicitParams({@ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")}) use for each method
 public class ProjectController {
 
 
@@ -38,18 +40,12 @@ public class ProjectController {
     }
 
     @GetMapping("/api/test")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public ResponseEntity<String> testSpringBoot() {
         return ResponseEntity.ok("Success");
     }
 
 
     @GetMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public ProjectResponse getProject(@PathVariable Integer id){
 
         ProjectDTO projectDTO = projectService.getProject(id);
@@ -59,9 +55,6 @@ public class ProjectController {
 
 
     @GetMapping("")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public List getAllProject(){
 
         Stream<ProjectResponse> projects = projectService
@@ -73,9 +66,6 @@ public class ProjectController {
 
 
     @PutMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id
             ,@RequestHeader("userId") Integer userId){
 
@@ -88,18 +78,12 @@ public class ProjectController {
 
 
     @DeleteMapping("")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public void deleteProject(@RequestBody Integer[] ids){
         projectService.deleteProject(ids);
     }
 
 
     @PostMapping("/{id}/tasks")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public TaskResponse createTask(@RequestBody TaskRequest request, @PathVariable Integer id,
                                    @RequestHeader("userId") Integer userId){
 
@@ -112,11 +96,14 @@ public class ProjectController {
 
 
     @GetMapping("/{id}/tasks")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public List<TaskResponse> getAllTaskByProjectId(@PathVariable Integer id){
         List<TaskDTO> list = taskService.getAllTaskByProject(id);
         return list.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
+    }
+
+    @PostMapping("{projectId}/users/{userId}")
+    public String addUserToProject(@PathVariable Integer projectId, @PathVariable Integer userId){
+        projectService.addUserToProject(userId, projectId);
+        return ResponseMessage.ADD_SUCCESS;
     }
 }

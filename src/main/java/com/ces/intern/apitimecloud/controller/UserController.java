@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
+//@ApiImplicitParams({@ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")}) use for each method
 public class UserController {
-
 
     private final UserService userService;
     private final ProjectService projectService;
@@ -52,27 +52,21 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
+
     public UserResponse findUser(@PathVariable Integer id)
     {
         return userService.findUser(id);
     }
 
     @PutMapping("/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
+
     public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable Integer id, @RequestHeader Integer modifiedBy)
     {
         return userService.update(userRequest, id, modifiedBy);
     }
 
     @DeleteMapping(value = "")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
+
     public String deleteUser(@RequestBody int[] ids)
     {
         userService.delete(ids);
@@ -95,6 +89,5 @@ public class UserController {
                 .map(time  -> modelMapper.map(time, TimeResponse.class))
                 .collect(Collectors.toList());
     }
-    
 
 }

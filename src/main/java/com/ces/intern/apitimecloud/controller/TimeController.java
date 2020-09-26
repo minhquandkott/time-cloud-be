@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/times")
+//@ApiImplicitParams({@ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")}) use for each method
 public class TimeController {
 
 
@@ -22,17 +23,11 @@ public class TimeController {
     }
 
     @GetMapping(value = "/{id}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public TimeResponse getTime(@PathVariable Integer id) throws Exception{
         return timeService.find(id);
     }
 
     @DeleteMapping(value = "/")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")
-    })
     public String deleteTime(@RequestBody int[] ids) {
         timeService.delete(ids);
         return ResponseMessage.DELETE_SUCCESS;
