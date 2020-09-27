@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserRoleService {
 
 
-    public UserRoleDTO addRoleUserInCompany(Integer userId, Integer companyId, Integer roleId);
+    UserRoleDTO addRoleUserInCompany(Integer userId, Integer companyId, Integer roleId);
 
-    public UserDTO addUserToCompany(Integer userId, Integer companyId);
+    UserDTO addUserToCompany(Integer userId, Integer companyId);
 }

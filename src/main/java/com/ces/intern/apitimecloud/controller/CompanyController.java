@@ -102,7 +102,7 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{companyId}/users/role/{roleId}")
-    public List<UserResponse> getUsersByCompanyIdAndRole(@PathVariable(value = "companyId") Integer companyId, @PathVariable Integer roleId){
+    public List<UserResponse> getUsersByCompanyIdAndRoleId(@PathVariable(value = "companyId") Integer companyId, @PathVariable Integer roleId){
 
         List<UserDTO> users =  userService.getAllByCompanyAndRole(companyId, roleId);
 

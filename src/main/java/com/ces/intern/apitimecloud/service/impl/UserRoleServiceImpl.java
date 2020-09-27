@@ -65,6 +65,8 @@ public class UserRoleServiceImpl implements UserRoleService {
         UserRoleEntity userRoleEntity = new UserRoleEntity(user, company, Role.MEMBER.getRoleEntity());
         userRoleEntity.setBasicInfo (date, userId, date, userId);
 
+        userRoleRepository.save(userRoleEntity);
+
         return modelMapper.map(user, UserDTO.class);
     }
 }
