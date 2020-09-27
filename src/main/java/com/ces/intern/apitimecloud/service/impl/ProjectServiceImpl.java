@@ -148,7 +148,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectEntity> projectEntities = projectRepository.getAllByUserId(userId);
 
-        if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+        if(projectEntities.isEmpty()) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
                 + " with " + userId);
 
         return projectEntities.stream()

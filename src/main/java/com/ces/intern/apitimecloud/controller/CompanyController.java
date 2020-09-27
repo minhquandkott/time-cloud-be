@@ -23,6 +23,7 @@ import com.ces.intern.apitimecloud.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,7 +94,6 @@ public class CompanyController {
     public List<UserRoleResponse> getUsersByCompanyId(@PathVariable Integer id){
 
         List<UserRoleDTO> users =  userService.getAllByCompanyId(id);
-
 
         return users.stream()
                 .map(user -> modelMapper.map(user, UserRoleResponse.class))
