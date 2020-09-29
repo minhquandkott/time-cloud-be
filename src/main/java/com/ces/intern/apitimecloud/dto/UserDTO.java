@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDTO extends BaseDTO {
 
-    private Integer id;
     private String name;
     private String email;
     private String password;

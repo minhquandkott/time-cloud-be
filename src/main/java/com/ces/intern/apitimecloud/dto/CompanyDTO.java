@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CompanyDTO extends BaseDTO {
 
-    private Integer id;
     private String name;
     private String avatar;
     private String description;

@@ -13,10 +13,7 @@ import java.util.Date;
 @Table(name = "time", schema = "public")
 @AttributeOverride(name = "id", column = @Column(name = "time_id"))
 @SequenceGenerator(name = "generator", sequenceName = "time_id_seq", schema = "public", allocationSize = 1)
-public class TimeEntity extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = -8468078557836858453L;
-
-
+public class TimeEntity extends BaseEntity  {
 
     @Column(name = "start_time")
     private Date startTime;

@@ -14,8 +14,7 @@ import java.io.Serializable;
 @Table(name = "project", schema ="public")
 @AttributeOverride(name = "id", column =  @Column(name="project_id"))
 @SequenceGenerator(name = "generator", sequenceName = "project_id_seq", schema = "public", allocationSize = 1)
-public class ProjectEntity extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = 5851584549644561471L;
+public class ProjectEntity extends BaseEntity {
 
     @Column(name="project_name", nullable = false)
     private String name;

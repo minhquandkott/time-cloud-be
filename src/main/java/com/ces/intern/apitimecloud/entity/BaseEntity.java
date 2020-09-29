@@ -3,13 +3,17 @@ package com.ces.intern.apitimecloud.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 4577088713053351885L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
@@ -34,4 +38,16 @@ public abstract class BaseEntity {
         this.modifiedBy = modifiedBy;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseEntity that = (BaseEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

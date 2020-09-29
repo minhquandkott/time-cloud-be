@@ -2,8 +2,6 @@ package com.ces.intern.apitimecloud.service;
 
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
-import com.ces.intern.apitimecloud.entity.UserRoleEntity;
-import com.ces.intern.apitimecloud.repository.UserRoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +13,9 @@ public interface UserRoleService {
     UserRoleDTO addRoleUserInCompany(Integer userId, Integer companyId, Integer roleId);
 
     UserDTO addUserToCompany(Integer userId, Integer companyId);
+
+    List<UserRoleDTO> getAllByCompanyIdAndRoleId(Integer companyId, Integer roleId);
+
+    List<UserRoleDTO>  getAllByCompanyId(Integer companyId);
+
 }

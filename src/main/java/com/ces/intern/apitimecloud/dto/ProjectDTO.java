@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProjectDTO extends BaseDTO {
 
-    private Integer id;
     private String name;
     private String clientName;
     private CompanyDTO company;

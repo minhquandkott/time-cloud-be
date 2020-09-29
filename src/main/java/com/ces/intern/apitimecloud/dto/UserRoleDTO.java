@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserRoleDTO extends BaseDTO{
+
     private UserDTO user;
     private CompanyDTO company;
     private RoleEntity role;

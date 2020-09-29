@@ -13,19 +13,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
-    public String save(UserRequest userRequest);
+    String save(UserRequest userRequest);
 
-    public UserResponse findUser(Integer id);
+    UserResponse findUser(Integer id);
 
-    public UserResponse update(UserRequest userRequest, Integer id, Integer modifiedBy);
+    UserResponse update(UserRequest userRequest, Integer id, Integer modifiedBy);
 
-    public void delete(int[] ids);
+    void delete(int[] ids);
 
-    public UserDTO findByEmail(String email);
+    UserDTO findByEmail(String email);
 
-    public List<UserRoleDTO> getAllByCompanyId(Integer companyId);
-
-    public List<UserDTO> getAllByCompanyAndRole(Integer companyId, Integer roleId);
-
-    public UserDTO validateUser(String email, String password);
+    UserDTO validateUser(String email, String password);
 }

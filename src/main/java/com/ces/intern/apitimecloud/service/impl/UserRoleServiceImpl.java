@@ -2,10 +2,7 @@ package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
-import com.ces.intern.apitimecloud.entity.CompanyEntity;
-import com.ces.intern.apitimecloud.entity.BaseEntity;
-import com.ces.intern.apitimecloud.entity.UserEntity;
-import com.ces.intern.apitimecloud.entity.UserRoleEntity;
+import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
@@ -17,8 +14,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
@@ -37,36 +36,58 @@ public class UserRoleServiceImpl implements UserRoleService {
         this.modelMapper = modelMapper;
     }
 
-    public List<UserRoleDTO> getAllUserByCompanyId(Integer companyId){
 
-        return null;
-    }
-
-
-    @Override
-    public UserRoleDTO addRoleUserInCompany(Integer userId, Integer companyId, Integer roleId) {
-        return null;
-    }
 
     @Override
     @Transactional
-    public UserDTO addUserToCompany(Integer userId, Integer companyId) {
+    public UserRoleDTO addRoleUserInCompany(Integer userId, Integer companyId, Integer roleId) {
 
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with" + userId));
+        UserEntity userEntity = userRepository
+                .findById(userId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
 
-        CompanyEntity company = companyRepository.findById(companyId)
-                .orElseThrow(() ->
-                        new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ) );
+        CompanyEntity companyEntity = companyRepository
+                .findById(companyId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with company " + companyId));
+
+        RoleEntity roleEntity = Role.values()[roleId-1].getRoleEntity();
 
         Date date = new Date();
-
-        UserRoleEntity userRoleEntity = new UserRoleEntity(user, company, Role.MEMBER.getRoleEntity());
+        UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity, companyEntity, roleEntity);
         userRoleEntity.setBasicInfo (date, userId, date, userId);
 
         userRoleRepository.save(userRoleEntity);
 
-        return modelMapper.map(user, UserDTO.class);
+        return modelMapper.map(userRoleEntity, UserRoleDTO.class);
+    }
+
+    @Override
+    public UserDTO addUserToCompany(Integer userId, Integer companyId) {
+        return addRoleUserInCompany(userId, companyId, Role.MEMBER.ordinal()).getUser();
+    }
+
+    @Override
+    public List<UserRoleDTO> getAllByCompanyIdAndRoleId(Integer companyId, Integer roleId) {
+
+        List<UserRoleEntity> userRoles = userRoleRepository.findAllByEmbedIdCompanyIdAndRoleId(companyId, roleId);
+
+        if(userRoles.isEmpty()) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage());
+
+        return userRoles
+                .stream()
+                .map(userRole -> modelMapper.map(userRole, UserRoleDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserRoleDTO> getAllByCompanyId(Integer companyId) {
+        List<UserRoleEntity> userRoles = userRoleRepository.findAllByEmbedIdCompanyId(companyId);
+
+        if(userRoles.isEmpty()) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage());
+
+        return userRoles
+                .stream()
+                .map(userRole -> modelMapper.map(userRole, UserRoleDTO.class))
+                .collect(Collectors.toList());
     }
 }

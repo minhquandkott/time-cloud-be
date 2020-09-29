@@ -11,7 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class TimeDTO extends BaseDTO {
 
-    private Integer id;
     private Date startTime;
     private Date endTime;
     private String description;

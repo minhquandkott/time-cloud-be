@@ -3,10 +3,7 @@ package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
-import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
-import com.ces.intern.apitimecloud.entity.ProjectEntity;
-import com.ces.intern.apitimecloud.entity.UserRoleEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.CompanyRequest;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
@@ -14,16 +11,12 @@ import com.ces.intern.apitimecloud.http.response.CompanyResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.http.response.UserRoleResponse;
-import com.ces.intern.apitimecloud.repository.UserRoleRepository;
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.UserRoleService;
 import com.ces.intern.apitimecloud.service.UserService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,7 +86,7 @@ public class CompanyController {
     @GetMapping(value = "/{id}/users")
     public List<UserRoleResponse> getUsersByCompanyId(@PathVariable Integer id){
 
-        List<UserRoleDTO> users =  userService.getAllByCompanyId(id);
+        List<UserRoleDTO> users = userRoleService.getAllByCompanyId(id);
 
         return users.stream()
                 .map(user -> modelMapper.map(user, UserRoleResponse.class))
@@ -101,13 +94,13 @@ public class CompanyController {
 
     }
 
-    @GetMapping(value = "/{companyId}/users/role/{roleId}")
-    public List<UserResponse> getUsersByCompanyIdAndRoleId(@PathVariable(value = "companyId") Integer companyId, @PathVariable Integer roleId){
+    @GetMapping(value = "/{companyId}/role/{roleId}/users")
+    public List<UserRoleResponse> getUsersByCompanyIdAndRoleId(@PathVariable(value = "companyId") Integer companyId, @PathVariable Integer roleId){
 
-        List<UserDTO> users =  userService.getAllByCompanyAndRole(companyId, roleId);
+        List<UserRoleDTO> users =  userRoleService.getAllByCompanyIdAndRoleId(companyId, roleId);
 
         return users.stream()
-                .map(user -> modelMapper.map(user, UserResponse.class))
+                .map(user -> modelMapper.map(user, UserRoleResponse.class))
                 .collect(Collectors.toList());
 
     }
@@ -135,4 +128,9 @@ public class CompanyController {
     public UserResponse addUserToCompany(@PathVariable Integer companyId, @PathVariable Integer userId ){
         return modelMapper.map(userRoleService.addUserToCompany(userId, companyId), UserResponse.class);
     }
+    @PostMapping("/{companyId}/role/{roleId}/users/{userId}")
+    public UserResponse addUserToCompanyWithRole(@PathVariable Integer companyId, @PathVariable Integer userId, @PathVariable Integer roleId ){
+        return modelMapper.map(userRoleService.addRoleUserInCompany(userId, companyId, roleId), UserResponse.class);
+    }
+
 }
