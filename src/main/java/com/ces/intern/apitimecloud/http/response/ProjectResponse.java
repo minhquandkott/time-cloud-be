@@ -14,4 +14,5 @@ public class ProjectResponse extends BaseResponse{
     private String name;
     private String clientName;
     private CompanyDTO company;
+    private String color;
 }

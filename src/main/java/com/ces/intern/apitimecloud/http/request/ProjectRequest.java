@@ -11,5 +11,5 @@ public class ProjectRequest {
 
     private String name;
     private String clientName;
-
+    private String color;
 }

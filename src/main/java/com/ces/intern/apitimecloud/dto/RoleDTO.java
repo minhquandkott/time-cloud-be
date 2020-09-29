@@ -12,4 +12,5 @@ public class RoleDTO {
 
     private Integer id;
     private String name;
+    private String color;
 }

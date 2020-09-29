@@ -22,6 +22,9 @@ public class ProjectEntity extends BaseEntity {
     @Column(name = "client_name")
     private String clientName;
 
+    @Column(name = "project_color")
+    private String color;
+
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
@@ -29,5 +32,7 @@ public class ProjectEntity extends BaseEntity {
     })
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
+
+
 
 }

@@ -13,4 +13,5 @@ public class ProjectDTO extends BaseDTO {
     private String name;
     private String clientName;
     private CompanyDTO company;
+    private String color;
 }
