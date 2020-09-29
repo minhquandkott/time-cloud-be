@@ -24,11 +24,10 @@ public class TimeEntity extends BaseEntity  {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.DETACH,CascadeType.MERGE,
-                    CascadeType.PERSIST,CascadeType.REFRESH
-            })
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

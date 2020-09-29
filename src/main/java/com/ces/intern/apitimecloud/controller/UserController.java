@@ -65,11 +65,11 @@ public class UserController {
         return userService.update(userRequest, id, modifiedBy);
     }
 
-    @DeleteMapping(value = "")
+    @DeleteMapping(value = "/{userId}")
 
-    public String deleteUser(@RequestBody int[] ids)
+    public String deleteUser(@PathVariable Integer userId)
     {
-        userService.delete(ids);
+        userService.delete(userId);
         return ResponseMessage.DELETE_SUCCESS;
     }
 

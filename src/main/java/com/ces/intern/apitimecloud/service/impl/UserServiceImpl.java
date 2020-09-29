@@ -88,11 +88,8 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
-    public void delete(int[] ids) {
-        for(int item : ids)
-        {
-            userRepository.deleteById(item);
-        }
+    public void delete(Integer userId) {
+        userRepository.deleteById(userId);
     }
 
     @Override

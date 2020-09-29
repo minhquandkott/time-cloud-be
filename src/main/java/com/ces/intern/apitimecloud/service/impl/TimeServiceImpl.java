@@ -79,12 +79,10 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     @Transactional
-    public void delete(int[] ids) {
-        for(int item: ids) {
-            TimeEntity timeEntity = timeRepository.findById(item)
-                    .orElseThrow(() -> new RuntimeException((ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " + item)));
-            timeRepository.delete(timeEntity);
-        }
+    public void delete(Integer timeId) {
+        TimeEntity timeEntity = timeRepository.findById(timeId)
+                .orElseThrow(() -> new RuntimeException((ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " + timeId)));
+        timeRepository.delete(timeEntity);
     }
 
     @Override
@@ -92,6 +90,15 @@ public class TimeServiceImpl implements TimeService {
         List<TimeEntity> times = timeRepository.getAllByUserId(userId);
         return times.stream()
                 .map(time -> modelMapper.map(time, TimeDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TimeDTO> getAllByTaskId(Integer taskId) {
+        List<TimeEntity> timeEntities = timeRepository.getAllByTaskId(taskId);
+        return timeEntities
+                .stream()
+                .map(timeEntity -> modelMapper.map(timeEntities, TimeDTO.class))
                 .collect(Collectors.toList());
     }
 }

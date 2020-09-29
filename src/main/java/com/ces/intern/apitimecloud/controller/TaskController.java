@@ -63,9 +63,9 @@ public class TaskController {
     }
 
 
-    @DeleteMapping("")
-    public void deleteTask(@RequestBody Integer[] ids){
-        taskService.deleteTask(ids);
+    @DeleteMapping("/{taskId}")
+    public void deleteTask(@PathVariable Integer taskId){
+        taskService.deleteTask(taskId);
     }
 
     @PostMapping("/{taskId}/users/{userId}")

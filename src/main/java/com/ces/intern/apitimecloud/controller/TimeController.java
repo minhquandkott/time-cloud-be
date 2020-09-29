@@ -27,9 +27,9 @@ public class TimeController {
         return timeService.find(id);
     }
 
-    @DeleteMapping(value = "/")
-    public String deleteTime(@RequestBody int[] ids) {
-        timeService.delete(ids);
+    @DeleteMapping(value = "/{timeId}")
+    public String deleteTime(@PathVariable Integer timeId) {
+        timeService.delete(timeId);
         return ResponseMessage.DELETE_SUCCESS;
     }
 

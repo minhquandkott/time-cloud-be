@@ -14,7 +14,7 @@ public interface TaskService {
 
     public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, Integer userId);
 
-    public void deleteTask(Integer[] ids);
+    public void deleteTask(Integer taskId);
 
     public void addUserToTask(Integer userId, Integer taskId);
 }

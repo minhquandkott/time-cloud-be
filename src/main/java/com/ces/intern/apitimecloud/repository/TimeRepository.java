@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface TimeRepository extends JpaRepository<TimeEntity, Integer> {
 
-    public List<TimeEntity> getAllByUserId(Integer userId);
-
+    List<TimeEntity> getAllByUserId(Integer userId);
+    List<TimeEntity> getAllByTaskId(Integer taskId);
 }

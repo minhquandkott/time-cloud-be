@@ -19,7 +19,7 @@ public interface UserService extends UserDetailsService {
 
     UserResponse update(UserRequest userRequest, Integer id, Integer modifiedBy);
 
-    void delete(int[] ids);
+    void delete(Integer userId);
 
     UserDTO findByEmail(String email);
 

@@ -7,6 +7,7 @@ import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.service.TaskService;
+import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,20 @@ import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private TaskRepository taskRepository;
-    private ProjectRepository projectRepository;
-    private ModelMapper modelMapper;
+    private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+    private final ModelMapper modelMapper;
+    private final TimeService timeService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository, ModelMapper modelMapper){
+    public TaskServiceImpl(TaskRepository taskRepository,
+                           ProjectRepository projectRepository,
+                           ModelMapper modelMapper,
+                           TimeService timeService){
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.modelMapper = modelMapper;
+        this.timeService = timeService;
     }
 
 
@@ -93,14 +99,17 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public void deleteTask(Integer[] ids) {
-        
-        for(Integer item:ids){
-            if(taskRepository.existsById(item)) {
-                taskRepository.deleteById(item);
-            } else {
-                throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+item);
-            }
+    public void deleteTask(Integer  taskId) {
+
+        if(taskRepository.existsById(taskId)) {
+            taskRepository.deleteById(taskId);
+
+            timeService
+                    .getAllByTaskId(taskId)
+                    .forEach(timeDTO -> timeService.delete(timeDTO.getId()));
+
+        } else {
+            throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+taskId);
         }
     }
 

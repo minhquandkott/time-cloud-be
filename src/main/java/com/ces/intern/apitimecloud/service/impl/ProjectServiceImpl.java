@@ -111,22 +111,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public void deleteProject(Integer[] projectIds) {
+    public void deleteProject(Integer projectId) {
 
-        for(Integer item:projectIds){
-            if(projectRepository.existsById(item)) {
+        List<TaskDTO> list = taskService.getAllTaskByProject(projectId);
 
-                List<TaskDTO> list = taskService.getAllTaskByProject(item);
+        list
+                .stream()
+                .forEach(taskDTO  -> taskService.deleteTask(taskDTO.getId()));
 
-                Integer[] idArray = list.stream().map(itemOfList->itemOfList.getId()).toArray(Integer[]::new);
-
-                taskService.deleteTask(idArray);
-
-                projectRepository.deleteById(item);
-            } else {
-                throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+item);
-            }
-        }
+        projectRepository.deleteById(projectId);
     }
 
 

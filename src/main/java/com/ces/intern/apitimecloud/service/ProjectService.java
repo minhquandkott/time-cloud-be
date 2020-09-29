@@ -16,7 +16,7 @@ public interface ProjectService {
 
     public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, Integer userId);
 
-    public void deleteProject(Integer[] projectIds);
+    public void deleteProject(Integer projectId);
 
     public List<ProjectDTO> getAllByCompanyId(Integer companyId);
 
