@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("/tasks")
 //@ApiImplicitParams({@ApiImplicitParam(name="authorization", value="JWT TOKEN", paramType="header")}) use for each method
@@ -59,6 +61,10 @@ public class TaskController {
                                    @RequestBody(required = true) TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
         if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");
+
+        System.out.println("===================================================================================");
+        System.out.println(new Date(timeRequest.getMileSecondEndTime()) + "   " + new Date(timeRequest.getMileSecondStartTime()));
+        System.out.println("===================================================================================");
         return timeService.save(userId, timeRequest, taskId);
     }
 
