@@ -127,9 +127,6 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> getAllByCompanyId(Integer companyId) {
         List<ProjectEntity> projectEntities = projectRepository.getAllByCompanyId(companyId);
 
-        if(projectEntities.size() == 0) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
-                                                                        + " with " + companyId);
-
         return projectEntities.stream()
                 .map(project  -> modelMapper.map(project, ProjectDTO.class))
                 .collect(Collectors.toList());

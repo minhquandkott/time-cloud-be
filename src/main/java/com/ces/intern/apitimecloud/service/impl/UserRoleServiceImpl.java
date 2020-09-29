@@ -71,7 +71,6 @@ public class UserRoleServiceImpl implements UserRoleService {
 
         List<UserRoleEntity> userRoles = userRoleRepository.findAllByEmbedIdCompanyIdAndRoleId(companyId, roleId);
 
-        if(userRoles.isEmpty()) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage());
 
         return userRoles
                 .stream()
@@ -83,7 +82,6 @@ public class UserRoleServiceImpl implements UserRoleService {
     public List<UserRoleDTO> getAllByCompanyId(Integer companyId) {
         List<UserRoleEntity> userRoles = userRoleRepository.findAllByEmbedIdCompanyId(companyId);
 
-        if(userRoles.isEmpty()) throw  new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage());
 
         return userRoles
                 .stream()

@@ -72,8 +72,6 @@ public class TaskServiceImpl implements TaskService {
 
         List<TaskEntity> taskEntities = taskRepository.getAllByProjectId(projectId);
 
-        if(taskEntities.size()==0) throw new NotFoundException
-                (ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+projectId);
 
         return taskEntities.stream().map(task -> modelMapper.map(task,TaskDTO.class)).collect(Collectors.toList());
     }
