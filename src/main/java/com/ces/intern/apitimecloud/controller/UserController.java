@@ -4,6 +4,7 @@ import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.dto.TimeDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
@@ -13,9 +14,11 @@ import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +91,12 @@ public class UserController {
         return times.stream()
                 .map(time  -> modelMapper.map(time, TimeResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{userId}/total-times")
+    public Float getSumTimeByUserId(@PathVariable("userId") Integer userId){
+        if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID");
+        return timeService.sumTimeByUserId(userId);
     }
 
 }

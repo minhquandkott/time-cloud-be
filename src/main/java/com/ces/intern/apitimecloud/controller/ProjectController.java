@@ -2,12 +2,15 @@ package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
+import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
+import com.ces.intern.apitimecloud.service.TimeService;
+import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,14 +32,17 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ModelMapper modelMapper;
     private final TaskService taskService;
+    private final TimeService timeService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
                              ModelMapper modelMapper,
-                             TaskService taskService){
+                             TaskService taskService,
+                             TimeService timeService){
         this.projectService = projectService;
         this.modelMapper = modelMapper;
         this.taskService = taskService;
+        this.timeService = timeService;
     }
 
     @GetMapping("/api/test")
@@ -105,5 +111,11 @@ public class ProjectController {
     public String addUserToProject(@PathVariable Integer projectId, @PathVariable Integer userId){
         projectService.addUserToProject(userId, projectId);
         return ResponseMessage.ADD_SUCCESS;
+    }
+
+    @GetMapping("/{projectId}/total-times")
+    public Float getSumTimeByUserId(@PathVariable("projectId") Integer projectId){
+        if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");
+        return timeService.sumTimeByProjectId(projectId);
     }
 }

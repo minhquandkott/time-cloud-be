@@ -8,6 +8,7 @@ import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
+import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
@@ -62,9 +63,6 @@ public class TaskController {
                                     @PathVariable("id") Integer taskId) {
         if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");
 
-        System.out.println("===================================================================================");
-        System.out.println(new Date(timeRequest.getMileSecondEndTime()) + "   " + new Date(timeRequest.getMileSecondStartTime()));
-        System.out.println("===================================================================================");
         return timeService.save(userId, timeRequest, taskId);
     }
 
@@ -77,6 +75,14 @@ public class TaskController {
     @PostMapping("/{taskId}/users/{userId}")
     public void addUserToTask(@PathVariable(value = "taskId") Integer taskId, @PathVariable(value = "userId") Integer userId){
         if(taskId == null || userId == null) throw  new BadRequestException("Missing some require field");
+
         taskService.addUserToTask(userId, taskId);
+    }
+
+    @GetMapping("/{taskId}/total-times")
+    public Float getSumTimeByUserId(@PathVariable("taskId") Integer taskId){
+        if(taskId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId");
+
+        return timeService.sumTimeByTaskId(taskId);
     }
 }
