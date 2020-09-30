@@ -8,6 +8,7 @@ import com.ces.intern.apitimecloud.http.exception.LoginUserException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
+import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.repository.UserRoleRepository;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
@@ -30,18 +31,21 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private PasswordEncoder passwordEncoder;
-    private UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRoleRepository userRoleRepository;
+    private final ProjectRepository projectRepository;
 
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper modelMapper,
                            PasswordEncoder passwordEncoder,
-                           UserRoleRepository userRoleRepository){
+                           UserRoleRepository userRoleRepository,
+                           ProjectRepository projectRepository){
         this.userRepository= userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -114,6 +118,18 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         if(!validate) throw new LoginUserException(ExceptionMessage.USERNAME_PASSWORD_INVALIDATE.getMessage());
 
         return modelMapper.map(user, UserDTO.class);
+    }
+
+    @Override
+    public List<UserDTO> getAllByProjectId(Integer projectId) {
+
+        projectRepository.findById(projectId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId"+projectId));
+        return userRepository
+                .getUserByProjectId(projectId)
+                .stream()
+                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
     }
 
     @Override

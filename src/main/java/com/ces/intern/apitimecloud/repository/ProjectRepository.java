@@ -21,4 +21,5 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
     @Modifying
     @Query(value = "insert into public.project_user(user_id, project_id) values(:userId, :projectId)", nativeQuery = true)
     void addUserToProject(@Param("userId") Integer userId, @Param("projectId")Integer projectId);
+
 }
