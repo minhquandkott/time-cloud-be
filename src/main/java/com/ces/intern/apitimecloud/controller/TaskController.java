@@ -6,6 +6,7 @@ import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
+import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -78,5 +79,10 @@ public class TaskController {
     public void addUserToTask(@PathVariable(value = "taskId") Integer taskId, @PathVariable(value = "userId") Integer userId){
         if(taskId == null || userId == null) throw  new BadRequestException("Missing some require field");
         taskService.addUserToTask(userId, taskId);
+    }
+
+    @GetMapping("/sum/{taskId}")
+    public TimeSumResponse sumTimeByTask(@PathVariable(value = "taskId") Integer taskId){
+        return null;
     }
 }

@@ -4,8 +4,11 @@ import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
+import com.ces.intern.apitimecloud.http.response.TimeResponse;
+import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.TaskRepository;
+import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
@@ -23,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final TimeRepository timeRepository;
     private final ModelMapper modelMapper;
     private final TimeService timeService;
 
@@ -30,9 +34,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            ModelMapper modelMapper,
-                           TimeService timeService){
+                           TimeService timeService,TimeRepository timeRepository){
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
+        this.timeRepository = timeRepository;
         this.modelMapper = modelMapper;
         this.timeService = timeService;
     }
@@ -114,5 +119,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void addUserToTask(Integer userId, Integer taskId) {
         taskRepository.addUserToTask(userId, taskId);
+    }
+
+
+    @Override
+    public Float sumTimeByTask(Integer taskId) {
+        return timeRepository.sumTimeByTaskId(taskId);
     }
 }
