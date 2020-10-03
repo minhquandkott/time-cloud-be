@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "role" , schema = "public")
 public class RoleEntity {
@@ -23,8 +24,5 @@ public class RoleEntity {
     @Column(name = "role_color")
     private String color;
 
-    public RoleEntity(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+
 }

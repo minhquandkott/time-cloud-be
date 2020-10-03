@@ -7,15 +7,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role{
-    ADMIN(new RoleEntity(1, "ADMIN")),
-    CEO(new RoleEntity(2, "CEO")),
-    PM(new RoleEntity(3, "PM")),
-    DEV(new RoleEntity(4, "DEV")),
-    DESIGNER(new RoleEntity(5, "DESIGNER")),
-    TESTER(new RoleEntity(6, "TESTER")),
-    HR(new RoleEntity(7, "HR")),
-    SEO(new RoleEntity(8, "SEO")),
-    MEMBER(new RoleEntity(9, "MEMBER"));
+    ADMIN(new RoleEntity(1, "ADMIN", "2ECC71")),
+    CEO(new RoleEntity(2, "CEO", "FFB332")),
+    PM(new RoleEntity(3, "PM", "E74C3C")),
+    DEV(new RoleEntity(4, "DEV", "9B59B6")),
+    DESIGNER(new RoleEntity(5, "DESIGNER", "1ABC9C")),
+    TESTER(new RoleEntity(6, "TESTER", "E67E22")),
+    HR(new RoleEntity(7, "HR", "5962B6")),
+    SEO(new RoleEntity(8, "SEO", "361D2E")),
+    MEMBER(new RoleEntity(9, "MEMBER", "86A397"));
 
     private RoleEntity roleEntity;
 

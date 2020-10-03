@@ -54,7 +54,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
         Date date = new Date();
         UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity, companyEntity, roleEntity);
-        userRoleEntity.setBasicInfo (date, userId, date, userId);
+        userRoleEntity.setBasicInfo (date, userId);
 
         userRoleRepository.save(userRoleEntity);
 
@@ -87,5 +87,18 @@ public class UserRoleServiceImpl implements UserRoleService {
                 .stream()
                 .map(userRole -> modelMapper.map(userRole, UserRoleDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteUserRole(Integer userId, Integer companyId, Integer roleId) {
+        UserEntity userEntity = userRepository
+                .findById(userId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
+
+        CompanyEntity companyEntity = companyRepository
+                .findById(companyId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with company " + companyId));
+
+        userRoleRepository.deleteById(new UserRoleEntity.EmbedId(userId, companyId, roleId));
     }
 }

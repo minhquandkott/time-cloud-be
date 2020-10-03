@@ -16,6 +16,7 @@ import com.ces.intern.apitimecloud.service.CompanyService;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.UserRoleService;
 import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -133,4 +134,9 @@ public class CompanyController {
         return modelMapper.map(userRoleService.addRoleUserInCompany(userId, companyId, roleId), UserRoleResponse.class);
     }
 
+    @DeleteMapping("/{companyId}/role/{roleId}/users/{userId}")
+    public String deleteUserRole(@PathVariable Integer companyId, @PathVariable Integer userId, @PathVariable Integer roleId ){
+        userRoleService.deleteUserRole(userId, companyId, roleId);
+        return ResponseMessage.DELETE_SUCCESS;
+    }
 }

@@ -119,12 +119,12 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/total-times")
-    public Float getSumTimeByUserId(@PathVariable("projectId") Integer projectId){
+    public Float getSumTimeByProjectId(@PathVariable("projectId") Integer projectId){
         if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");
         return timeService.sumTimeByProjectId(projectId);
     }
 
-    @GetMapping("/{projectId}/user")
+    @GetMapping("/{projectId}/users")
     public List<UserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId){
         if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");
         return userService.getAllByProjectId(projectId)

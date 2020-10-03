@@ -18,4 +18,6 @@ public interface UserRoleService {
 
     List<UserRoleDTO>  getAllByCompanyId(Integer companyId);
 
+    void deleteUserRole(Integer userId, Integer companyId, Integer roleId);
+
 }
