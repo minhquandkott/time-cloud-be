@@ -115,4 +115,11 @@ public class TaskServiceImpl implements TaskService {
     public void addUserToTask(Integer userId, Integer taskId) {
         taskRepository.addUserToTask(userId, taskId);
     }
+
+    @Override
+    public List getAllTaskByUser(Integer userId) {
+        List<TaskEntity> taskEntities = taskRepository.getAllByUserId(userId);
+
+        return taskEntities.stream().map(task -> modelMapper.map(task,TaskDTO.class)).collect(Collectors.toList());
+    }
 }
