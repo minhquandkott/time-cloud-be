@@ -131,4 +131,16 @@ public class TimeServiceImpl implements TimeService {
 
         return timeRepository.sumTimeByProjectId(projectId);
     }
+
+    @Override
+    public Float sumTimeByUserTask(Integer userId, Integer taskId) {
+        userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
+
+        return timeRepository.sumTimeByUserTask(userId,taskId);
+    }
 }
