@@ -12,6 +12,7 @@ import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
+import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
@@ -36,16 +37,19 @@ public class UserController {
     private final ProjectService projectService;
     private final ModelMapper modelMapper;
     private final TimeService timeService;
+    private final TaskService taskService;
 
     @Autowired
     public UserController(UserService userService,
                           ProjectService projectService,
                           ModelMapper modelMapper,
-                          TimeService timeService){
+                          TimeService timeService,
+                          TaskService taskService){
         this.userService = userService;
         this.projectService = projectService;
         this.modelMapper = modelMapper;
         this.timeService = timeService;
+        this.taskService = taskService;
     }
 
     @PostMapping(value ="")
@@ -99,4 +103,9 @@ public class UserController {
         return timeService.sumTimeByUserId(userId);
     }
 
+    @GetMapping("{id}/tasks")
+    public List<TaskResponse> getAllTasksByUserId(@PathVariable("id") Integer userId){
+        List<TaskDTO> tasks = taskService.getAllTaskByUser(userId);
+        return tasks.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
+    }
 }

@@ -17,4 +17,6 @@ public interface TaskService {
     void deleteTask(Integer taskId);
 
     void addUserToTask(Integer userId, Integer taskId);
+
+    List getAllTaskByUser(Integer userId);
 }
