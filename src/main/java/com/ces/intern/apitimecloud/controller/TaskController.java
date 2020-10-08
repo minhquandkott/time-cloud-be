@@ -6,8 +6,10 @@ import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
+import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
+import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tasks")
@@ -25,14 +29,17 @@ public class TaskController {
     private final TaskService taskService;
     private final ModelMapper modelMapper;
     private final TimeService timeService;
+    private final UserService userService;
 
     @Autowired
     public TaskController(TaskService taskService,
                           ModelMapper modelMapper,
-                          TimeService timeService){
+                          TimeService timeService,
+                          UserService userService){
         this.taskService = taskService;
         this.modelMapper = modelMapper;
         this.timeService = timeService;
+        this.userService = userService;
     }
 
 
@@ -82,7 +89,17 @@ public class TaskController {
     @GetMapping("/{taskId}/total-times")
     public Float getSumTimeByUserId(@PathVariable("taskId") Integer taskId){
         if(taskId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId");
-
         return timeService.sumTimeByTaskId(taskId);
     }
+
+    @GetMapping("/{taskId}/users")
+    public List<UserResponse> getAllUserByTaskId(@PathVariable("taskId") Integer taskId){
+        if(taskId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId");
+        return userService.getAllByTaskId(taskId)
+                .stream()
+                .map(user -> modelMapper.map(user, UserResponse.class))
+                .collect(Collectors.toList());
+    }
+
+
 }
