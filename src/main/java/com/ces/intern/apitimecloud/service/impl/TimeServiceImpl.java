@@ -143,4 +143,37 @@ public class TimeServiceImpl implements TimeService {
 
         return timeRepository.sumTimeByUserTask(userId,taskId);
     }
+
+    @Override
+    public void deleteAllTimeByTaskId(Integer taskId) {
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
+        timeRepository.deleteByTaskId(taskId);
+    }
+
+    @Override
+    public Float sumTimeByUserProject(Integer userId, Integer projectId) {
+        userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+        projectRepository.findById(projectId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + projectId));
+
+        return timeRepository.sumTimeByUserProject(userId,projectId);
+    }
+
+    @Override
+    public Float sumTimeByUserDescription(Integer userId, String description) {
+        userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+
+        if(timeRepository.getAllByDescription(description).isEmpty()){
+            throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with description" + description);
+        }
+
+        return timeRepository.sumTimeByUserDescription(userId,description);
+    }
 }

@@ -17,4 +17,7 @@ public interface TimeService {
     Float sumTimeByTaskId(Integer taskId);
     Float sumTimeByProjectId(Integer projectId);
     Float sumTimeByUserTask(Integer userId, Integer taskId);
+    void deleteAllTimeByTaskId(Integer taskId);
+    Float sumTimeByUserProject(Integer userId, Integer projectId);
+    Float sumTimeByUserDescription(Integer userId, String description);
 }

@@ -116,4 +116,10 @@ public class UserController {
         List<TaskDTO> tasks = taskService.getAllTaskByUser(userId);
         return tasks.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }
+
+    @GetMapping("/{userId}/description/{description}/total-times")
+    public Float getSumTimeByUserDescription(@PathVariable("userId") Integer userId,@PathVariable("description") String description){
+        if(userId == null || description == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"description");
+        return timeService.sumTimeByUserDescription(userId,description);
+    }
 }

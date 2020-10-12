@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.service;
 
 import com.ces.intern.apitimecloud.dto.TaskDTO;
+import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface TaskService {
     TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, Integer userId);
 
     void deleteTask(Integer taskId);
+
+    public Float sumTimeByTask (Integer taskId);
 
     void addUserToTask(Integer userId, Integer taskId);
 
