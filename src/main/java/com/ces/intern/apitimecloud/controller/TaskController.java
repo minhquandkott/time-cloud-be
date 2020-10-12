@@ -86,7 +86,7 @@ public class TaskController {
 
         taskService.addUserToTask(userId, taskId);
     }
-    
+
     @GetMapping("/sum/{taskId}")
     public TimeSumResponse sumTimeByTask(@PathVariable(value = "taskId") Integer taskId){
         return null;
@@ -112,5 +112,4 @@ public class TaskController {
         if(taskId==null||userId==null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId" +"or"+"userId");
         return timeService.sumTimeByUserTask(userId,taskId);
     }
-
 }
