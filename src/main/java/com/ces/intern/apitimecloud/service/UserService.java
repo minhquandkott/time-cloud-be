@@ -24,4 +24,8 @@ public interface UserService extends UserDetailsService {
     UserDTO findByEmail(String email);
 
     UserDTO validateUser(String email, String password);
+
+    List<UserDTO> getAllByProjectId(Integer projectId);
+
+    List<UserDTO> getAllByTaskId(Integer taskId);
 }

@@ -14,5 +14,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     Optional<UserEntity> findByEmail(String email);
 
+    @Query(value = "select * from public.user where user_id in (select user_id from project_user where project_id=:projectId)", nativeQuery = true)
+    List<UserEntity> getUserByProjectId(@Param(value = "projectId") Integer projectId);
 
+    @Query(value = "select * from public.user where user_id in (select user_id from task_user where task_id=:taskId)", nativeQuery = true)
+    List<UserEntity> getUserByTaskId(@Param(value = "taskId") Integer taskId);
 }

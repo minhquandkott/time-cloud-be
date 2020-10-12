@@ -8,6 +8,7 @@ import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
+import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
@@ -24,21 +25,23 @@ import java.util.stream.Collectors;
 @Service
 public class TimeServiceImpl implements TimeService {
 
-
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final TimeRepository timeRepository;
     private final ModelMapper modelMapper;
+    private final ProjectRepository projectRepository;
 
     @Autowired
     public TimeServiceImpl( UserRepository userRepository,
                             TaskRepository taskRepository,
                             TimeRepository timeRepository,
-                            ModelMapper modelMapper) {
+                            ModelMapper modelMapper,
+                            ProjectRepository projectRepository) {
         this.timeRepository = timeRepository;
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
         this.modelMapper = modelMapper;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -100,5 +103,52 @@ public class TimeServiceImpl implements TimeService {
                 .stream()
                 .map(timeEntity -> modelMapper.map(timeEntities, TimeDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Float sumTimeByUserId(Integer userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() ->
+                new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+
+        return timeRepository.sumTimeByUserId(userId);
+    }
+
+    @Override
+    public Float sumTimeByTaskId(Integer taskId) {
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
+
+        return timeRepository.sumTimeByTaskId(taskId);
+    }
+
+    @Override
+    public Float sumTimeByProjectId(Integer projectId) {
+        projectRepository.findById(projectId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + projectId) );
+
+        return timeRepository.sumTimeByProjectId(projectId);
+    }
+
+    @Override
+    public Float sumTimeByUserTask(Integer userId, Integer taskId) {
+        userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
+
+        return timeRepository.sumTimeByUserTask(userId,taskId);
+    }
+
+    @Override
+    public void deleteAllTimeByTaskId(Integer taskId) {
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
+        timeRepository.deleteByTaskId(taskId);
     }
 }

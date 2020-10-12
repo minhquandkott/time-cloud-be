@@ -7,17 +7,19 @@ import java.util.List;
 
 public interface TaskService {
 
-    public TaskDTO createTask(Integer projectId, TaskDTO taskDTO, Integer userId);
+    TaskDTO createTask(Integer projectId, TaskDTO taskDTO, Integer userId);
 
-    public TaskDTO getTask(Integer taskId);
+    TaskDTO getTask(Integer taskId);
 
-    public List getAllTaskByProject(Integer projectId);
+    List getAllTaskByProject(Integer projectId);
 
-    public TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, Integer userId);
+    TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, Integer userId);
 
-    public void deleteTask(Integer taskId);
-
-    public void addUserToTask(Integer userId, Integer taskId);
+    void deleteTask(Integer taskId);
 
     public Float sumTimeByTask (Integer taskId);
+
+    void addUserToTask(Integer userId, Integer taskId);
+
+    List getAllTaskByUser(Integer userId);
 }

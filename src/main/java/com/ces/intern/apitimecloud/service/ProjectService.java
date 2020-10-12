@@ -8,19 +8,21 @@ import java.util.List;
 
 public interface ProjectService {
 
-    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId);
+    ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId);
 
-    public ProjectDTO getProject(Integer projectId);
+    ProjectDTO getProject(Integer projectId);
 
-    public List getAllProject();
+    List getAllProject();
 
-    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, Integer userId);
+    ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, Integer userId);
 
-    public void deleteProject(Integer projectId);
+    void deleteProject(Integer projectId);
 
-    public List<ProjectDTO> getAllByCompanyId(Integer companyId);
+    List<ProjectDTO> getAllByCompanyId(Integer companyId);
 
-    public List<ProjectDTO> getAllByUserId(Integer userId);
+    List<ProjectDTO> getAllByUserId(Integer userId);
 
-    public void addUserToProject(Integer userId, Integer projectId);
+    void addUserToProject(Integer userId, Integer projectId);
+
+    List<ProjectDTO> getAllByUserIdOOrderByTaskCount(Integer userId);
 }

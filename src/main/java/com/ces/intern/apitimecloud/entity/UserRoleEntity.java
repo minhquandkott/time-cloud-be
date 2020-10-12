@@ -55,23 +55,17 @@ public class UserRoleEntity  implements Serializable{
     @Column(name = "created_by", nullable = false)
     private Integer createdBy;
 
-    @Column(name = "modify_at", nullable = false)
-    private Date modifyAt;
-
-    @Column(name = "modified_by", nullable = false)
-    private Integer modifiedBy;
-
-    public void setBasicInfo(Date createAt, Integer createdBy, Date modifyAt, Integer modifiedBy){
+    public void setBasicInfo(Date createAt, Integer createdBy){
         this.createAt = createAt;
         this.createdBy = createdBy;
-        this.modifyAt = modifyAt;
-        this.modifiedBy = modifiedBy;
+
     }
 
     @Embeddable
     @Getter
     @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class EmbedId implements Serializable {
         private static final long serialVersionUID = -5535178767632113317L;
         @Column(name = "user_id")

@@ -30,7 +30,6 @@ public class AppExceptionHandler {
         return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<Object> handlerBadRequestException(BadRequestException ex,HttpServletRequest request){
         ErrorResponse response = new ErrorResponse();

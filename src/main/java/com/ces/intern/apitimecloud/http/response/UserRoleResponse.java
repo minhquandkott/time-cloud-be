@@ -6,15 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
-
-public class UserRoleResponse extends BaseResponse {
+public class UserRoleResponse {
     private UserResponse user;
-
     private CompanyResponse company;
-
     private RoleEntity role;
+    private Integer createdBy;
+    private Date createAt;
 
 }

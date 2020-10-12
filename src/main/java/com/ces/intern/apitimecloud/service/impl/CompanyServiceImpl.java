@@ -77,7 +77,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity, companyEntity, Role.ADMIN.getRoleEntity());
 
-        userRoleEntity.setBasicInfo(date, userId, date, userId);
+        userRoleEntity.setBasicInfo(date, userId);
 
         userRoleRepository.save(userRoleEntity);
 
@@ -113,16 +113,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.delete(company);
     }
 
-    @Override
-    public CompanyEntity getFullInFor(Integer companyId) {
-        return null;
-    }
 
-
-    @Override
-    public List<UserEntity> getMemberByRole(Integer companyId, String role) {
-        return null;
-    }
 
 
 }
