@@ -143,4 +143,12 @@ public class TimeServiceImpl implements TimeService {
 
         return timeRepository.sumTimeByUserTask(userId,taskId);
     }
+
+    @Override
+    public void deleteAllTimeByTaskId(Integer taskId) {
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
+        timeRepository.deleteByTaskId(taskId);
+    }
 }

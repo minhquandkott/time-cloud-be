@@ -97,15 +97,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public void deleteTask(Integer  taskId) {
+    public void deleteTask(Integer taskId) {
 
         if(taskRepository.existsById(taskId)) {
+            timeService.deleteAllTimeByTaskId(taskId);
+            taskRepository.deleteUserOfTask(taskId);
             taskRepository.deleteById(taskId);
-
-            timeService
-                    .getAllByTaskId(taskId)
-                    .forEach(timeDTO -> timeService.delete(timeDTO.getId()));
-
         } else {
             throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with "+taskId);
         }
