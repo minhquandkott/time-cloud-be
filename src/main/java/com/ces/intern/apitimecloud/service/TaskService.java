@@ -19,4 +19,6 @@ public interface TaskService {
     void addUserToTask(Integer userId, Integer taskId);
 
     List getAllTaskByUser(Integer userId);
+
+    List<TaskDTO> getAllByUserIdAndProjectId(Integer userId, Integer projectId);
 }

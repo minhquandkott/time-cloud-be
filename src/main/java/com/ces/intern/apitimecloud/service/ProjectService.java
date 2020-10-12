@@ -25,4 +25,6 @@ public interface ProjectService {
     void addUserToProject(Integer userId, Integer projectId);
 
     List<ProjectDTO> getAllByUserIdOOrderByTaskCount(Integer userId);
+
+    void deleteAllProjectUser(Integer projectId);
 }

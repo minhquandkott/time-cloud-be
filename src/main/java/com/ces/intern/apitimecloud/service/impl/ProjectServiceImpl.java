@@ -112,11 +112,9 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(Integer projectId) {
 
         List<TaskDTO> list = taskService.getAllTaskByProject(projectId);
+        taskService.
 
-        list
-                .stream()
-                .forEach(taskDTO  -> taskService.deleteTask(taskDTO.getId()));
-
+        deleteAllProjectUser(projectId);
         projectRepository.deleteById(projectId);
     }
 
@@ -160,5 +158,10 @@ public class ProjectServiceImpl implements ProjectService {
         return projectEntities.stream()
                 .map(project  -> modelMapper.map(project, ProjectDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteAllProjectUser(Integer projectId) {
+        projectRepository.deleteAllProjectUser(projectId);
     }
 }

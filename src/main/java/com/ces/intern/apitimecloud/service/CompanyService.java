@@ -2,6 +2,7 @@ package com.ces.intern.apitimecloud.service;
 
 import com.ces.intern.apitimecloud.dto.CompanyDTO;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
+import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
@@ -17,7 +18,5 @@ public interface CompanyService {
     CompanyDTO updateCompany(Integer companyId, CompanyDTO companyDTO,Integer userId);
 
     void deleteCompany(Integer companyId);
-
-
 
 }

@@ -118,6 +118,12 @@ public class ProjectController {
         return ResponseMessage.ADD_SUCCESS;
     }
 
+    @GetMapping("{projectId}/users/{userId}/tasks")
+    public List<TaskResponse> getAllTaskByProjectIdAndTaskId(@PathVariable Integer projectId, @PathVariable Integer userId){
+        List<TaskDTO> taskDTOS= taskService.getAllByUserIdAndProjectId(userId, projectId);
+        return taskDTOS.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
+    }
+
     @GetMapping("/{projectId}/total-times")
     public Float getSumTimeByProjectId(@PathVariable("projectId") Integer projectId){
         if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");

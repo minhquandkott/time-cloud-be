@@ -123,4 +123,12 @@ public class TaskServiceImpl implements TaskService {
 
         return taskEntities.stream().map(task -> modelMapper.map(task,TaskDTO.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaskDTO> getAllByUserIdAndProjectId(Integer userId, Integer projectId) {
+        List<TaskEntity> taskEntities = taskRepository.getAllByUserIdAndProjectId(userId, projectId);
+
+        return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+    }
 }
+
