@@ -87,7 +87,7 @@ public class TaskController {
     }
 
     @GetMapping("/{taskId}/total-times")
-    public Float getSumTimeByUserId(@PathVariable("taskId") Integer taskId){
+    public Float getSumTimeByTaskId(@PathVariable("taskId") Integer taskId){
         if(taskId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId");
         return timeService.sumTimeByTaskId(taskId);
     }

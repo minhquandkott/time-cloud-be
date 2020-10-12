@@ -47,7 +47,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId) {
-
         CompanyEntity company= companyRepository.findById(companyId).
                 orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
@@ -73,7 +72,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         return modelMapper.map(projectEntity,ProjectDTO.class);
     }
-
 
     @Override
     public List getAllProject() {
@@ -147,7 +145,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void addUserToProject(Integer userId, Integer projectId) {
         projectRepository.addUserToProject(userId, projectId);
+    }
+
+    @Override
+    public List<ProjectDTO> getAllByUserIdOOrderByTaskCount(Integer userId) {
+        List<ProjectEntity> projectEntities = projectRepository.getAllByUserIdOOrderByTaskCount(userId);
+
+        if(projectEntities.isEmpty()) throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()
+                + " with " + userId);
+
+        return projectEntities.stream()
+                .map(project  -> modelMapper.map(project, ProjectDTO.class))
+                .collect(Collectors.toList());
     }
 }

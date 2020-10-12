@@ -88,6 +88,14 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}/projects/task-count")
+    public List<ProjectResponse> getProjectsByUserIdOrderByTaskCount(@PathVariable("id") Integer userId){
+        List<ProjectDTO> projects = projectService.getAllByUserIdOOrderByTaskCount(userId);
+        return projects.stream()
+                .map(project  -> modelMapper.map(project, ProjectResponse.class))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("{id}/times")
     public List<TimeResponse> getTimesByUserId(@PathVariable("id") Integer userId){
         List<TimeDTO> times = timeService.getTimesByUserId(userId);

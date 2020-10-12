@@ -112,6 +112,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void addUserToTask(Integer userId, Integer taskId) {
         taskRepository.addUserToTask(userId, taskId);
     }
