@@ -6,6 +6,7 @@ import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
+import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
@@ -86,6 +87,11 @@ public class TaskController {
         taskService.addUserToTask(userId, taskId);
     }
 
+    @GetMapping("/sum/{taskId}")
+    public TimeSumResponse sumTimeByTask(@PathVariable(value = "taskId") Integer taskId){
+        return null;
+    }
+
     @GetMapping("/{taskId}/total-times")
     public Float getSumTimeByTaskId(@PathVariable("taskId") Integer taskId){
         if(taskId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId");
@@ -106,5 +112,4 @@ public class TaskController {
         if(taskId==null||userId==null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId" +"or"+"userId");
         return timeService.sumTimeByUserTask(userId,taskId);
     }
-
 }

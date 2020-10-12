@@ -132,4 +132,10 @@ public class ProjectController {
                 .map(userDTO -> modelMapper.map(userDTO, UserResponse.class))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/{projectId}/users/{userId}/total-times")
+    public Float getSumTimeByUserProject(@PathVariable("userId") Integer userId,@PathVariable("projectId") Integer projectId){
+        if(projectId==null||userId==null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId" +"or"+"userId");
+        return timeService.sumTimeByUserProject(userId,projectId);
+    }
 }
