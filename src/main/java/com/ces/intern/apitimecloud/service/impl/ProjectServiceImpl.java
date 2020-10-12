@@ -106,13 +106,19 @@ public class ProjectServiceImpl implements ProjectService {
         return modelMapper.map(projectEntity,ProjectDTO.class);
     }
 
+    @Override
+    public void deleteAllProjectUser(Integer projectId) {
+        projectRepository.deleteAllProjectUser(projectId);
+    }
+
 
     @Override
     @Transactional
     public void deleteProject(Integer projectId) {
 
         List<TaskDTO> list = taskService.getAllTaskByProject(projectId);
-        taskService.
+        List<TaskDTO> taskDTOList = taskService.getAllTaskByProject(projectId);
+        taskDTOList.forEach(ele -> taskService.deleteTask(ele.getId()));
 
         deleteAllProjectUser(projectId);
         projectRepository.deleteById(projectId);
@@ -160,8 +166,5 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void deleteAllProjectUser(Integer projectId) {
-        projectRepository.deleteAllProjectUser(projectId);
-    }
+
 }
