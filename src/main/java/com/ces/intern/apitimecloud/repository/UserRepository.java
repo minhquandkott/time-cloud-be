@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query(value = "select * from public.user where user_id in (select user_id from task_user where task_id=:taskId)", nativeQuery = true)
     List<UserEntity> getUserByTaskId(@Param(value = "taskId") Integer taskId);
+
+
 }

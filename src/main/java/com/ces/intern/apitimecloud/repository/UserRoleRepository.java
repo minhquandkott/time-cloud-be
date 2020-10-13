@@ -10,6 +10,6 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, UserRo
 
     List<UserRoleEntity> findAllByEmbedIdCompanyIdAndRoleId(Integer companyId, Integer roleId);
 
-
+    List<UserRoleEntity> findAllByEmbedIdCompanyIdAndUserId(Integer companyId, Integer userId);
 
 }

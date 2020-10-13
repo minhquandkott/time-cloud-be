@@ -16,6 +16,8 @@ public interface UserRoleService {
 
     List<UserRoleDTO> getAllByCompanyIdAndRoleId(Integer companyId, Integer roleId);
 
+    List<UserRoleDTO> getAllByCompanyIdAndUserId(Integer companyId, Integer userId);
+
     List<UserRoleDTO>  getAllByCompanyId(Integer companyId);
 
     void deleteUserRole(Integer userId, Integer companyId, Integer roleId);

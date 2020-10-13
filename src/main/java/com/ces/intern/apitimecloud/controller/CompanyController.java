@@ -105,6 +105,18 @@ public class CompanyController {
                 .collect(Collectors.toList());
 
     }
+
+    @GetMapping(value = "/{companyId}/users/{userId}/role")
+    public List<UserRoleResponse> getUsersByCompanyIdAndUserId(@PathVariable(value = "companyId") Integer companyId, @PathVariable Integer userId){
+
+        List<UserRoleDTO> users =  userRoleService.getAllByCompanyIdAndUserId(companyId, userId);
+
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserRoleResponse.class))
+                .collect(Collectors.toList());
+
+    }
+
     @GetMapping(value = "/{id}/projects")
     public List<ProjectResponse> getProjects(@PathVariable Integer id){
 

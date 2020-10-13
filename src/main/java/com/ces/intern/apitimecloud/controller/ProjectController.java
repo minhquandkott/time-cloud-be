@@ -119,7 +119,7 @@ public class ProjectController {
     }
 
     @GetMapping("{projectId}/users/{userId}/tasks")
-    public List<TaskResponse> getAllTaskByProjectIdAndTaskId(@PathVariable Integer projectId, @PathVariable Integer userId){
+    public List<TaskResponse> getAllTaskByProjectIdAndUserId(@PathVariable Integer projectId, @PathVariable Integer userId){
         List<TaskDTO> taskDTOS= taskService.getAllByUserIdAndProjectId(userId, projectId);
         return taskDTOS.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }

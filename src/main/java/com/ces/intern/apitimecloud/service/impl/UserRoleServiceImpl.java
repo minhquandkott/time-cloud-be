@@ -79,6 +79,16 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
+    public List<UserRoleDTO> getAllByCompanyIdAndUserId(Integer companyId, Integer userId) {
+        List<UserRoleEntity> userRoles = userRoleRepository.findAllByEmbedIdCompanyIdAndUserId(companyId, userId);
+
+        return userRoles
+                .stream()
+                .map(userRole -> modelMapper.map(userRole, UserRoleDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<UserRoleDTO> getAllByCompanyId(Integer companyId) {
         List<UserRoleEntity> userRoles = userRoleRepository.findAllByEmbedIdCompanyId(companyId);
 
