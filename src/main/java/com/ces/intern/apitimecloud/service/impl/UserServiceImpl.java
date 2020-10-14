@@ -91,6 +91,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         userDTO.setCreateAt(userEntity.getCreateAt());
         userDTO.setCreatedBy(userEntity.getCreatedBy());
         userDTO.setPassword(userEntity.getPassword());
+        userDTO.setAvatar(userEntity.getAvatar());
         userEntity = modelMapper.map(userDTO, UserEntity.class);
         userRepository.save(userEntity);
 
