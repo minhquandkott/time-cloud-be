@@ -88,6 +88,9 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
+        userDTO.setCreateAt(userEntity.getCreateAt());
+        userDTO.setCreatedBy(userEntity.getCreatedBy());
+        userDTO.setPassword(userEntity.getPassword());
         userEntity = modelMapper.map(userDTO, UserEntity.class);
         userRepository.save(userEntity);
 
