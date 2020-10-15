@@ -57,7 +57,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     public String save(UserRequest userRequest) {
 
         if(userRepository.countByEmail(userRequest.getEmail()) == 1){
-            throw new AlreadyExistException(ExceptionMessage.USERNAME_PASSWORD_ALREADY_EXIST.getMessage());
+            throw new AlreadyExistException(ExceptionMessage.EMAIL_ALREADY_EXIST.getMessage());
         }else{
             String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
