@@ -4,6 +4,7 @@ import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.entity.UserRoleEntity;
+import com.ces.intern.apitimecloud.http.exception.AlreadyExistException;
 import com.ces.intern.apitimecloud.http.exception.LoginUserException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
@@ -55,19 +56,24 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     @Transactional
     public String save(UserRequest userRequest) {
 
-        String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
+        if(userRepository.countByEmail(userRequest.getEmail()) == 1){
+            throw new AlreadyExistException(ExceptionMessage.USERNAME_PASSWORD_ALREADY_EXIST.getMessage());
+        }else{
+            String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
-        UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
-        userEntity.setPassword(encodedPassword);
-        Date date = new Date();
-        userEntity.setBasicInfo(date, 1, date, 1);
+            UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
+            userEntity.setPassword(encodedPassword);
+            Date date = new Date();
+            userEntity.setBasicInfo(date, 1, date, 1);
 
-        userEntity = userRepository.save(userEntity);
-        userEntity.setCreatedBy(userEntity.getId());
-        userEntity.setModifiedBy(userEntity.getId());
-        userRepository.save(userEntity);
+            userEntity = userRepository.save(userEntity);
+            userEntity.setCreatedBy(userEntity.getId());
+            userEntity.setModifiedBy(userEntity.getId());
+            userRepository.save(userEntity);
 
-        return ResponseMessage.CREATE_SUCCESS;
+            return ResponseMessage.CREATE_SUCCESS;
+        }
+
     }
 
     @Override
