@@ -70,7 +70,7 @@ public class TaskController {
     public TimeResponse createTime(@RequestHeader("userId") Integer userId,
                                    @RequestBody(required = true) TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
-        if(timeRequest.getDescription() == null) {
+        if(timeRequest.getDescription().isEmpty()) {
             timeRequest.setDescription(DEFAULT_DESCRIPTION);
         };
         return timeService.save(userId, timeRequest, taskId);
