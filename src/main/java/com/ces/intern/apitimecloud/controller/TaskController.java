@@ -31,6 +31,7 @@ public class TaskController {
     private final ModelMapper modelMapper;
     private final TimeService timeService;
     private final UserService userService;
+    private final String DEFAULT_DESCRIPTION = "DEVELOPMENT";
 
     @Autowired
     public TaskController(TaskService taskService,
@@ -69,8 +70,9 @@ public class TaskController {
     public TimeResponse createTime(@RequestHeader("userId") Integer userId,
                                    @RequestBody(required = true) TimeRequest timeRequest,
                                     @PathVariable("id") Integer taskId) {
-        if(timeRequest.getDescription() == null) throw new BadRequestException("Missing time description");
-
+        if(timeRequest.getDescription() == null) {
+            timeRequest.setDescription(DEFAULT_DESCRIPTION);
+        };
         return timeService.save(userId, timeRequest, taskId);
     }
 
