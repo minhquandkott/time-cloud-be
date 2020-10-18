@@ -24,6 +24,7 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Integer>
     @Query(value = "select * from task where task.task_id in (select task_user.task_id from task_user where task_user.user_id = :taskId) and task.project_id =:projectId",nativeQuery = true)
     List<TaskEntity> getAllByUserIdAndProjectId(@Param(value = "taskId") Integer task_id, @Param(value = "projectId") Integer projectId);
 
+    @Modifying
     @Query(value = "delete from task_user where task_user.task_id = :taskId", nativeQuery = true)
     void deleteUserOfTask(@Param(value = "taskId") Integer task_id);
 

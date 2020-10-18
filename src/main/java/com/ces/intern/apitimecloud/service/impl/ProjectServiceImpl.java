@@ -9,6 +9,7 @@ import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
+import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -116,9 +117,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public void deleteProject(Integer projectId) {
 
-        List<TaskDTO> list = taskService.getAllTaskByProject(projectId);
         List<TaskDTO> taskDTOList = taskService.getAllTaskByProject(projectId);
-        taskDTOList.forEach(ele -> taskService.deleteTask(ele.getId()));
+        taskDTOList.forEach(e -> taskService.deleteTask(e.getId()));
+        taskDTOList.forEach(e -> System.out.println(e.getId()));
 
         deleteAllProjectUser(projectId);
         projectRepository.deleteById(projectId);

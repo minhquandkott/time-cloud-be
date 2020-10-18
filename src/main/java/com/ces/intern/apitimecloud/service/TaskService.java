@@ -11,7 +11,7 @@ public interface TaskService {
 
     TaskDTO getTask(Integer taskId);
 
-    List getAllTaskByProject(Integer projectId);
+    List<TaskDTO> getAllTaskByProject(Integer projectId);
 
     TaskDTO updateTask(Integer projectId, TaskDTO taskDTO, Integer userId);
 
