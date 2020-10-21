@@ -26,6 +26,10 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Integer>
 
     @Modifying
     @Query(value = "delete from task_user where task_user.task_id = :taskId", nativeQuery = true)
-    void deleteUserOfTask(@Param(value = "taskId") Integer task_id);
+    void deleteUsersOfTask(@Param(value = "taskId") Integer task_id);
+
+    @Modifying
+    @Query(value = "delete from task_user where task_id = :taskId and user_id = :userId", nativeQuery = true)
+    void deleteUserOfTask(@Param(value = "taskId") Integer taskId, @Param(value="userId") Integer userId);
 
 }

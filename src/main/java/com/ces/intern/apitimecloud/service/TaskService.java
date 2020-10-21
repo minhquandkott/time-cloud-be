@@ -17,7 +17,9 @@ public interface TaskService {
 
     void deleteTask(Integer taskId);
 
-    public Float sumTimeByTask (Integer taskId);
+    void deleteUserOfTask(Integer taskId, Integer userId);
+
+    Float sumTimeByTask (Integer taskId);
 
     void addUserToTask(Integer userId, Integer taskId);
 

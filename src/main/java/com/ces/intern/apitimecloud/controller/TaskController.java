@@ -12,6 +12,7 @@ import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
+import com.ces.intern.apitimecloud.util.ResponseMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
@@ -87,6 +88,13 @@ public class TaskController {
         if(taskId == null || userId == null) throw  new BadRequestException("Missing some require field");
 
         taskService.addUserToTask(userId, taskId);
+    }
+    @DeleteMapping("/{taskId}/users/{userId}")
+    public String deleteUserOfTask(@PathVariable(value = "taskId") Integer taskId, @PathVariable(value = "userId") Integer userId){
+        if(taskId == null || userId == null) throw  new BadRequestException("Missing some require field");
+
+        taskService.deleteUserOfTask(taskId, userId);
+        return ResponseMessage.DELETE_SUCCESS;
     }
 
     @GetMapping("/sum/{taskId}")
