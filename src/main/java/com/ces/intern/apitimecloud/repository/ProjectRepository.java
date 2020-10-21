@@ -18,6 +18,10 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
     @Query(value = "delete from project_user where project_id =:projectId", nativeQuery = true)
     void deleteAllProjectUser(@Param("projectId") Integer projectId);
 
+    @Modifying
+    @Query(value = "delete from project_user where project_id =:projectId and user_id =:userId", nativeQuery = true)
+    void deleteUserOfProject(@Param("projectId") Integer projectId, @Param("userId") Integer userId);
+
     @Query(value = "select * from project where project_id in(select project_id from public.project_user where project_user.user_id =:userId)",
     nativeQuery = true)
     List<ProjectEntity> getAllByUserId(@Param("userId") Integer userId);

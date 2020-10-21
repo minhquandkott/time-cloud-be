@@ -112,6 +112,11 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.deleteAllProjectUser(projectId);
     }
 
+    @Override
+    public void deleteUserOfProject(Integer projectId, Integer userId) {
+        projectRepository.deleteUserOfProject(projectId, userId);
+    }
+
 
     @Override
     @Transactional

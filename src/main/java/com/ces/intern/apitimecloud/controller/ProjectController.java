@@ -89,8 +89,9 @@ public class ProjectController {
 
 
     @DeleteMapping("/{projectId}")
-    public void deleteProject(@PathVariable Integer projectId){
+    public String deleteProject(@PathVariable Integer projectId){
         projectService.deleteProject(projectId);
+        return ResponseMessage.DELETE_SUCCESS;
     }
 
 
@@ -122,6 +123,12 @@ public class ProjectController {
     public List<TaskResponse> getAllTaskByProjectIdAndUserId(@PathVariable Integer projectId, @PathVariable Integer userId){
         List<TaskDTO> taskDTOS= taskService.getAllByUserIdAndProjectId(userId, projectId);
         return taskDTOS.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
+    }
+
+    @DeleteMapping("{projectId}/users/{userId}")
+    public String deleteUserOfProject(@PathVariable Integer projectId, @PathVariable Integer userId){
+        projectService.deleteUserOfProject(projectId, userId);
+        return ResponseMessage.DELETE_SUCCESS;
     }
 
     @GetMapping("/{projectId}/total-times")
