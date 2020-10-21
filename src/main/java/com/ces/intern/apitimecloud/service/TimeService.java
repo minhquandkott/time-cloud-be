@@ -4,6 +4,7 @@ import com.ces.intern.apitimecloud.dto.TimeDTO;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
 
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -20,4 +21,6 @@ public interface TimeService {
     void deleteAllTimeByTaskId(Integer taskId);
     Float sumTimeByUserProject(Integer userId, Integer projectId);
     Float sumTimeByUserDescription(Integer userId, String description);
+    Float sumTimeByDayOfUser(Integer userId, String dateStart, String dateEnd);
+    Float sumTimeByWeekOfUser(Integer userId, String date) throws ParseException;
 }
