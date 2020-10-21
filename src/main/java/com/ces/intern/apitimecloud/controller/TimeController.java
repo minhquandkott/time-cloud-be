@@ -25,8 +25,8 @@ public class TimeController {
     @GetMapping(value = "/{id}")
     public TimeResponse getTime(@PathVariable Integer id) throws Exception{
         TimeResponse time = timeService.find(id);
-
-        System.out.println(time.getStartTime().getMinutes() + "  "+ time.getStartTime().getSeconds()+"  " +time.getEndTime().getMinutes() + "  " + time.getEndTime().getSeconds());
+        System.out.println(time.getEndTime().getDay());
+        //System.out.println(time.getStartTime().getMinutes() + "  "+ time.getStartTime().getSeconds()+"  " +time.getEndTime().getMinutes() + "  " + time.getEndTime().getSeconds());
         return time;
     }
 
@@ -35,6 +35,4 @@ public class TimeController {
         timeService.delete(timeId);
         return ResponseMessage.DELETE_SUCCESS;
     }
-
-
 }

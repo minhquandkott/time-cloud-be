@@ -14,10 +14,13 @@ import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
+import com.ces.intern.apitimecloud.util.Utils;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -175,5 +178,22 @@ public class TimeServiceImpl implements TimeService {
         }
 
         return timeRepository.sumTimeByUserDescription(userId,description);
+    }
+
+    @Override
+    public Float sumTimeByDayOfUser(Integer userId, String dateStart, String dateEnd) {
+        userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+        return timeRepository.sumTimeByDayOfUser(userId,dateStart,dateEnd);
+    }
+
+    @Override
+    public Float sumTimeByWeekOfUser(Integer userId, String date) throws ParseException {
+        userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+        String firstDayOfWeek = Utils.toFirstDayOfWeek(date);
+        return sumTimeByDayOfUser(userId,firstDayOfWeek,Utils.toNumbersOfDay(firstDayOfWeek,7));
     }
 }

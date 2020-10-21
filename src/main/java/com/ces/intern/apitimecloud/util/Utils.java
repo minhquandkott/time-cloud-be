@@ -12,6 +12,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import sun.awt.AppContext;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Utils {
@@ -29,4 +31,22 @@ public class Utils {
         return Arrays.asList(token, loginUser.getId()+"");
     }
 
+    public static String toNumbersOfDay(String date, int days) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(simpleDateFormat.parse(date));
+        calendar.add(Calendar.DATE, days);
+        String nextDay = simpleDateFormat.format(calendar.getTime());
+        return nextDay;
+    }
+
+    public static String toFirstDayOfWeek(String date) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(simpleDateFormat.parse(date));
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        calendar.add(Calendar.DATE, -(6-dayOfWeek));
+        String firstDay = simpleDateFormat.format(calendar.getTime());
+        return firstDay;
+    }
 }

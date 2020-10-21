@@ -17,6 +17,7 @@ import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
+import com.ces.intern.apitimecloud.util.Utils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,5 +122,17 @@ public class UserController {
     public Float getSumTimeByUserDescription(@PathVariable("userId") Integer userId,@PathVariable("description") String description){
         if(userId == null || description == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"description");
         return timeService.sumTimeByUserDescription(userId,description);
+    }
+
+    @GetMapping("/{userId}/date/{date}/total-times")
+    public Float getSumTimeByDayOfUser(@PathVariable("userId") Integer userId,@PathVariable("date") String date) throws ParseException {
+        if(userId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"date");
+        return timeService.sumTimeByDayOfUser(userId,date,Utils.toNumbersOfDay(date,1));
+    }
+
+    @GetMapping("/{userId}/week/{date}/total-times")
+    public Float getSumTimeByWeekOfUser(@PathVariable("userId") Integer userId,@PathVariable("date") String date) throws ParseException {
+        if(userId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"date");
+        return timeService.sumTimeByWeekOfUser(userId,date);
     }
 }
