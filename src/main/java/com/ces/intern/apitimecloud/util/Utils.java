@@ -35,6 +35,7 @@ public class Utils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(simpleDateFormat.parse(date));
+
         calendar.add(Calendar.DATE, days);
         String nextDay = simpleDateFormat.format(calendar.getTime());
         return nextDay;
@@ -44,8 +45,13 @@ public class Utils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(simpleDateFormat.parse(date));
+
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE, -(6-dayOfWeek));
+        if(dayOfWeek==1){
+            calendar.add(Calendar.DATE, -6);
+        }else{
+            calendar.add(Calendar.DATE, (2-dayOfWeek));
+        }
         String firstDay = simpleDateFormat.format(calendar.getTime());
         return firstDay;
     }
