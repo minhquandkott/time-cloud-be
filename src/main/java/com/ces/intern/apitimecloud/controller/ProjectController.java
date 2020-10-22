@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
+import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
@@ -115,9 +116,9 @@ public class ProjectController {
     }
 
     @PostMapping("{projectId}/users/{userId}")
-    public String addUserToProject(@PathVariable Integer projectId, @PathVariable Integer userId){
-        projectService.addUserToProject(userId, projectId);
-        return ResponseMessage.ADD_SUCCESS;
+    public ProjectUserResponse addUserToProject(@PathVariable Integer projectId, @PathVariable Integer userId){
+        ProjectUserDTO projectUserDTO = projectService.addUserToProject(userId, projectId);
+        return modelMapper.map(projectUserDTO,ProjectUserResponse.class);
     }
 
     @GetMapping("{projectId}/users/{userId}/tasks")

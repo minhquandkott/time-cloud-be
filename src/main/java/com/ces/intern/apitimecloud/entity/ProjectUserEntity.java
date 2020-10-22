@@ -3,7 +3,6 @@ package com.ces.intern.apitimecloud.entity;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -34,7 +33,7 @@ public class ProjectUserEntity implements Serializable {
     private UserEntity user;
 
     @Column(name = "is_doing", nullable = false)
-    private boolean isDoing;
+    private Boolean isDoing;
 
     @Embeddable
     @Getter

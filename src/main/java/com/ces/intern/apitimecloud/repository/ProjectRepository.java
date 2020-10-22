@@ -15,12 +15,8 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
     List<ProjectEntity> getAllByCompanyId(Integer companyId);
 
     @Modifying
-    @Query(value = "delete from project_user where project_id =:projectId", nativeQuery = true)
+    @Query(value = "update project_user set is_doing = false", nativeQuery = true)
     void deleteAllProjectUser(@Param("projectId") Integer projectId);
-
-    @Modifying
-    @Query(value = "delete from project_user where project_id =:projectId and user_id =:userId", nativeQuery = true)
-    void deleteUserOfProject(@Param("projectId") Integer projectId, @Param("userId") Integer userId);
 
     @Query(value = "select * from project where project_id in(select project_id from public.project_user where project_user.user_id =:userId)",
     nativeQuery = true)
@@ -30,11 +26,11 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
             nativeQuery = true)
     List<ProjectEntity> getAllByUserIdOOrderByTaskCount(@Param("userId") Integer userId);
 
-    @Modifying
-    @Query(value = "insert into public.project_user(user_id, project_id) values(:userId, :projectId)", nativeQuery = true)
-    void addUserToProject(@Param("userId") Integer userId, @Param("projectId")Integer projectId);
+//    @Modifying
+//    @Query(value = "insert into public.project_user(user_id, project_id) values(:userId, :projectId)", nativeQuery = true)
+//    void addUserToProject(@Param("userId") Integer userId, @Param("projectId")Integer projectId);
 
 //    @Modifying
-//    @Query(value = "update project_user set is_doing = false where project_id = :projectId", nativeQuery = true)
-//    void deleteProjectById(@Param("projectId") Integer projectId);
+//    @Query(value = "delete from project_user where project_id =:projectId and user_id =:userId", nativeQuery = true)
+//    void deleteUserOfProject(@Param("projectId") Integer projectId, @Param("userId") Integer userId);
 }
