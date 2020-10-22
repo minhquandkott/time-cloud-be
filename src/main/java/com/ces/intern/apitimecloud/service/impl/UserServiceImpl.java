@@ -1,5 +1,6 @@
 package com.ces.intern.apitimecloud.service.impl;
 
+import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
 import com.ces.intern.apitimecloud.entity.UserEntity;
@@ -133,8 +134,20 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         return modelMapper.map(user, UserDTO.class);
     }
 
+//    @Override
+//    public List<UserDTO> getAllByProjectId(Integer projectId) {
+//
+//        projectRepository.findById(projectId)
+//                .orElseThrow(()
+//                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId"+projectId));
+//        return userRepository
+//                .getUserByProjectId(projectId)
+//                .stream()
+//                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
+//    }
+
     @Override
-    public List<UserDTO> getAllByProjectId(Integer projectId) {
+    public List<ProjectUserDTO> getAllByProjectId(Integer projectId) {
 
         projectRepository.findById(projectId)
                 .orElseThrow(()
@@ -142,7 +155,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         return userRepository
                 .getUserByProjectId(projectId)
                 .stream()
-                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
+                .map(projectUserEntity -> modelMapper.map(projectUserEntity, ProjectUserDTO.class)).collect(Collectors.toList());
     }
 
     @Override

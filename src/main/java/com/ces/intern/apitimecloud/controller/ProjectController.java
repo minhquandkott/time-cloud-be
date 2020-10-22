@@ -6,6 +6,7 @@ import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
+import com.ces.intern.apitimecloud.http.response.ProjectUserResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.service.ProjectService;
@@ -138,11 +139,11 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/users")
-    public List<UserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId){
+    public List<ProjectUserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId){
         if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");
         return userService.getAllByProjectId(projectId)
                 .stream()
-                .map(userDTO -> modelMapper.map(userDTO, UserResponse.class))
+                .map(projectUserDTO -> modelMapper.map(projectUserDTO, ProjectUserResponse.class))
                 .collect(Collectors.toList());
     }
 

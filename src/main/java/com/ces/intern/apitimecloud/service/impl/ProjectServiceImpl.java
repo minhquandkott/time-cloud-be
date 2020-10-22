@@ -122,16 +122,22 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
+//    @Override
+//    @Transactional
+//    public void deleteProject(Integer projectId) {
+//
+//        List<TaskDTO> taskDTOList = taskService.getAllTaskByProject(projectId);
+//        taskDTOList.forEach(e -> taskService.deleteTask(e.getId()));
+//        taskDTOList.forEach(e -> System.out.println(e.getId()));
+//
+//        deleteAllProjectUser(projectId);
+//        projectRepository.deleteById(projectId);
+//    }
+
     @Override
     @Transactional
     public void deleteProject(Integer projectId) {
-
-        List<TaskDTO> taskDTOList = taskService.getAllTaskByProject(projectId);
-        taskDTOList.forEach(e -> taskService.deleteTask(e.getId()));
-        taskDTOList.forEach(e -> System.out.println(e.getId()));
-
-        deleteAllProjectUser(projectId);
-        projectRepository.deleteById(projectId);
+        projectRepository.deleteProjectById(projectId);
     }
 
 

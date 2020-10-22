@@ -1,5 +1,6 @@
 package com.ces.intern.apitimecloud.service;
 
+import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
 import com.ces.intern.apitimecloud.entity.UserEntity;
@@ -25,7 +26,7 @@ public interface UserService extends UserDetailsService {
 
     UserDTO validateUser(String email, String password);
 
-    List<UserDTO> getAllByProjectId(Integer projectId);
+    List<ProjectUserDTO> getAllByProjectId(Integer projectId);
 
     List<UserDTO> getAllByTaskId(Integer taskId);
 
