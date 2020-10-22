@@ -9,6 +9,6 @@ public class ProjectUserResponse {
 
     private ProjectResponse project;
     private UserResponse user;
-    private boolean isDoing;
+    private Boolean isDoing;
 
 }
