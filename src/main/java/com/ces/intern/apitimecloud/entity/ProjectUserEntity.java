@@ -22,14 +22,16 @@ public class ProjectUserEntity implements Serializable {
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @MapsId("projectId")
-    private ProjectEntity projects;
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @MapsId("userId")
-    private UserEntity users;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(name = "is_doing", nullable = false)
     private boolean isDoing;

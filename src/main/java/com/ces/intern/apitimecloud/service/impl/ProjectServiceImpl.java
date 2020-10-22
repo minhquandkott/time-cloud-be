@@ -4,9 +4,11 @@ import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.CompanyEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
+import com.ces.intern.apitimecloud.entity.ProjectUserEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.CompanyRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
+import com.ces.intern.apitimecloud.repository.ProjectUserRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
@@ -31,16 +33,19 @@ public class ProjectServiceImpl implements ProjectService {
     private final CompanyRepository companyRepository;
     private final TaskService taskService;
     private final ModelMapper modelMapper;
+    private final ProjectUserRepository projectUserRepository;
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository,
                               CompanyRepository companyRepository,
                               TaskService taskService,
-                              ModelMapper modelMapper
+                              ModelMapper modelMapper,
+                              ProjectUserRepository projectUserRepository
                              ){
         this.projectRepository = projectRepository;
         this.companyRepository = companyRepository;
         this.taskService = taskService;
+        this.projectUserRepository = projectUserRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -122,22 +127,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-//    @Override
-//    @Transactional
-//    public void deleteProject(Integer projectId) {
-//
-//        List<TaskDTO> taskDTOList = taskService.getAllTaskByProject(projectId);
-//        taskDTOList.forEach(e -> taskService.deleteTask(e.getId()));
-//        taskDTOList.forEach(e -> System.out.println(e.getId()));
-//
-//        deleteAllProjectUser(projectId);
-//        projectRepository.deleteById(projectId);
-//    }
-
     @Override
     @Transactional
     public void deleteProject(Integer projectId) {
-        projectRepository.deleteProjectById(projectId);
     }
 
 

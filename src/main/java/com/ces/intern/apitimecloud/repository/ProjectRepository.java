@@ -34,7 +34,7 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
     @Query(value = "insert into public.project_user(user_id, project_id) values(:userId, :projectId)", nativeQuery = true)
     void addUserToProject(@Param("userId") Integer userId, @Param("projectId")Integer projectId);
 
-    @Modifying
-    @Query(value = "update project_user set is_doing = false where project_id = :projectId", nativeQuery = true)
-    void deleteProjectById(@Param("projectId") Integer projectId);
+//    @Modifying
+//    @Query(value = "update project_user set is_doing = false where project_id = :projectId", nativeQuery = true)
+//    void deleteProjectById(@Param("projectId") Integer projectId);
 }
