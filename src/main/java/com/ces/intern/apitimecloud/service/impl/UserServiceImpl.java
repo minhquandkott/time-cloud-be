@@ -1,18 +1,15 @@
 package com.ces.intern.apitimecloud.service.impl;
 
+import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.UserDTO;
 import com.ces.intern.apitimecloud.dto.UserRoleDTO;
-import com.ces.intern.apitimecloud.entity.UserEntity;
-import com.ces.intern.apitimecloud.entity.UserRoleEntity;
+import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.AlreadyExistException;
 import com.ces.intern.apitimecloud.http.exception.LoginUserException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
-import com.ces.intern.apitimecloud.repository.ProjectRepository;
-import com.ces.intern.apitimecloud.repository.TaskRepository;
-import com.ces.intern.apitimecloud.repository.UserRepository;
-import com.ces.intern.apitimecloud.repository.UserRoleRepository;
+import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
@@ -37,19 +34,22 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     private final UserRoleRepository userRoleRepository;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final ProjectUserRepository projectUserRepository;
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper modelMapper,
                            PasswordEncoder passwordEncoder,
                            UserRoleRepository userRoleRepository,
                            ProjectRepository projectRepository,
-                           TaskRepository taskRepository){
+                           TaskRepository taskRepository,
+                           ProjectUserRepository projectUserRepository){
         this.userRepository= userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
+        this.projectUserRepository = projectUserRepository;
     }
 
     @Override
@@ -134,15 +134,15 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
-    public List<UserDTO> getAllByProjectId(Integer projectId) {
+    public List<ProjectUserDTO> getAllByProjectId(Integer projectId) {
 
         projectRepository.findById(projectId)
                 .orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId"+projectId));
-        return userRepository
-                .getUserByProjectId(projectId)
+        return projectUserRepository
+                .getAllByEmbedIdProjectId(projectId)
                 .stream()
-                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
+                .map(projectUserEntity -> modelMapper.map(projectUserEntity, ProjectUserDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -155,6 +155,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
                 .stream()
                 .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

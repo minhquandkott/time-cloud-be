@@ -1,11 +1,13 @@
 package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
+import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
+import com.ces.intern.apitimecloud.http.response.ProjectUserResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.service.ProjectService;
@@ -114,9 +116,9 @@ public class ProjectController {
     }
 
     @PostMapping("{projectId}/users/{userId}")
-    public String addUserToProject(@PathVariable Integer projectId, @PathVariable Integer userId){
-        projectService.addUserToProject(userId, projectId);
-        return ResponseMessage.ADD_SUCCESS;
+    public ProjectUserResponse addUserToProject(@PathVariable Integer projectId, @PathVariable Integer userId){
+        ProjectUserDTO projectUserDTO = projectService.addUserToProject(userId, projectId);
+        return modelMapper.map(projectUserDTO,ProjectUserResponse.class);
     }
 
     @GetMapping("{projectId}/users/{userId}/tasks")
@@ -138,11 +140,11 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/users")
-    public List<UserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId){
+    public List<ProjectUserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId){
         if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");
         return userService.getAllByProjectId(projectId)
                 .stream()
-                .map(userDTO -> modelMapper.map(userDTO, UserResponse.class))
+                .map(projectUserDTO -> modelMapper.map(projectUserDTO, ProjectUserResponse.class))
                 .collect(Collectors.toList());
     }
 
