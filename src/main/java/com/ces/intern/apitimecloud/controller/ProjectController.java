@@ -122,6 +122,7 @@ public class ProjectController {
     @GetMapping("{projectId}/users/{userId}/tasks")
     public List<TaskResponse> getAllTaskByProjectIdAndUserId(@PathVariable Integer projectId, @PathVariable Integer userId){
         List<TaskDTO> taskDTOS= taskService.getAllByUserIdAndProjectId(userId, projectId);
+        taskDTOS.stream().sorted((o1, o2) -> (int)(o1.getCreateAt().getTime() - o2.getCreateAt().getTime()));
         return taskDTOS.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }
 

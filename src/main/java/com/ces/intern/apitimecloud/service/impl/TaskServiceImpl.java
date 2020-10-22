@@ -134,6 +134,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List getAllTaskByUser(Integer userId) {
         List<TaskEntity> taskEntities = taskRepository.getAllByUserId(userId);
+        taskEntities.stream().sorted((o1, o2) -> (int)(o1.getCreateAt().getTime() - o2.getCreateAt().getTime()));
 
         return taskEntities.stream().map(task -> modelMapper.map(task,TaskDTO.class)).collect(Collectors.toList());
     }

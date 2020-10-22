@@ -113,8 +113,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void deleteUserOfProject(Integer projectId, Integer userId) {
         projectRepository.deleteUserOfProject(projectId, userId);
+        List<TaskDTO> tasks = taskService.getAllTaskByProject(projectId);
+        tasks.forEach(task -> taskService.deleteUserOfTask(task.getId(), userId));
+        
     }
 
 
