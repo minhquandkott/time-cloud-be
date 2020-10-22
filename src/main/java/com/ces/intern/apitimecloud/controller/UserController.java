@@ -84,6 +84,7 @@ public class UserController {
     @GetMapping("/{id}/projects")
     public List<ProjectResponse> getProjectsByUserId(@PathVariable("id") Integer userId){
         List<ProjectDTO> projects = projectService.getAllByUserId(userId);
+        projects.sort((o1, o2) -> (int)(o1.getCreateAt().getTime() - o2.getCreateAt().getTime()));
         return projects.stream()
                 .map(project  -> modelMapper.map(project, ProjectResponse.class))
                 .collect(Collectors.toList());
