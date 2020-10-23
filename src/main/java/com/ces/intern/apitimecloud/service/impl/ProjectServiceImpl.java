@@ -3,15 +3,9 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
-import com.ces.intern.apitimecloud.entity.CompanyEntity;
-import com.ces.intern.apitimecloud.entity.ProjectEntity;
-import com.ces.intern.apitimecloud.entity.ProjectUserEntity;
-import com.ces.intern.apitimecloud.entity.UserEntity;
+import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
-import com.ces.intern.apitimecloud.repository.CompanyRepository;
-import com.ces.intern.apitimecloud.repository.ProjectRepository;
-import com.ces.intern.apitimecloud.repository.ProjectUserRepository;
-import com.ces.intern.apitimecloud.repository.UserRepository;
+import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
@@ -34,6 +28,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CompanyRepository companyRepository;
+    private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskService taskService;
     private final ModelMapper modelMapper;
@@ -45,10 +40,12 @@ public class ProjectServiceImpl implements ProjectService {
                               TaskService taskService,
                               ModelMapper modelMapper,
                               ProjectUserRepository projectUserRepository,
-                              UserRepository userRepository
+                              UserRepository userRepository,
+                              TaskRepository taskRepository
                              ){
         this.projectRepository = projectRepository;
         this.companyRepository = companyRepository;
+        this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskService = taskService;
         this.projectUserRepository = projectUserRepository;
@@ -131,6 +128,8 @@ public class ProjectServiceImpl implements ProjectService {
             if(projectUserEntity == null)
                 throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " + userId +" or "+projectId);
 
+            taskService.deleteUserOfAllTaskOfProject(projectId,userId);
+
             projectUserEntity.setIsDoing(false);
             projectUserRepository.save(projectUserEntity);
     }
@@ -141,6 +140,9 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(Integer projectId) {
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
+
+        taskService.deleteUsersOfAllTaskOfProject(projectId);
+
         projectUserRepository.deleteProjectById(projectId);
     }
 

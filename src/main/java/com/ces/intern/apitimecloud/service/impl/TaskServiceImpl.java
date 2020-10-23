@@ -3,12 +3,14 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
+import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
+import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
@@ -27,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TimeRepository timeRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final TimeService timeService;
 
@@ -34,9 +37,11 @@ public class TaskServiceImpl implements TaskService {
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            ModelMapper modelMapper,
-                           TimeService timeService,TimeRepository timeRepository){
+                           TimeService timeService,TimeRepository timeRepository,
+                           UserRepository userRepository){
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
         this.timeRepository = timeRepository;
         this.modelMapper = modelMapper;
         this.timeService = timeService;
@@ -144,6 +149,26 @@ public class TaskServiceImpl implements TaskService {
         List<TaskEntity> taskEntities = taskRepository.getAllByUserIdAndProjectId(userId, projectId);
 
         return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteUserOfAllTaskOfProject(Integer projectId, Integer userId) {
+        ProjectEntity projectEntity = projectRepository.findById(projectId).
+                orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ projectId));
+
+        UserEntity userEntity = userRepository.findById(userId).
+                orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ userId));
+
+        taskRepository.deleteUserOfAllTaskOfProject(projectId,userId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUsersOfAllTaskOfProject(Integer projectId) {
+        ProjectEntity projectEntity = projectRepository.findById(projectId).
+                orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ projectId));
+
+        taskRepository.deleteUsersOfAllTaskOfProject(projectId);
     }
 }
 
