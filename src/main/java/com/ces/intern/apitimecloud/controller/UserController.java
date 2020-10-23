@@ -94,9 +94,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}/projects-available")
-    public List<ProjectUserResponse> getAllProjectsByUserIdAndIsDoing(@PathVariable("id") Integer userId){
-        List<ProjectUserDTO> projectUsers = projectService.getAllByUserIdAndIsDoing(userId,true);
-        return projectUsers.stream().map(projectUser->modelMapper.map(projectUser,ProjectUserResponse.class))
+    public List<ProjectResponse> getAllProjectsByUserIdAndIsDoing(@PathVariable("id") Integer userId){
+        List<ProjectDTO> projects = projectService.getAllByUserIdAndIsDoing(userId);
+        return projects.stream().map(project->modelMapper.map(project,ProjectResponse.class))
                 .collect(Collectors.toList());
     }
 

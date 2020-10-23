@@ -171,13 +171,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectUserDTO> getAllByUserIdAndIsDoing(Integer userId, Boolean isDoing) {
+    public List<ProjectDTO> getAllByUserIdAndIsDoing(Integer userId) {
         UserEntity userEntity = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
 
-        List<ProjectUserEntity> projectUserEntities = projectUserRepository.getAllByEmbedIdUserIdAndIsDoing(userId,isDoing);
-        return projectUserEntities.stream().map(projectUser -> modelMapper.map(projectUser,ProjectUserDTO.class) )
+        List<ProjectEntity> projectEntities = projectRepository.getAllByUserIdAndIsDoing(userId);
+        return projectEntities.stream().map(project -> modelMapper.map(project,ProjectDTO.class) )
                 .collect(Collectors.toList());
     }
 

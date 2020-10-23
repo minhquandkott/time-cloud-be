@@ -26,6 +26,10 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
             nativeQuery = true)
     List<ProjectEntity> getAllByUserIdOOrderByTaskCount(@Param("userId") Integer userId);
 
+    @Query(value = "select * from project where project_id in(select project_id from public.project_user where project_user.user_id =:userId and is_doing=true)",
+            nativeQuery = true)
+    List<ProjectEntity> getAllByUserIdAndIsDoing(@Param("userId") Integer userId);
+
 //    @Modifying
 //    @Query(value = "insert into public.project_user(user_id, project_id) values(:userId, :projectId)", nativeQuery = true)
 //    void addUserToProject(@Param("userId") Integer userId, @Param("projectId")Integer projectId);
