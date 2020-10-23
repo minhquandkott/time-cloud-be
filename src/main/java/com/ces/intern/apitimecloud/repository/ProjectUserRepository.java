@@ -12,6 +12,8 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUserEntity, 
 
         List<ProjectUserEntity> getAllByEmbedIdProjectId(Integer projectId);
 
+        List<ProjectUserEntity> getAllByEmbedIdUserIdAndIsDoing(Integer userId, Boolean isDoing);
+
         ProjectUserEntity getByEmbedIdProjectIdAndEmbedIdUserId(Integer projectId, Integer userId);
 
         @Modifying

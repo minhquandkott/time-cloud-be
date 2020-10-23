@@ -1,15 +1,10 @@
 package com.ces.intern.apitimecloud.controller;
 
-import com.ces.intern.apitimecloud.dto.ProjectDTO;
-import com.ces.intern.apitimecloud.dto.TaskDTO;
-import com.ces.intern.apitimecloud.dto.TimeDTO;
-import com.ces.intern.apitimecloud.dto.UserDTO;
+import com.ces.intern.apitimecloud.dto.*;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
-import com.ces.intern.apitimecloud.http.response.ProjectResponse;
-import com.ces.intern.apitimecloud.http.response.TaskResponse;
-import com.ces.intern.apitimecloud.http.response.TimeResponse;
-import com.ces.intern.apitimecloud.http.response.UserResponse;
+import com.ces.intern.apitimecloud.http.response.*;
+import com.ces.intern.apitimecloud.repository.ProjectUserRepository;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
@@ -95,6 +90,13 @@ public class UserController {
         List<ProjectDTO> projects = projectService.getAllByUserIdOOrderByTaskCount(userId);
         return projects.stream()
                 .map(project  -> modelMapper.map(project, ProjectResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/projects-available")
+    public List<ProjectUserResponse> getAllProjectsByUserIdAndIsDoing(@PathVariable("id") Integer userId){
+        List<ProjectUserDTO> projectUsers = projectService.getAllByUserIdAndIsDoing(userId,true);
+        return projectUsers.stream().map(projectUser->modelMapper.map(projectUser,ProjectUserResponse.class))
                 .collect(Collectors.toList());
     }
 
