@@ -21,6 +21,8 @@ public interface ProjectService {
 
     List<ProjectDTO> getAllByUserId(Integer userId);
 
+    List<ProjectUserDTO> getAllByUserIdAndIsDoing(Integer userId, Boolean isDoing);
+
     ProjectUserDTO addUserToProject(Integer userId, Integer projectId);
 
     List<ProjectDTO> getAllByUserIdOOrderByTaskCount(Integer userId);
