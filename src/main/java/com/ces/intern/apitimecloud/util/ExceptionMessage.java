@@ -9,7 +9,8 @@ public enum ExceptionMessage {
     MISSING_REQUIRE_FIELD("Missing Require Field !"),
     INTERNAL_SERVER_ERROR("Internal Server Error"),
     USERNAME_PASSWORD_INVALIDATE("Username or Password Incorrect"),
-    EMAIL_ALREADY_EXIST("Email Already Exist");
+    EMAIL_ALREADY_EXIST("Email Already Exist"),
+    FIELD_NOT_CORRECT("Format Not Correct");
 
 
     private String message;

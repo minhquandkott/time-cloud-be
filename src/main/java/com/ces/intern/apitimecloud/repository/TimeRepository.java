@@ -37,4 +37,7 @@ public interface TimeRepository extends JpaRepository<TimeEntity, Integer> {
 
     @Query(value = "select extract(epoch from sum(end_time-start_time)) as totalTime from time join task on time.task_id = task.task_id where  user_id = :userId and end_time >= TO_TIMESTAMP( :dateStart, 'yyyy-mm-dd' ) and end_time < TO_TIMESTAMP( :dateEnd, 'yyyy-mm-dd')",nativeQuery = true)
     Float sumTimeByDayOfUser(@Param(value = "userId") Integer userId, @Param(value = "dateStart") String dateEnd, @Param(value = "dateEnd") String dateStart);
+
+    @Query(value = "select * from time where user_id = :userId and to_char(create_at, 'dd-MM-yyyy') = :date", nativeQuery = true)
+    List<TimeEntity> getAllByUserIdAndTime(@Param(value="userId")Integer userId, @Param(value = "date") String date);
 }

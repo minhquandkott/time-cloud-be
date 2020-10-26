@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
@@ -101,12 +102,27 @@ public class UserController {
     }
 
     @GetMapping("{id}/times")
-    public List<TimeResponse> getTimesByUserId(@PathVariable("id") Integer userId){
-        List<TimeDTO> times = timeService.getTimesByUserId(userId);
+    public List<TimeResponse> getTimesByUserId(@PathVariable("id") Integer userId, @RequestParam(required = false) String date){
+        if(date != null){
+            String regex = "^(\\d{1,2})-\\d{1,2}-*(\\d{4})";
+            if(!Pattern.matches(regex, date)){
+                throw new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + "DD-MM-YYYY");
+            }else{
+                List<TimeDTO> times = timeService.getAllByUserIdAndDate(userId,date);
 
-        return times.stream()
-                .map(time  -> modelMapper.map(time, TimeResponse.class))
-                .collect(Collectors.toList());
+                return times.stream()
+                        .map(time  -> modelMapper.map(time, TimeResponse.class))
+                        .collect(Collectors.toList());
+            }
+
+        }else{
+            List<TimeDTO> times = timeService.getTimesByUserId(userId);
+
+            return times.stream()
+                    .map(time  -> modelMapper.map(time, TimeResponse.class))
+                    .collect(Collectors.toList());
+        }
+
     }
 
     @GetMapping("/{userId}/total-times")
@@ -145,4 +161,6 @@ public class UserController {
         List<ProjectUserDTO> projectUsers = projectService.getAllByProjectUserId(userId);
         return projectUsers.stream().map(projectUser->modelMapper.map(projectUser,ProjectUserResponse.class)).collect(Collectors.toList());
     }
+
+
 }
