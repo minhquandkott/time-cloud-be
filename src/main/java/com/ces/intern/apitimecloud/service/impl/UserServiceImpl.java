@@ -156,7 +156,6 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
                 .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Not Found"));
