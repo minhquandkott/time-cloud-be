@@ -153,4 +153,5 @@ public class ProjectController {
         if(projectId==null||userId==null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId" +"or"+"userId");
         return timeService.sumTimeByUserProject(userId,projectId);
     }
+
 }

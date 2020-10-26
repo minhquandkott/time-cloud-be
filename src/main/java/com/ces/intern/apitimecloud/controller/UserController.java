@@ -111,7 +111,7 @@ public class UserController {
 
     @GetMapping("/{userId}/total-times")
     public Float getSumTimeByUserId(@PathVariable("userId") Integer userId){
-        if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID");
+        if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId");
         return timeService.sumTimeByUserId(userId);
     }
 
@@ -123,19 +123,26 @@ public class UserController {
 
     @GetMapping("/{userId}/description/{description}/total-times")
     public Float getSumTimeByUserDescription(@PathVariable("userId") Integer userId,@PathVariable("description") String description){
-        if(userId == null || description == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"description");
+        if(userId == null || description == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId" +" or "+"description");
         return timeService.sumTimeByUserDescription(userId,description);
     }
 
     @GetMapping("/{userId}/date/{date}/total-times")
     public Float getSumTimeByDayOfUser(@PathVariable("userId") Integer userId,@PathVariable("date") String date) throws ParseException {
-        if(userId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"date");
+        if(userId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId" +" or "+"date");
         return timeService.sumTimeByDayOfUser(userId,date,Utils.toNumbersOfDay(date,1));
     }
 
     @GetMapping("/{userId}/week/{date}/total-times")
     public Float getSumTimeByWeekOfUser(@PathVariable("userId") Integer userId,@PathVariable("date") String date) throws ParseException {
-        if(userId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userID" +" or "+"date");
+        if(userId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId" +" or "+"date");
         return timeService.sumTimeByWeekOfUser(userId,date);
+    }
+
+    @GetMapping("/{userId}/project-users")
+    public List<ProjectUserResponse> getAllByProjectUserId(@PathVariable("userId") Integer userId){
+        if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId");
+        List<ProjectUserDTO> projectUsers = projectService.getAllByProjectUserId(userId);
+        return projectUsers.stream().map(projectUser->modelMapper.map(projectUser,ProjectUserResponse.class)).collect(Collectors.toList());
     }
 }
