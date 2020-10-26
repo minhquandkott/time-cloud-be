@@ -29,5 +29,4 @@ public interface UserService extends UserDetailsService {
     List<ProjectUserDTO> getAllByProjectId(Integer projectId);
 
     List<UserDTO> getAllByTaskId(Integer taskId);
-    
 }
