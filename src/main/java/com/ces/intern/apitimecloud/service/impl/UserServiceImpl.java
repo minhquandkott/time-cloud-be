@@ -162,4 +162,6 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
 
         return User.builder().username(user.getEmail()).password(user.getPassword()).roles().build();
     }
+
+
 }

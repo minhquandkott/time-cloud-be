@@ -101,6 +101,14 @@ public class TimeServiceImpl implements TimeService {
     }
 
     @Override
+    public List<TimeDTO> getAllByUserIdAndDate(Integer userId, String date) {
+        List<TimeEntity> times = timeRepository.getAllByUserIdAndTime(userId, date);
+        return times.stream()
+                .map(time -> modelMapper.map(time, TimeDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<TimeDTO> getAllByTaskId(Integer taskId) {
         List<TimeEntity> timeEntities = timeRepository.getAllByTaskId(taskId);
         return timeEntities

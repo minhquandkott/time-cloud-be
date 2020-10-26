@@ -13,6 +13,7 @@ public interface TimeService {
     TimeResponse find(Integer id);
     void delete(Integer timeId);
     List<TimeDTO> getTimesByUserId(Integer userId);
+    List<TimeDTO> getAllByUserIdAndDate(Integer userId, String date);
     List<TimeDTO> getAllByTaskId(Integer taskId);
     Float sumTimeByUserId(Integer userId);
     Float sumTimeByTaskId(Integer taskId);
