@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -195,5 +196,29 @@ public class TimeServiceImpl implements TimeService {
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
         String firstDayOfWeek = Utils.toFirstDayOfWeek(date);
         return sumTimeByDayOfUser(userId,firstDayOfWeek,Utils.toNumbersOfDay(firstDayOfWeek,7));
+    }
+
+    @Override
+    public Float sumTimeByDayOfProject(Integer projectId, String dateStart, String dateEnd) {
+        projectRepository.findById(projectId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + projectId) );
+        return timeRepository.sumTimeByDayOfProject(projectId,dateStart,dateEnd);
+    }
+
+    @Override
+    public List<Float> getAllSumTimesByDayOfWeekOfProject(Integer projectId, String date) throws ParseException {
+        projectRepository.findById(projectId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + projectId) );
+        List<Float> listTimes = new ArrayList<>();
+        String dayOfWeek = Utils.toFirstDayOfWeek(date);
+        Float timeOfDay = 0f;
+        for(int i = 1; i <= 7; i++){
+            timeOfDay = sumTimeByDayOfProject(projectId,dayOfWeek,Utils.toNumbersOfDay(dayOfWeek,1));
+            listTimes.add(timeOfDay);
+            dayOfWeek = Utils.toNumbersOfDay(dayOfWeek,1);
+        }
+        return listTimes;
     }
 }

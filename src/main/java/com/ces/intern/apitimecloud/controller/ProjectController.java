@@ -16,6 +16,7 @@ import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
+import com.ces.intern.apitimecloud.util.Utils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -154,4 +156,15 @@ public class ProjectController {
         return timeService.sumTimeByUserProject(userId,projectId);
     }
 
+    @GetMapping("/{projectId}/date/{date}/total-times")
+    public Float getSumTimeByDayOfProject(@PathVariable("projectId") Integer projectId,@PathVariable("date") String date) throws ParseException {
+        if(projectId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId" +" or "+"date");
+        return timeService.sumTimeByDayOfProject(projectId,date, Utils.toNumbersOfDay(date,1));
+    }
+
+    @GetMapping("/{projectId}/date/{date}/all-week-times")
+    public List<Float> getAllSumTimesByDayOfWeekOfProject(@PathVariable("projectId") Integer projectId,@PathVariable("date") String date) throws ParseException{
+        if(projectId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId" +" or "+"date");
+        return timeService.getAllSumTimesByDayOfWeekOfProject(projectId,date);
+    }
 }
