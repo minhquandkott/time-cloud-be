@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -182,22 +183,33 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public ProjectUserDTO addUserToProject(Integer userId, Integer projectId) {
-        UserEntity userEntity = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
+        Optional<ProjectUserEntity> optional = projectUserRepository.findById(new ProjectUserEntity.EmbedId(projectId, userId));
+        ProjectUserEntity projectUserEntity;
 
-        ProjectEntity projectEntity = projectRepository
-                .findById(projectId)
-                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with project " + projectId));
+        if(optional.isPresent()){
+            projectUserEntity = optional.get();
+            projectUserEntity.setIsDoing(true);
+        }else{
+            UserEntity userEntity = userRepository
+                    .findById(userId)
+                    .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
 
-        ProjectUserEntity projectUserEntity = new ProjectUserEntity();
-        projectUserEntity.setProject(projectEntity);
-        projectUserEntity.setUser(userEntity);
-        projectUserEntity.setIsDoing(true);
+            ProjectEntity projectEntity = projectRepository
+                    .findById(projectId)
+                    .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with project " + projectId));
+
+            projectUserEntity = new ProjectUserEntity();
+
+            projectUserEntity.setProject(projectEntity);
+            projectUserEntity.setUser(userEntity);
+            projectUserEntity.setIsDoing(true);
+        }
 
         projectUserRepository.save(projectUserEntity);
         return modelMapper.map(projectUserEntity,ProjectUserDTO.class);
+
     }
 
     @Override
