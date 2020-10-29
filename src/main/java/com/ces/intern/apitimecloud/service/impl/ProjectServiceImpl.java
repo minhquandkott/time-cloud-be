@@ -2,13 +2,11 @@ package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
-import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
-import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -120,6 +118,15 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteAllProjectUser(Integer projectId) {
 
         projectRepository.deleteAllProjectUser(projectId);
+    }
+
+    @Override
+    public boolean checkProjectAvailable(Integer projectId) {
+        int count = projectRepository.checkProjectAvailable(projectId);
+        if(count == 0){
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -150,6 +150,11 @@ public class ProjectController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{projectId}/available")
+    public boolean checkProjectAvailable(@PathVariable("projectId")Integer projectId){
+        return projectService.checkProjectAvailable(projectId); 
+    }
+
     @GetMapping("/{projectId}/users/{userId}/total-times")
     public Float getSumTimeByUserProject(@PathVariable("userId") Integer userId,@PathVariable("projectId") Integer projectId){
         if(projectId==null||userId==null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId" +"or"+"userId");
