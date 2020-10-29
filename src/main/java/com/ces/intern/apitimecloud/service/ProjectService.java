@@ -36,4 +36,6 @@ public interface ProjectService {
     void deleteUserOfProject(Integer projectId, Integer userId);
 
     void deleteAllProjectUser(Integer projectId);
+
+    boolean checkProjectAvailable(Integer projectId);
 }

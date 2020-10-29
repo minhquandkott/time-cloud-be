@@ -2,7 +2,6 @@ package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
-import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.*;
@@ -22,6 +21,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,6 +126,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public boolean checkProjectAvailable(Integer projectId) {
+        int count = projectRepository.checkProjectAvailable(projectId);
+        if(count == 0){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     @Transactional
     public void deleteUserOfProject(Integer projectId, Integer userId) {
             ProjectUserEntity projectUserEntity = projectUserRepository.getByEmbedIdProjectIdAndEmbedIdUserId(projectId,userId);
@@ -209,22 +218,33 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public ProjectUserDTO addUserToProject(Integer userId, Integer projectId) {
-        UserEntity userEntity = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
+        Optional<ProjectUserEntity> optional = projectUserRepository.findById(new ProjectUserEntity.EmbedId(projectId, userId));
+        ProjectUserEntity projectUserEntity;
 
-        ProjectEntity projectEntity = projectRepository
-                .findById(projectId)
-                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with project " + projectId));
+        if(optional.isPresent()){
+            projectUserEntity = optional.get();
+            projectUserEntity.setIsDoing(true);
+        }else{
+            UserEntity userEntity = userRepository
+                    .findById(userId)
+                    .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
 
-        ProjectUserEntity projectUserEntity = new ProjectUserEntity();
-        projectUserEntity.setProject(projectEntity);
-        projectUserEntity.setUser(userEntity);
-        projectUserEntity.setIsDoing(true);
+            ProjectEntity projectEntity = projectRepository
+                    .findById(projectId)
+                    .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with project " + projectId));
+
+            projectUserEntity = new ProjectUserEntity();
+
+            projectUserEntity.setProject(projectEntity);
+            projectUserEntity.setUser(userEntity);
+            projectUserEntity.setIsDoing(true);
+        }
 
         projectUserRepository.save(projectUserEntity);
         return modelMapper.map(projectUserEntity,ProjectUserDTO.class);
+
     }
 
     @Override

@@ -56,6 +56,8 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     @Transactional
     public String save(UserRequest userRequest) {
 
+        userRequest.setEmail(userRequest.getEmail().toLowerCase());
+
         if(userRepository.countByEmail(userRequest.getEmail()) == 1){
             throw new AlreadyExistException(ExceptionMessage.EMAIL_ALREADY_EXIST.getMessage());
         }else{
