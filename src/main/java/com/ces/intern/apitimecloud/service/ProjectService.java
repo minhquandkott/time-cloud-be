@@ -19,6 +19,8 @@ public interface ProjectService {
 
     List<ProjectDTO> getAllByCompanyId(Integer companyId);
 
+    List<ProjectDTO> getAllStillDoingByCompanyId(Integer companyId);
+
     List<ProjectDTO> getAllByUserId(Integer userId);
 
     List<ProjectDTO> getAllByUserIdAndIsDoing(Integer userId);
