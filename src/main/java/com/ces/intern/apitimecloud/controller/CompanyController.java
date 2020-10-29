@@ -16,6 +16,7 @@ import com.ces.intern.apitimecloud.service.CompanyService;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.UserRoleService;
 import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,13 @@ public class CompanyController {
         return projects.stream()
                 .map(project  -> modelMapper.map(project, ProjectResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/{id}/projects-available")
+    public List<ProjectResponse> getAllStillDoingByCompanyId(@PathVariable("id") Integer companyId){
+        if(companyId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "id");
+        List<ProjectDTO> listProjects = projectService.getAllStillDoingByCompanyId(companyId);
+        return listProjects.stream().map(project->modelMapper.map(project,ProjectResponse.class)).collect(Collectors.toList());
     }
 
     @PostMapping("/{id}/projects")

@@ -7,6 +7,8 @@ import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
+import com.ces.intern.apitimecloud.service.TimeService;
+import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -30,6 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskService taskService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
     private final ProjectUserRepository projectUserRepository;
 
@@ -37,6 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectServiceImpl(ProjectRepository projectRepository,
                               CompanyRepository companyRepository,
                               TaskService taskService,
+                              UserService userService,
                               ModelMapper modelMapper,
                               ProjectUserRepository projectUserRepository,
                               UserRepository userRepository,
@@ -47,6 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskService = taskService;
+        this.userService = userService;
         this.projectUserRepository = projectUserRepository;
         this.modelMapper = modelMapper;
     }
@@ -162,6 +167,29 @@ public class ProjectServiceImpl implements ProjectService {
         return projectEntities.stream()
                 .map(project  -> modelMapper.map(project, ProjectDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectDTO> getAllStillDoingByCompanyId(Integer companyId) {
+        boolean stillDoing = false;
+        List<ProjectDTO> listProjects = getAllByCompanyId(companyId);
+        List<ProjectDTO> listProjectNews = new ArrayList<>();
+        List<ProjectUserDTO> listProjectUsers;
+        for(int i = 0; i < listProjects.size(); i++){
+            listProjectUsers = userService.getAllByProjectId(listProjects.get(i).getId());
+            for(int j = 0; j < listProjectUsers.size(); j++){
+                if(listProjectUsers.get(j).getIsDoing() == true){
+                    stillDoing = true;
+                    break;
+                }
+            }
+            if( stillDoing == true ){
+                listProjectNews.add(listProjects.get(i));
+                stillDoing = false;
+            }
+            listProjectUsers.clear();
+        }
+        return  listProjectNews;
     }
 
 
