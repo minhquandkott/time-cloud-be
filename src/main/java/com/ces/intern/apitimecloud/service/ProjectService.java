@@ -38,4 +38,6 @@ public interface ProjectService {
     void deleteAllProjectUser(Integer projectId);
 
     boolean checkProjectAvailable(Integer projectId);
+
+    List<ProjectUserDTO> getAllUserByIsDoing(Integer projectId, boolean isDoing);
 }

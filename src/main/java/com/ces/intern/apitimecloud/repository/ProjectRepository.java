@@ -35,4 +35,5 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> 
     int checkProjectAvailable(@Param("projectId") Integer projectId);
 
 
+
 }

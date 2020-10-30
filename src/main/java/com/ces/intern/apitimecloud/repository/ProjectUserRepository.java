@@ -20,6 +20,5 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUserEntity, 
         @Query(value = "update project_user set is_doing = false where project_id = :projectId", nativeQuery = true)
         void deleteProjectById(@Param("projectId") Integer projectId);
 
-//        @Query(value = "select * from project_user where project_user.user_id =:userId", nativeQuery = true)
-//        List<ProjectUserEntity> getAllByEmbedUserId(@Param("userId") Integer userId);
+        List<ProjectUserEntity> getAllByEmbedId_ProjectIdAndIsDoing(Integer projectId, boolean isDoing);
 }

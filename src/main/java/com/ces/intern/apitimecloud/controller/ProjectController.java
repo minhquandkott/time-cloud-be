@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -142,8 +143,15 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/users")
-    public List<ProjectUserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId){
+    public List<ProjectUserResponse> getAllUserByProjectId(@PathVariable("projectId") Integer projectId,
+                                                           @RequestParam(value = "is_doing", required = false) Optional<Boolean> isDoing){
         if(projectId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId");
+        if(isDoing.isPresent()){
+            return projectService.getAllUserByIsDoing(projectId, isDoing.get())
+                    .stream()
+                    .map(projectUser -> modelMapper.map(projectUser, ProjectUserResponse.class))
+                    .collect(Collectors.toList());
+        }
         return userService.getAllByProjectId(projectId)
                 .stream()
                 .map(projectUserDTO -> modelMapper.map(projectUserDTO, ProjectUserResponse.class))
@@ -152,7 +160,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/available")
     public boolean checkProjectAvailable(@PathVariable("projectId")Integer projectId){
-        return projectService.checkProjectAvailable(projectId); 
+        return projectService.checkProjectAvailable(projectId);
     }
 
     @GetMapping("/{projectId}/users/{userId}/total-times")
