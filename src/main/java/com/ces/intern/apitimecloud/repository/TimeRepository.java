@@ -1,12 +1,16 @@
 package com.ces.intern.apitimecloud.repository;
 
+import com.ces.intern.apitimecloud.dto.TaskUserTimeDTO;
 import com.ces.intern.apitimecloud.entity.TimeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Time;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
 import java.util.List;
 
 @Repository
@@ -22,6 +26,9 @@ public interface TimeRepository extends JpaRepository<TimeEntity, Integer> {
 
     @Query(value = "select extract(epoch from sum(end_time - start_time)) as totalTime from time where user_id =:userId", nativeQuery = true)
     Float sumTimeByUserId(@Param(value = "userId") Integer userId);
+
+    @Query(value = "select * from time where user_id = :userId and to_char(create_at, 'dd-MM-yyyy') = :date", nativeQuery = true)
+    List<TimeEntity> getAllByUserIdAndTime(@Param(value="userId")Integer userId, @Param(value = "date") String date);
 
     @Query(value = "select extract(epoch from sum(end_time - start_time)) as totalTime from time where task_id in (select task_id from task where project_id =:projectId)", nativeQuery = true)
     Float sumTimeByProjectId(@Param(value = "projectId") Integer projectId);
@@ -41,6 +48,4 @@ public interface TimeRepository extends JpaRepository<TimeEntity, Integer> {
     @Query(value = "select extract(epoch from sum(end_time-start_time)) as totalTime from time join task on time.task_id = task.task_id where  project_id = :projectId and end_time >= TO_TIMESTAMP( :dateStart, 'yyyy-mm-dd' ) and end_time < TO_TIMESTAMP( :dateEnd, 'yyyy-mm-dd')",nativeQuery = true)
     Float sumTimeByDayOfProject(@Param(value = "projectId") Integer projectId, @Param(value = "dateStart") String dateStart, @Param(value = "dateEnd") String dateEnd);
 
-    @Query(value = "select * from time where user_id = :userId and to_char(create_at, 'dd-MM-yyyy') = :date", nativeQuery = true)
-    List<TimeEntity> getAllByUserIdAndTime(@Param(value="userId")Integer userId, @Param(value = "date") String date);
 }

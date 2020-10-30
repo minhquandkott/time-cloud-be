@@ -1,5 +1,6 @@
 package com.ces.intern.apitimecloud.service;
 
+import com.ces.intern.apitimecloud.dto.TaskUserTimeDTO;
 import com.ces.intern.apitimecloud.dto.TimeDTO;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
@@ -26,4 +27,5 @@ public interface TimeService {
     Float sumTimeByWeekOfUser(Integer userId, String date) throws ParseException;
     Float sumTimeByDayOfProject(Integer projectId, String dateStart, String dateEnd);
     List<Float> getAllSumTimesByDayOfWeekOfProject (Integer projectId, String date) throws ParseException;
+    List<TaskUserTimeDTO> sumTimesOfTaskUserInProject(Integer projectId, Integer userId);
 }

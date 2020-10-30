@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.controller;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
+import com.ces.intern.apitimecloud.dto.TaskUserTimeDTO;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.TaskRequest;
@@ -179,5 +180,11 @@ public class ProjectController {
     public List<Float> getAllSumTimesByDayOfWeekOfProject(@PathVariable("projectId") Integer projectId,@PathVariable("date") String date) throws ParseException{
         if(projectId == null || date == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "projectId" +" or "+"date");
         return timeService.getAllSumTimesByDayOfWeekOfProject(projectId,date);
+    }
+
+    @GetMapping(value = "/{projectId}/users/{userId}/tasks/total_time")
+    public List<TaskUserTimeDTO> add(@PathVariable("projectId") Integer projectId, @PathVariable("userId")Integer userId){
+
+        return timeService.sumTimesOfTaskUserInProject(projectId, userId);
     }
 }
