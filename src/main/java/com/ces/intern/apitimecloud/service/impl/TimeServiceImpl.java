@@ -1,8 +1,7 @@
 package com.ces.intern.apitimecloud.service.impl;
 
-import com.ces.intern.apitimecloud.dto.TaskUserTimeDTO;
+
 import com.ces.intern.apitimecloud.dto.TimeDTO;
-import com.ces.intern.apitimecloud.entity.BaseEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
 import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
@@ -21,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,8 +34,7 @@ public class TimeServiceImpl implements TimeService {
     private final TimeRepository timeRepository;
     private final ModelMapper modelMapper;
     private final ProjectRepository projectRepository;
-    @PersistenceContext
-    private EntityManager em;
+
 
     @Autowired
     public TimeServiceImpl( UserRepository userRepository,
@@ -235,14 +231,5 @@ public class TimeServiceImpl implements TimeService {
         return listTimes;
     }
 
-    @Override
-    public List<TaskUserTimeDTO> sumTimesOfTaskUserInProject(Integer projectId, Integer userId) {
-        List<TaskUserTimeDTO> taskUserTimeDTOS =
-                em.createNamedQuery("getTotalTimeOfTaskUserInProject")
-                .setParameter(1, userId)
-                .setParameter(2, projectId)
-                .getResultList();
 
-        return taskUserTimeDTOS;
-    }
 }

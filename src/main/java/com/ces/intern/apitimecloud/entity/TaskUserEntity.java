@@ -1,4 +1,4 @@
-package com.ces.intern.apitimecloud.dto;
+package com.ces.intern.apitimecloud.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,25 +13,23 @@ import javax.persistence.*;
 @AllArgsConstructor
 @MappedSuperclass
 @SqlResultSetMapping(
-        name = "TaskUserTimeMapping",
+        name = "TaskUserMapping",
         classes = {
                 @ConstructorResult(
-                        targetClass = TaskUserTimeDTO.class,
+                        targetClass = TaskUserEntity.class,
                         columns = {
                                 @ColumnResult(name="task_id", type=Integer.class),
                                 @ColumnResult(name="user_id", type=Integer.class),
-                                @ColumnResult(name="total_time", type=Float.class)
                         }
                 )
         }
 )
 @NamedNativeQuery(
-        name="getTotalTimeOfTaskUserInProject",
-        query = "select task_id,user_id, extract (epoch from sum(end_time- start_time)) as total_time from time where user_id =?1 and task_id in (select task_id from task where project_id =?2) group by task_id, user_id",
-        resultSetMapping = "TaskUserTimeMapping"
+        name="getTaskUserInProject",
+        query = "select task_id,user_id from time where user_id =?1 and task_id in (select task_id from task where project_id =?2) group by task_id, user_id",
+        resultSetMapping = "TaskUserMapping"
 )
-public class TaskUserTimeDTO {
+public class TaskUserEntity {
     private Integer taskId;
     private Integer userId;
-    private Float totalTime;
 }

@@ -3,10 +3,9 @@ package com.ces.intern.apitimecloud.service.impl;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
+import com.ces.intern.apitimecloud.entity.TaskUserEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
-import com.ces.intern.apitimecloud.http.response.TimeResponse;
-import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.TaskRepository;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
@@ -18,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,8 @@ public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final TimeService timeService;
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     public TaskServiceImpl(TaskRepository taskRepository,
@@ -169,6 +172,14 @@ public class TaskServiceImpl implements TaskService {
                 orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD+" with "+ projectId));
 
         taskRepository.deleteUsersOfAllTaskOfProject(projectId);
+    }
+
+    @Override
+    public List<TaskUserEntity> getAllTaskUsersByProjectIdAndUserId(Integer projectId, Integer userId) {
+        return em.createNamedQuery("getTaskUserInProject")
+                .setParameter(1, userId)
+                .setParameter(2, projectId)
+                .getResultList();
     }
 }
 

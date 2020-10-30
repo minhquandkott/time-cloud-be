@@ -3,14 +3,13 @@ package com.ces.intern.apitimecloud.controller;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
-import com.ces.intern.apitimecloud.dto.TaskUserTimeDTO;
+import com.ces.intern.apitimecloud.entity.TaskUserEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectUserResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
-import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
@@ -18,8 +17,6 @@ import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import com.ces.intern.apitimecloud.util.Utils;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -182,9 +179,9 @@ public class ProjectController {
         return timeService.getAllSumTimesByDayOfWeekOfProject(projectId,date);
     }
 
-    @GetMapping(value = "/{projectId}/users/{userId}/tasks/total_time")
-    public List<TaskUserTimeDTO> add(@PathVariable("projectId") Integer projectId, @PathVariable("userId")Integer userId){
+    @GetMapping(value = "/{projectId}/users/{userId}/task_user")
+    public List<TaskUserEntity> add(@PathVariable("projectId") Integer projectId, @PathVariable("userId")Integer userId){
 
-        return timeService.sumTimesOfTaskUserInProject(projectId, userId);
+        return taskService.getAllTaskUsersByProjectIdAndUserId(projectId, userId);
     }
 }

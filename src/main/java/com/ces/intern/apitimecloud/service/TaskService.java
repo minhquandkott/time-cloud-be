@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.service;
 
 import com.ces.intern.apitimecloud.dto.TaskDTO;
+import com.ces.intern.apitimecloud.entity.TaskUserEntity;
 import com.ces.intern.apitimecloud.http.response.TimeSumResponse;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface TaskService {
     void deleteUserOfAllTaskOfProject(Integer projectId, Integer userId);
 
     void deleteUsersOfAllTaskOfProject(Integer projectId);
+
+    List<TaskUserEntity> getAllTaskUsersByProjectIdAndUserId(Integer projectId, Integer userId);
 }
