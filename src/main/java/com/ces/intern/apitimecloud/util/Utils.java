@@ -2,19 +2,16 @@ package com.ces.intern.apitimecloud.util;
 
 import com.ces.intern.apitimecloud.ApplicationContext;
 import com.ces.intern.apitimecloud.dto.UserDTO;
-import com.ces.intern.apitimecloud.entity.UserEntity;
-import com.ces.intern.apitimecloud.http.request.UserLoginRequest;
 import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.UserService;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import sun.awt.AppContext;
-
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -54,5 +51,18 @@ public class Utils {
         }
         String firstDay = simpleDateFormat.format(calendar.getTime());
         return firstDay;
+    }
+
+    public static List<String> getFieldName(Class c){
+        List<Field> fields = Arrays.asList(c.getDeclaredFields());
+        return fields.stream().map(field -> field.getName()).collect(Collectors.toList()) ;
+    }
+
+    public static boolean containFiledName(Class c, String fieldName){
+        List<String> fields = getFieldName(c);
+        List<String> supperClassFields = getFieldName(c.getSuperclass());
+
+        return fields.stream().anyMatch(field -> field.equals(fieldName)) ||
+                supperClassFields.stream().anyMatch(field -> field.equals(fieldName));
     }
 }

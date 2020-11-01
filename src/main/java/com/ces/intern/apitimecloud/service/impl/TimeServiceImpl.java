@@ -5,6 +5,7 @@ import com.ces.intern.apitimecloud.dto.TimeDTO;
 import com.ces.intern.apitimecloud.entity.TaskEntity;
 import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
+import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
@@ -17,6 +18,9 @@ import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.Utils;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -229,6 +233,27 @@ public class TimeServiceImpl implements TimeService {
             dayOfWeek = Utils.toNumbersOfDay(dayOfWeek,1);
         }
         return listTimes;
+    }
+
+    @Override
+    public List<TimeDTO> getAllTimeByUserIdAndPageable(Integer userId, Integer limit, Integer page, String sortBy,String order) {
+        Pageable p = PageRequest.of(page, limit);
+
+        if(!sortBy.isEmpty()){
+            if("ASC".equals(order)){
+                p = PageRequest.of(page, limit, Sort.by(sortBy).ascending());
+            }else if("DESC".equals(order)){
+                p = PageRequest.of(page, limit, Sort.by(sortBy).descending());
+            }else{
+                throw new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + " order (DESC, ASC)");
+            }
+        }
+        List<TimeEntity> timeEntities = timeRepository.findAllByUserId(userId, p).get().collect(Collectors.toList());
+        return timeEntities
+                .stream()
+                .map(timeEntity -> modelMapper.map(timeEntity, TimeDTO.class))
+                .collect(Collectors.toList());
+
     }
 
 

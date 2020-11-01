@@ -1,6 +1,8 @@
 package com.ces.intern.apitimecloud.repository;
 
 import com.ces.intern.apitimecloud.entity.TimeEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +16,7 @@ public interface TimeRepository extends JpaRepository<TimeEntity, Integer> {
     List<TimeEntity> getAllByUserId(Integer userId);
     List<TimeEntity> getAllByTaskId(Integer taskId);
     List<TimeEntity> getAllByDescription(String description);
+    Page<TimeEntity> findAllByUserId(Integer userId, Pageable pageable);
     void deleteByTaskId (Integer taskId);
 
     @Query(value = "select extract(epoch from sum(end_time - start_time)) as totalTime from time where task_id =:taskId", nativeQuery = true)

@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.*;
+import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.*;
@@ -13,6 +14,7 @@ import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import com.ces.intern.apitimecloud.util.Utils;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -20,11 +22,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.sql.Time;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/users")
@@ -102,12 +107,16 @@ public class UserController {
     }
 
     @GetMapping("{id}/times")
-    public List<TimeResponse> getTimesByUserId(@PathVariable("id") Integer userId, @RequestParam(required = false) String date){
+    public List<TimeResponse> getTimesByUserId(@PathVariable("id") Integer userId,
+                                               @RequestParam(required = false) String date,
+                                               @RequestParam(required = false) Integer limit,
+                                               @RequestParam(required = false) boolean sort_by_create_at){
         if(date != null){
-            String regex = "^(\\d{1,2})-\\d{1,2}-*(\\d{4})";
+            String regex = "^(\\d{2})-\\d{2}-*(\\d{4})";
             if(!Pattern.matches(regex, date)){
                 throw new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + "DD-MM-YYYY");
             }else{
+
                 List<TimeDTO> times = timeService.getAllByUserIdAndDate(userId,date);
 
                 return times.stream()
@@ -123,6 +132,25 @@ public class UserController {
                     .collect(Collectors.toList());
         }
 
+    }
+
+    @GetMapping("{id}/times/page")
+    public List<TimeResponse> getTimesByUserIdAndPageable(@PathVariable("id") Integer userId,
+                                               @RequestParam(value = "limit") Integer limit,
+                                               @RequestParam(value = "page") Integer page,
+                                               @RequestParam(value = "sort_by", required = false) String sortBy,
+                                                          @RequestParam(value = "order", defaultValue = "ASC") String order){
+        List<TimeDTO> timeDTOS;
+        if(sortBy==null){
+            timeDTOS = timeService.getAllTimeByUserIdAndPageable(userId, limit, page, "", order);
+        }else{
+            if(!Utils.containFiledName(TimeDTO.class, sortBy))
+                throw  new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + " sortBy " +sortBy);
+            timeDTOS = timeService.getAllTimeByUserIdAndPageable(userId, limit, page, sortBy, order );
+        }
+        return timeDTOS.stream()
+                .map(timeDTO -> modelMapper.map(timeDTO, TimeResponse.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{userId}/total-times")

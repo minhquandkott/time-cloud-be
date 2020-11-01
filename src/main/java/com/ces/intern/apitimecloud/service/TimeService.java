@@ -26,5 +26,5 @@ public interface TimeService {
     Float sumTimeByWeekOfUser(Integer userId, String date) throws ParseException;
     Float sumTimeByDayOfProject(Integer projectId, String dateStart, String dateEnd);
     List<Float> getAllSumTimesByDayOfWeekOfProject (Integer projectId, String date) throws ParseException;
-
+    List<TimeDTO> getAllTimeByUserIdAndPageable (Integer userId, Integer limit, Integer page, String sortBy, String order);
 }
