@@ -199,7 +199,11 @@ public class TimeServiceImpl implements TimeService {
         userRepository.findById(userId)
                 .orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
-        return timeRepository.sumTimeByDayOfUser(userId,dateStart,dateEnd);
+        Float result = timeRepository.sumTimeByDayOfUser(userId,dateStart,dateEnd);
+        if(result == null){
+            return new Float(0);
+        }
+        return result;
     }
 
     @Override
