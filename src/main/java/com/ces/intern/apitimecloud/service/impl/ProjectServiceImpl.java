@@ -110,6 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectEntity.setName(projectDTO.getName());
         projectEntity.setClientName(projectDTO.getClientName());
+        projectEntity.setColor(projectDTO.getColor());
 
         projectEntity.setModifyAt(new Date());
         projectEntity.setModifiedBy(userId);
