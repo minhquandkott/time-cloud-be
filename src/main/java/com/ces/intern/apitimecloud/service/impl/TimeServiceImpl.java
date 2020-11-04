@@ -90,6 +90,21 @@ public class TimeServiceImpl implements TimeService {
     }
 
     @Override
+    public TimeResponse update(TimeDTO timeDTO) {
+        TimeEntity timeEntity= timeRepository
+                .findById(timeDTO.getId())
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD + " Time with id : "+ timeDTO.getId()));
+
+        timeEntity.setEndTime(timeDTO.getEndTime());
+        timeEntity.setStartTime(timeDTO.getStartTime());
+        timeEntity.setDescription(timeDTO.getDescription());
+        timeEntity.setModifiedBy(timeDTO.getModifiedBy());
+        timeEntity.setModifyAt(timeDTO.getModifyAt());
+        
+        return modelMapper.map(timeRepository.save(timeEntity), TimeResponse.class);
+    }
+
+    @Override
     @Transactional
     public void delete(Integer timeId) {
         TimeEntity timeEntity = timeRepository.findById(timeId)
@@ -124,40 +139,23 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public Float sumTimeByUserId(Integer userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() ->
-                new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
 
         return timeRepository.sumTimeByUserId(userId);
     }
 
     @Override
     public Float sumTimeByTaskId(Integer taskId) {
-        taskRepository.findById(taskId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
 
         return timeRepository.sumTimeByTaskId(taskId);
     }
 
     @Override
     public Float sumTimeByProjectId(Integer projectId) {
-        projectRepository.findById(projectId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + projectId) );
-
         return timeRepository.sumTimeByProjectId(projectId);
     }
 
     @Override
     public Float sumTimeByUserTask(Integer userId, Integer taskId) {
-        userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
-        taskRepository.findById(taskId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + taskId) );
-
         return timeRepository.sumTimeByUserTask(userId,taskId);
     }
 
@@ -171,34 +169,18 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public Float sumTimeByUserProject(Integer userId, Integer projectId) {
-        userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
-        projectRepository.findById(projectId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with task" + projectId));
 
         return timeRepository.sumTimeByUserProject(userId,projectId);
     }
 
     @Override
     public Float sumTimeByUserDescription(Integer userId, String description) {
-        userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
-
-        if(timeRepository.getAllByDescription(description).isEmpty()){
-            throw new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with description" + description);
-        }
 
         return timeRepository.sumTimeByUserDescription(userId,description);
     }
 
     @Override
     public Float sumTimeByDayOfUser(Integer userId, String dateStart, String dateEnd) {
-        userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
         Float result = timeRepository.sumTimeByDayOfUser(userId,dateStart,dateEnd);
         if(result == null){
             return new Float(0);
@@ -208,26 +190,20 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public Float sumTimeByWeekOfUser(Integer userId, String date) throws ParseException {
-        userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + userId) );
+
         String firstDayOfWeek = Utils.toFirstDayOfWeek(date);
         return sumTimeByDayOfUser(userId,firstDayOfWeek,Utils.toNumbersOfDay(firstDayOfWeek,7));
     }
 
     @Override
     public Float sumTimeByDayOfProject(Integer projectId, String dateStart, String dateEnd) {
-        projectRepository.findById(projectId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + projectId) );
+
         return timeRepository.sumTimeByDayOfProject(projectId,dateStart,dateEnd);
     }
 
     @Override
     public List<Float> getAllSumTimesByDayOfWeekOfProject(Integer projectId, String date) throws ParseException {
-        projectRepository.findById(projectId)
-                .orElseThrow(()
-                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ "with user" + projectId) );
+
         List<Float> listTimes = new ArrayList<>();
         String dayOfWeek = Utils.toFirstDayOfWeek(date);
         Float timeOfDay = 0f;

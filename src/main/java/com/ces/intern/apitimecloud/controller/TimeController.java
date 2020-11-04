@@ -1,10 +1,17 @@
 package com.ces.intern.apitimecloud.controller;
 
+import com.ces.intern.apitimecloud.dto.TimeDTO;
+import com.ces.intern.apitimecloud.http.request.TimeRequest;
 import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Time;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/times")
@@ -24,8 +31,26 @@ public class TimeController {
     public TimeResponse getTime(@PathVariable Integer id) throws Exception{
         TimeResponse time = timeService.find(id);
         System.out.println(time.getEndTime().getDay());
-        //System.out.println(time.getStartTime().getMinutes() + "  "+ time.getStartTime().getSeconds()+"  " +time.getEndTime().getMinutes() + "  " + time.getEndTime().getSeconds());
         return time;
+    }
+
+    @PutMapping(value = "/{timeId}")
+    public TimeResponse update(@PathVariable Integer timeId,
+                               @RequestBody TimeRequest timeRequest,
+                               @RequestHeader(value = "userId")Integer userId){
+        TypeMap<TimeRequest, TimeDTO> tm = modelMapper.typeMap(TimeRequest.class, TimeDTO.class);
+        Converter<Long, Date> converter = (context) -> context.getSource() == null ? null : new Date(context.getSource());
+        tm.addMappings(mapping ->{
+            mapping.using(converter).map(TimeRequest::getMileSecondEndTime, TimeDTO::setEndTime);
+            mapping.using(converter).map(TimeRequest::getMileSecondStartTime, TimeDTO::setStartTime);
+        });
+
+        TimeDTO timeDTO = tm.map(timeRequest);
+        timeDTO.setId(timeId);
+        timeDTO.setModifiedBy(userId);
+        timeDTO.setModifyAt(new Date());
+        return timeService.update(timeDTO);
+
     }
 
     @DeleteMapping(value = "/{timeId}")
