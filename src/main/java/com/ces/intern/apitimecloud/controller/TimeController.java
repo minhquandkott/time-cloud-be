@@ -38,18 +38,8 @@ public class TimeController {
     public TimeResponse update(@PathVariable Integer timeId,
                                @RequestBody TimeRequest timeRequest,
                                @RequestHeader(value = "userId")Integer userId){
-        TypeMap<TimeRequest, TimeDTO> tm = modelMapper.typeMap(TimeRequest.class, TimeDTO.class);
-        Converter<Long, Date> converter = (context) -> context.getSource() == null ? null : new Date(context.getSource());
-        tm.addMappings(mapping ->{
-            mapping.using(converter).map(TimeRequest::getMileSecondEndTime, TimeDTO::setEndTime);
-            mapping.using(converter).map(TimeRequest::getMileSecondStartTime, TimeDTO::setStartTime);
-        });
 
-        TimeDTO timeDTO = tm.map(timeRequest);
-        timeDTO.setId(timeId);
-        timeDTO.setModifiedBy(userId);
-        timeDTO.setModifyAt(new Date());
-        return timeService.update(timeDTO);
+        return timeService.update(timeRequest, userId, timeId);
 
     }
 

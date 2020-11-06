@@ -12,5 +12,7 @@ public class TimeRequest {
     private Long mileSecondStartTime;
     private Long mileSecondEndTime;
     private String description;
+    private Integer taskId;
+    private Integer userId;
 
 }

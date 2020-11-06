@@ -90,17 +90,28 @@ public class TimeServiceImpl implements TimeService {
     }
 
     @Override
-    public TimeResponse update(TimeDTO timeDTO) {
+    public TimeResponse update(TimeRequest timeRequest, Integer modifiedBy, Integer timeId) {
         TimeEntity timeEntity= timeRepository
-                .findById(timeDTO.getId())
-                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD + " Time with id : "+ timeDTO.getId()));
+                .findById(timeId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD + " Time with id : "+ timeId));
+        if(!timeEntity.getTask().getId().equals(timeRequest.getTaskId())){
+            TaskEntity taskEntity = taskRepository.findById(timeRequest.getTaskId())
+                    .orElseThrow(() ->
+                            new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name() + " task with id " + timeRequest.getTaskId()));
+            timeEntity.setTask(taskEntity);
+        }
+        if(!timeEntity.getUser().getId().equals(timeRequest.getUserId())){
+            UserEntity userEntity = userRepository.findById(timeRequest.getUserId())
+                    .orElseThrow(() ->
+                            new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name() + " user with id " + timeRequest.getUserId()));
+            timeEntity.setUser(userEntity);
+        }
+        timeEntity.setEndTime(new Date(timeRequest.getMileSecondEndTime()));
+        timeEntity.setStartTime(new Date(timeRequest.getMileSecondStartTime()));
+        timeEntity.setDescription(timeRequest.getDescription());
+        timeEntity.setModifiedBy(modifiedBy);
+        timeEntity.setModifyAt(new Date());
 
-        timeEntity.setEndTime(timeDTO.getEndTime());
-        timeEntity.setStartTime(timeDTO.getStartTime());
-        timeEntity.setDescription(timeDTO.getDescription());
-        timeEntity.setModifiedBy(timeDTO.getModifiedBy());
-        timeEntity.setModifyAt(timeDTO.getModifyAt());
-        
         return modelMapper.map(timeRepository.save(timeEntity), TimeResponse.class);
     }
 
