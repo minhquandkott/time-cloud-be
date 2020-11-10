@@ -191,8 +191,8 @@ public class ProjectController {
         return discussionService.getAllByProjectId(projectId);
     }
 
-    @GetMapping(value = "/{projectId}/discussions")
-    public List<DiscussionDTO> getAllDiscussionByProjectIdAndType(@PathVariable(value = "projectId")Integer projectId, @RequestParam(value = "type") Integer type){
-        return discussionService.getAllByProjectIdAndType(projectId, type);
-    }
+//    @GetMapping(value = "/{projectId}/discussions")
+//    public List<DiscussionDTO> getAllDiscussionByProjectIdAndType(@PathVariable(value = "projectId")Integer projectId, @RequestParam(value = "type") Integer type){
+//        return discussionService.getAllByProjectIdAndType(projectId, type);
+//    }
 }
