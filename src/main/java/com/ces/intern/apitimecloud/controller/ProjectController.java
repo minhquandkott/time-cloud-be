@@ -1,5 +1,6 @@
 package com.ces.intern.apitimecloud.controller;
 
+import com.ces.intern.apitimecloud.dto.DiscussionDTO;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.dto.TaskDTO;
@@ -10,10 +11,7 @@ import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectUserResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
-import com.ces.intern.apitimecloud.service.ProjectService;
-import com.ces.intern.apitimecloud.service.TaskService;
-import com.ces.intern.apitimecloud.service.TimeService;
-import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.service.*;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import com.ces.intern.apitimecloud.util.Utils;
@@ -39,18 +37,21 @@ public class ProjectController {
     private final TaskService taskService;
     private final TimeService timeService;
     private final UserService userService;
+    private final DiscussionService discussionService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
                              ModelMapper modelMapper,
                              TaskService taskService,
                              TimeService timeService,
-                             UserService userService){
+                             UserService userService,
+                             DiscussionService discussionService){
         this.projectService = projectService;
         this.modelMapper = modelMapper;
         this.taskService = taskService;
         this.timeService = timeService;
         this.userService = userService;
+        this.discussionService = discussionService;
     }
 
     @GetMapping("/api/test")
@@ -183,5 +184,15 @@ public class ProjectController {
     public List<TaskUserEntity> add(@PathVariable("projectId") Integer projectId, @PathVariable("userId")Integer userId){
 
         return taskService.getAllTaskUsersByProjectIdAndUserId(projectId, userId);
+    }
+
+    @GetMapping(value = "/{projectId}/discussions")
+    public List<DiscussionDTO> getAllDiscussionByProjectId(@PathVariable(value = "projectId")Integer projectId){
+        return discussionService.getAllByProjectId(projectId);
+    }
+
+    @GetMapping(value = "/{projectId}/discussions")
+    public List<DiscussionDTO> getAllDiscussionByProjectIdAndType(@PathVariable(value = "projectId")Integer projectId, @RequestParam(value = "type") Integer type){
+        return discussionService.getAllByProjectIdAndType(projectId, type);
     }
 }
