@@ -1,0 +1,107 @@
+@relation 'Discussion-DataMining'
+
+@attribute Text string
+@attribute class-att {0,1}
+
+@data
+
+'Everything OK',1
+'It is good',1
+'All the thing work very well',1
+'It is Ok',1
+'Approved',1
+'Nice result',1
+'The function is OK',1
+'The feature is OK',1
+'The functions are OK',1
+'The features are OK',1
+'I think it is time to step to next function, this is good',1
+'I think it is time to step to next feature, this is good',1
+'This feature is working well, well done lads',1
+'Good job, I do not see anything wrong here',1
+'After test, i think it is time to deploy it',1
+'We are doing a great job on this project, everything till now are good',1
+'All are tested and nothing wrong',1
+'Keep working on the next feature, this feature it is very good',1
+'Keep working on the next function, this function it is very good',1
+'The customer agrees with this feature',1
+'The customer agrees with this function',1
+'The customer agrees with new features',1
+'The customer agrees with new functions',1
+'The customer commend for the project',1
+'We have the approvement from the customer',1
+'Our partners say the project is ok',1
+'The partners approve with all the features',1
+'The partners approve with all the functions',1
+'The partners approve with the feature',1
+'The partners approve with the function',1
+'This version is working well, hope so is the next version',1
+'This feature is perfect',1
+'This function is perfect',1
+'These features are perfect',1
+'These functions are perfect',1
+'This feature is working well',1
+'This feature is as good as expected',1
+'This function is working well',1
+'This function is as good as expected',1
+'This project is working well',1
+'This project is as good as expected',1
+'The project is ready to deploy',1
+'The new feature are commended from the customer',1
+'The new function are commended from the customer',1
+'The manager has talk to the customer and they approve all the features',1
+'The manager has talk to the customer and they approve all the new functions',1
+'Team QA has finished the test and nothing need to fix',1
+'The feature team java has fix is really good',1
+'The feature team js has fix is really good',1
+'The function team java has fix is really good',1
+'The function team js has fix is really good',1
+'The new bugs are fixed completely',1
+'There is nothing wrong anymore in the projects till now',1
+'There is nothing wrong anymore in this feature till now',1
+'There is nothing wrong anymore in this function till now',1
+'The project is working very well and smoothly',1
+'Deploy successfully',1
+'This version is well and ready to deploy',1
+'Team QA approves with all the new functions',1
+'Team QA approves with the new function',1
+'Team QA approves with all the new features',1
+'Team QA approves with the new feature',1
+'All the functions are done very well',1
+'All the features are done very well',1
+'This function is done very well',1
+'This feature is done very well',1
+'The new function has been done completely',1
+'The new feature has been done completely',1
+'New functions have been done completely',1
+'New features have been done completely',1
+'The customer report very well',1
+'What about you David?',0
+'How is your task?',0
+'The customer rejects the new function',0
+'I am hungry',0
+'The quality of this version is very bad',0
+'All the functions are not done yet',0
+'All the features are not done very yet',0
+'the boss makes it look easily',0
+'the new ping pong table is so damn good',0
+'my monitor is too old to use',0
+'the server is down',0
+'wifi connector is too slow, i can not work',0
+'we are running out of water, buy more',0
+'turn off the light before going out',0
+'there is a cool cafeteria in front of our office',0
+'the air conditioner does not work, it is so hot here',0
+'someone has taken my flip-flop',0
+'could anyone bring me the paper',0
+'out of room',0
+'time to get lunch',0
+'this afternoon, the foosball finail will be held',0
+
+
+
+
+
+
+
+ 

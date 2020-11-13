@@ -12,6 +12,7 @@ import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.service.DiscussionService;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.util.Classifications;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class DiscussionServiceImpl implements DiscussionService {
         this.userRepository = userRepository;
     }
     @Override
-    public DiscussionDTO create(DiscussionRequest input) {
+    public DiscussionDTO create(DiscussionRequest input) throws Exception {
         UserEntity userEntity = userRepository
                 .findById(input.getUserId())
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name()));
@@ -54,7 +55,8 @@ public class DiscussionServiceImpl implements DiscussionService {
         discussionEntity.setContent(input.getContent());
         discussionEntity.setUser(userEntity);
         discussionEntity.setProject(projectEntity);
-
+        Integer type = Classifications.classifyType(input.getContent());
+        discussionEntity.setType(type);
 
         return modelMapper.map(discussionRepository.save(discussionEntity), DiscussionDTO.class);
 

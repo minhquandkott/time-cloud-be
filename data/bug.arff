@@ -1,0 +1,107 @@
+@relation 'Discussion-DataMining'
+
+@attribute Text string
+@attribute class-att {0,1}
+
+@data
+
+'Bug',1
+'I got bug!',1
+'We need to change this',0
+'I think it is ok',0
+'I got error at login user',1
+'How can I know this email is invalid',1
+'What is you problem?',0
+'I got it',0
+'We have a error at this function',1
+'I can not add it to card',1
+'So many bugs here',1
+'We do it great',0
+'Think about it',0
+'This module has bug!',1
+'We got the wrong number at the random',1
+'The wrong grammar',1
+'Validation is not right',1
+'I completed this feature',0
+'Can not find user',1
+'Could not add user',1
+'wrong name',1
+'No auth',1
+'Build error',1
+'Can not connect to server',1
+'I am so happy',0
+'I save time track and it do not show in the list',1
+'Minh edit user information with wrong format email, but it still accept',1
+'I edit user information with wrong format phone number, but it still accept',1
+'Edit user need to be validated',1
+'My project do not show in the list',1
+'The week feature get wrong date when I click on the button',1
+'When he click update time and click to another update time, it still add time in the total time by day',1
+'When a user has many role, it make format page is broken',1
+'Should validate for search do not have any projects',1
+'Data of chart is not right',1
+'Task UI-UX in Project Twitter does not match time tracked',1
+'The member if task BE in project Facebook do not view enough',1
+'Should validate for searching project do not found',1
+'Edit project do not show enough tasks',1
+'I can not delete my account',1
+'Kin can not login with correct username and password',1
+'Total time by week incorrect',1
+'Click in interaction but count does not decrease ',1
+'Update user information with avatar is empty',1
+'Can not edit comment',1
+'Tom testing API for create time but he do not understand why data saved is empty',1
+'I try to see all member in my project and I wrote API for it as well. But I do not know where I wrong',1
+'Hey David, Do you write API for update projects? He can not save information',1
+'Yesterday, I strong believe that I tracked time and saved it, but today I do not see it in my list.',1
+'I delete a project, confirmation show up asks me that Do I really want to delete it? and I chossen yes, but now I still see that project in list.',1
+'Why can not I back to the last page',1
+'The response data with get task is wrong',1
+'I got bug at login',1
+'I got bug at write comment',1
+'Sarah found some bugs with edit project',1
+'We are going to delete many people in the same time but we can not',1
+'Bug in edit discussion',1
+'Sunny get a trouble with catch exception',1
+'Error!!!',1
+'He make many error with login API',1
+'I found an error in chart with time by day of week wrong',1
+'In the edit user information if you do not vatidate for fields, it will has many error',1
+'I do not know',0
+'Track time has bug',1
+'Value of list total time bay day of week return empty',1
+'API get user return null',1
+'I try to get projects but API return null',1
+'You need throw exception for function find user',1
+'Value of id attribute is null when convert to entity',1
+'Color in project does not change when update',1
+'It does not change',1
+'Something wrong with report user',1
+'User name in header is incorrect',1
+'You should try to update that API',1
+'I disconnect with wifi',1
+'Text classification return the incorrect value',1
+'Use updated the wrong data',1
+'We do not think that it is right',1
+'Thank you so much',0
+'I agree',0
+'I think it completed, so we should move to the next module',0
+'Go for it',0
+'OK, keep going',0
+'Are you finish?',0
+'This project is gonna done, so let go party tonight.',0
+'I had catch the exception for update user',0
+'How are you?',0
+'I had test API for CRUD user, and it is done',0
+'Quickly',0
+'This project will be review tomorrow so finish your task quickest you can',0
+'Maybe',0
+'Sometimes I forgot to add it to data but I has modify it in time',0
+'Go to ask tester about this function',0
+'I go to another page ang time tracking does not continue',1
+'I try to track time and save it but after that I do not see it in list below I have to reload this page to can see that time',1
+'What about you David?',0
+'How is your task?',0
+'Can you help me with this bugs?',1
+'Anyone want to fix it?',0
+'No problem!!',0

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DiscussionService {
 
-    DiscussionDTO create(DiscussionRequest input);
+    DiscussionDTO create(DiscussionRequest input) throws Exception;
 
     DiscussionDTO update(DiscussionRequest input, Integer discussionId, Integer userId);
 
