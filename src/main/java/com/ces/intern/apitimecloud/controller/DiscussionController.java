@@ -28,7 +28,7 @@ public class DiscussionController {
     }
 
     @PostMapping("")
-    private DiscussionDTO create(@RequestBody DiscussionRequest discussionRequest){
+    private DiscussionDTO create(@RequestBody DiscussionRequest discussionRequest) throws Exception {
         if(discussionRequest.getContent().isEmpty()) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.name());
         return discussionService.create(discussionRequest);
     }
