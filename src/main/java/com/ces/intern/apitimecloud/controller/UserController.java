@@ -131,7 +131,6 @@ public class UserController {
                     .map(time  -> modelMapper.map(time, TimeResponse.class))
                     .collect(Collectors.toList());
         }
-
     }
 
     @GetMapping("{id}/times/page")
