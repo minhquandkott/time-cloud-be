@@ -1,0 +1,108 @@
+@relation 'Discussion-DataMining'
+
+@attribute Text string
+@attribute class-att {0,1}
+
+@data
+
+'header should blue color',1 
+'dashboard is key feature for this web',1
+'track time feature is really nessesary',1
+'why do we not add chart in this page ?',1
+'we should use table to display data',1 
+'cancel button is not nessesary in modal',1
+'infomation user need display in table',1
+'Logo project need to change, It is too bad',1
+'what about side bar for project page?',1
+'fontsize look like a litter small',1
+'fontsize look like a litter big',1
+'fontsize should change',1
+'we must done before next month',1
+'firstly, we need to complete timer page',1
+'version 1 need speeding',1
+'version 2 need have chat feature',1
+'customer require have View product feature firstly',1
+'customer want to see version 2',1
+'customer does not want add product feature',1
+'footer need to add some information',1
+'customer want to add some theme in website',1
+'darkmode for this project ?',1
+'create card feature must to have in this version',1
+'validation input please',1
+'key feature of this project is Learning exam',1
+'we do not have create test feature, customer need it',1
+'animation in home too slow!',1
+'get project API is not correct, i need it now!',1
+'we should add 2 chosens on this page',1 
+'validate email on login page?',1
+'why should we not add create team feature ?',1
+'add project button not work ?',1
+'profile page need redesign.',1
+'navbar should be smaller',1
+'Client want to add more filter in search project',1
+'Client want to change main color',1
+'new feed need bigger and change color',1
+'this project need reponsive in small screen',1
+'this project need reponsive in smart phone',1
+'font size of menu need bigger',1
+'Profile page need to complete in version 1',1
+'Project should have login facebook',1
+'Project should have login google',1
+'Account need to connect with email',1
+'Chat feature need have some icons',1
+'how about dark theme for this project ?',1
+'Please make button smaller',1
+'client want to add more widget in main page',1
+'version 1 must to complete before the last day the this mouth',1
+'task 101 must be done firstly',1
+'we need more features of management, who have any idea?',1
+'we need the calendar at the bottom of the main page',1
+'Can we chage the color a little bit darker?',1
+'Can we chage the color a little bit brighter?',1
+'we need the calendar at the top of the main page',1
+'the avatar must be circle',1
+'the avatar must be square',1
+'the sound of notifications must be change more friendly',1
+'should we put a clock on the top-leaf of the main page',1
+'we need the chart for users to manage easily ',1
+'the selectboxes in the manage page are redundant',1
+'someone put the copyright at the bottom of the page',1
+'the description must be appear when clicking',1
+'the label of each project information is not rational',1
+'the customer does not like the new feature, remove it',1
+'the button must be changed to radiobutton',1
+'the list must be replace by the table',1
+'can we put the gridview here instead of listview',1
+'we must put the number to each task',1
+'should we public the member of each team in the list',1
+'the piechart is not suitable here, replace with the barchart',1
+'hello',0
+'hi how are you',0
+'it is ugly',0
+'i want some water',0
+'The weather is so good',0
+'It is raining',0
+'we need to destroy ',0
+'we have a party today',0
+'this is so terrible',0
+'i think we could dance the night away',0
+'the computer is broken',0
+'electric is out',0
+'do you play football to night with team',0
+'i may call the taxi',0
+'i forgot to check mattermost',0
+'sorry baby, i am done',0
+'the boss makes it look easily',0
+'the new ping pong table is so damn good',0
+'my monitor is too old to use',0
+'the server is down',0
+'wifi connector is too slow, i can not work',0
+'we are running out of water, buy more',0
+'turn off the light before going out',0
+'there is a cool cafeteria in front of our office',0
+'the air conditioner does not work, it is so hot here',0
+'someone has taken my flip-flop',0
+'could anyone bring me the paper',0
+'out of room',0
+'time to get lunch',0
+'this afternoon, the foosball finail will be held',0
