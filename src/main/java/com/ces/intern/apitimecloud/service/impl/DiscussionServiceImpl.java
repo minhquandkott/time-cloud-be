@@ -61,7 +61,7 @@ public class DiscussionServiceImpl implements DiscussionService {
             discussionEntity.setType(type);
         }
         catch (Exception e){
-            throw e;
+            throw new BadRequestException(e.getMessage());
         }
 
 
