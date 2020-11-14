@@ -48,15 +48,21 @@ public class DiscussionServiceImpl implements DiscussionService {
                 .findById(input.getProjectId())
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name()));
 
-
         DiscussionEntity discussionEntity = new DiscussionEntity();
-        Date date = new Date();
-        discussionEntity.setBasicInfo(date, input.getUserId(), date, input.getUserId());
-        discussionEntity.setContent(input.getContent());
-        discussionEntity.setUser(userEntity);
-        discussionEntity.setProject(projectEntity);
-        Integer type = Classifications.classifyType(input.getContent());
-        discussionEntity.setType(type);
+        try{
+
+            Date date = new Date();
+            discussionEntity.setBasicInfo(date, input.getUserId(), date, input.getUserId());
+            discussionEntity.setContent(input.getContent());
+            discussionEntity.setUser(userEntity);
+            discussionEntity.setProject(projectEntity);
+            Integer type = Classifications.classifyType(input.getContent());
+            discussionEntity.setType(type);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         return modelMapper.map(discussionRepository.save(discussionEntity), DiscussionDTO.class);
 
