@@ -4,6 +4,7 @@ import com.ces.intern.apitimecloud.dto.DiscussionDTO;
 import com.ces.intern.apitimecloud.entity.DiscussionEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
+import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.DiscussionRequest;
 import com.ces.intern.apitimecloud.repository.DiscussionRepository;
@@ -60,7 +61,7 @@ public class DiscussionServiceImpl implements DiscussionService {
             discussionEntity.setType(type);
         }
         catch (Exception e){
-            e.printStackTrace();
+            throw e;
         }
 
 
