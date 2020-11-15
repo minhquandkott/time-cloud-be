@@ -18,25 +18,25 @@ public class Classifications {
 //    private static String approveModel = new File("").getAbsolutePath()+""+"\\data\\approve.model";
 //    private static String bugModel = new File("").getAbsolutePath()+""+"\\data\\bug.model";;
 //    private static String featureModel = new File("").getAbsolutePath()+""+"\\data\\feature.model";
-    private static String[] getPathModel () {
+    private static InputStream[] getPathModel () {
 
-        String bug ="", feature="", approve="";
+        InputStream bug =null, feature=null, approve=null;
 
 
 
         try {
 
-            bug = new ClassPathResource("bug.model").getFile().getPath();
-            feature = new ClassPathResource("bug.model").getFile().getPath();
-            approve = new ClassPathResource("bug.model").getFile().getPath();
+            bug = new ClassPathResource("bug.model").getInputStream();
+            feature = new ClassPathResource("feature.model").getInputStream();
+            approve = new ClassPathResource("approve.model").getInputStream();
 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return new String[]{bug, feature, approve};
+        return new InputStream[]{bug, feature, approve};
     }
 
-    private static int Classify(String path,String discussion) throws Exception {
+    private static int Classify(InputStream path,String discussion) throws Exception {
         FilteredClassifier ft = (FilteredClassifier) SerializationHelper.read(path);
         FastVector fvNominalVal = new FastVector(2);
         fvNominalVal.addElement("0");
@@ -64,7 +64,7 @@ public class Classifications {
 
     public static Integer classifyType(String discussion) throws Exception {
 
-        String[] listURL = getPathModel();
+        InputStream[] listURL = getPathModel();
         for(int i = 0; i < listURL.length; i++){
             if(Classify(listURL[i],discussion) == 1){
                 return i;
