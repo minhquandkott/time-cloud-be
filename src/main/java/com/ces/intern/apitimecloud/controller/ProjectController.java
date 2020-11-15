@@ -197,24 +197,15 @@ public class ProjectController {
 
         if(sortBy==null){
             if(type == null){
-                System.out.println(1);
                 return discussionService.getAllByProjectId(projectId, limit, page, "", order);
-
             }
-            System.out.println(2);
-
             return  discussionService.getAllByProjectIdAndType(projectId, type, limit, page, "", order);
-
         }else{
             if(!Utils.containFiledName(DiscussionDTO.class, sortBy))
                 throw  new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + " sortBy " +sortBy);
             else if(type == null){
-                System.out.println(3);
-
                 return discussionService.getAllByProjectId(projectId, limit, page, sortBy, order);
             }
-            System.out.println(4);
-
             return  discussionService.getAllByProjectIdAndType(projectId, type, limit, page, sortBy, order );
         }
 
