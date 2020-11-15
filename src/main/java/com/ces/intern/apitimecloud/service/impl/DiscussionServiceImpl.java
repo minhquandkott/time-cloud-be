@@ -1,8 +1,10 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.DiscussionDTO;
+import com.ces.intern.apitimecloud.dto.TimeDTO;
 import com.ces.intern.apitimecloud.entity.DiscussionEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
+import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
@@ -16,8 +18,12 @@ import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.Classifications;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,5 +112,30 @@ public class DiscussionServiceImpl implements DiscussionService {
                 .stream()
                 .map(ele -> modelMapper.map(ele, DiscussionDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page, String sortBy) {
+
+        System.out.println(0);
+        List<DiscussionEntity> discussionEntities = new ArrayList<>();
+
+        try {
+            if(sortBy.isEmpty()){
+                discussionEntities = discussionRepository
+                        .getAllByUserIdInProject(userId, "create_at", limit, page * limit);
+            }else{
+                discussionEntities = discussionRepository
+                        .getAllByUserIdInProject(userId, sortBy,  limit, page * limit);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return discussionEntities
+                .stream()
+                .map(discussionEntity -> modelMapper.map(discussionEntity, DiscussionDTO.class))
+                .collect(Collectors.toList());
+
     }
 }

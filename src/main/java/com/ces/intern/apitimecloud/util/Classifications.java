@@ -1,12 +1,5 @@
 package com.ces.intern.apitimecloud.util;
-import com.ces.intern.apitimecloud.ApplicationContext;
-import io.swagger.models.auth.In;
-import org.omg.PortableInterceptor.INACTIVE;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.util.ResourceUtils;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.*;
 

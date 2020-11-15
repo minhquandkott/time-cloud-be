@@ -17,4 +17,6 @@ public interface DiscussionService {
     List<DiscussionDTO> getAllByProjectId(Integer projectId);
 
     List<DiscussionDTO> getAllByProjectIdAndType(Integer projectId, Integer type);
+
+    List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page, String sortBy);
 }

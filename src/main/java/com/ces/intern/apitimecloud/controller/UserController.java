@@ -7,10 +7,7 @@ import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.*;
 import com.ces.intern.apitimecloud.repository.ProjectUserRepository;
 import com.ces.intern.apitimecloud.repository.TimeRepository;
-import com.ces.intern.apitimecloud.service.ProjectService;
-import com.ces.intern.apitimecloud.service.TaskService;
-import com.ces.intern.apitimecloud.service.TimeService;
-import com.ces.intern.apitimecloud.service.UserService;
+import com.ces.intern.apitimecloud.service.*;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import com.ces.intern.apitimecloud.util.Utils;
@@ -41,18 +38,21 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final TimeService timeService;
     private final TaskService taskService;
+    private final DiscussionService discussionService;
 
     @Autowired
     public UserController(UserService userService,
                           ProjectService projectService,
                           ModelMapper modelMapper,
                           TimeService timeService,
-                          TaskService taskService){
+                          TaskService taskService,
+                          DiscussionService discussionService){
         this.userService = userService;
         this.projectService = projectService;
         this.modelMapper = modelMapper;
         this.timeService = timeService;
         this.taskService = taskService;
+        this.discussionService = discussionService;
     }
 
     @PostMapping(value ="")
@@ -189,5 +189,15 @@ public class UserController {
         return projectUsers.stream().map(projectUser->modelMapper.map(projectUser,ProjectUserResponse.class)).collect(Collectors.toList());
     }
 
+    @GetMapping("/{userId}/discussions")
+    private List<DiscussionDTO> getDiscussion(
+            @PathVariable(value = "userId") Integer userId,
+            @RequestParam(value = "limit") Integer limit,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "sort_by", required = false) String sortBy,
+            @RequestParam(value = "order", defaultValue = "ASC") String order
+    ){
+        return discussionService.getAllByUserIdInProject(userId, limit, page, (sortBy == null ? "": sortBy));
+    }
 
 }
