@@ -1,9 +1,6 @@
 package com.ces.intern.apitimecloud.controller;
 
-import com.ces.intern.apitimecloud.dto.DiscussionDTO;
-import com.ces.intern.apitimecloud.dto.ProjectDTO;
-import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
-import com.ces.intern.apitimecloud.dto.TaskDTO;
+import com.ces.intern.apitimecloud.dto.*;
 import com.ces.intern.apitimecloud.entity.TaskUserEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
@@ -11,6 +8,7 @@ import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectUserResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
+import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.service.*;
 import com.ces.intern.apitimecloud.util.Classifications;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
@@ -189,12 +187,38 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/{projectId}/discussions")
-    public List<DiscussionDTO> getAllDiscussionByProjectId(@PathVariable(value = "projectId")Integer projectId){
-        return discussionService.getAllByProjectId(projectId);
+    public List<DiscussionDTO> getAllDiscussionByProjectIdAndType(@PathVariable(value = "projectId")Integer projectId,
+                                                           @RequestParam(value = "type", required = false)Integer type,
+                                                           @RequestParam(value = "limit") Integer limit,
+                                                           @RequestParam(value = "page") Integer page,
+                                                           @RequestParam(value = "sort_by", required = false) String sortBy,
+                                                           @RequestParam(value = "order", defaultValue = "ASC") String order){
+
+
+        if(sortBy==null){
+            if(type == null){
+                System.out.println(1);
+                return discussionService.getAllByProjectId(projectId, limit, page, "", order);
+
+            }
+            System.out.println(2);
+
+            return  discussionService.getAllByProjectIdAndType(projectId, type, limit, page, "", order);
+
+        }else{
+            if(!Utils.containFiledName(DiscussionDTO.class, sortBy))
+                throw  new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + " sortBy " +sortBy);
+            else if(type == null){
+                System.out.println(3);
+
+                return discussionService.getAllByProjectId(projectId, limit, page, sortBy, order);
+            }
+            System.out.println(4);
+
+            return  discussionService.getAllByProjectIdAndType(projectId, type, limit, page, sortBy, order );
+        }
+
     }
 
-//    @GetMapping(value = "/{projectId}/discussions")
-//    public List<DiscussionDTO> getAllDiscussionByProjectIdAndType(@PathVariable(value = "projectId")Integer projectId, @RequestParam(value = "type") Integer type){
-//        return discussionService.getAllByProjectIdAndType(projectId, type);
-//    }
+
 }

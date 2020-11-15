@@ -1,10 +1,8 @@
 package com.ces.intern.apitimecloud.service.impl;
 
 import com.ces.intern.apitimecloud.dto.DiscussionDTO;
-import com.ces.intern.apitimecloud.dto.TimeDTO;
 import com.ces.intern.apitimecloud.entity.DiscussionEntity;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
-import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
@@ -13,8 +11,6 @@ import com.ces.intern.apitimecloud.repository.DiscussionRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.service.DiscussionService;
-import com.ces.intern.apitimecloud.service.ProjectService;
-import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.Classifications;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import org.modelmapper.ModelMapper;
@@ -70,7 +66,6 @@ public class DiscussionServiceImpl implements DiscussionService {
             throw new BadRequestException(e.getMessage());
         }
 
-
         return modelMapper.map(discussionRepository.save(discussionEntity), DiscussionDTO.class);
 
     }
@@ -97,40 +92,56 @@ public class DiscussionServiceImpl implements DiscussionService {
     }
 
     @Override
-    public List<DiscussionDTO> getAllByProjectId(Integer projectId) {
-        List<DiscussionEntity> discussionEntities = discussionRepository.getAllByProjectId(projectId);
-        return discussionEntities
-                .stream()
-                .map(ele -> modelMapper.map(ele, DiscussionDTO.class))
-                .collect(Collectors.toList());
-    }
+    public List<DiscussionDTO> getAllByProjectId(Integer projectId, Integer limit, Integer page, String sortBy, String order) {
+        Pageable p = PageRequest.of(page, limit);
 
-    @Override
-    public List<DiscussionDTO> getAllByProjectIdAndType(Integer projectId, Integer type) {
-        List<DiscussionEntity> discussionEntities = discussionRepository.getAllByProjectIdAndType(projectId, type);
-        return discussionEntities
-                .stream()
-                .map(ele -> modelMapper.map(ele, DiscussionDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page, String sortBy) {
-
-        System.out.println(0);
-        List<DiscussionEntity> discussionEntities = new ArrayList<>();
-
-        try {
-            if(sortBy.isEmpty()){
-                discussionEntities = discussionRepository
-                        .getAllByUserIdInProject(userId, "create_at", limit, page * limit);
+        if(!sortBy.isEmpty()){
+            if("ASC".equals(order)){
+                p = PageRequest.of(page, limit, Sort.by(sortBy).ascending());
+            }else if("DESC".equals(order)){
+                p = PageRequest.of(page, limit, Sort.by(sortBy).descending());
             }else{
-                discussionEntities = discussionRepository
-                        .getAllByUserIdInProject(userId, sortBy,  limit, page * limit);
+                throw new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + " order (DESC, ASC)");
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
+        List<DiscussionEntity> discussionEntities = discussionRepository
+                .getAllByProjectId(projectId, p)
+                .get()
+                .collect(Collectors.toList());
+        return discussionEntities
+                .stream()
+                .map(discussionEntity -> modelMapper.map(discussionEntity, DiscussionDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DiscussionDTO> getAllByProjectIdAndType(Integer projectId, Integer type, Integer limit, Integer page, String sortBy, String order ) {
+        Pageable p = PageRequest.of(page, limit);
+
+        if(!sortBy.isEmpty()){
+            if("ASC".equals(order)){
+                p = PageRequest.of(page, limit, Sort.by(sortBy).ascending());
+            }else if("DESC".equals(order)){
+                p = PageRequest.of(page, limit, Sort.by(sortBy).descending());
+            }else{
+                throw new BadRequestException(ExceptionMessage.FIELD_NOT_CORRECT.getMessage() + " order (DESC, ASC)");
+            }
+        }
+        List<DiscussionEntity> discussionEntities = discussionRepository
+                .getAllByProjectIdAndType(projectId, type, p)
+                .get()
+                .collect(Collectors.toList());
+        return discussionEntities
+                .stream()
+                .map(discussionEntity -> modelMapper.map(discussionEntity, DiscussionDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page) {
+
+        List<DiscussionEntity> discussionEntities = discussionRepository
+                .getAllByUserIdInProject(userId, limit, page * limit);
 
         return discussionEntities
                 .stream()

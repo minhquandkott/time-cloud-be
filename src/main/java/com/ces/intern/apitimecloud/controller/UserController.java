@@ -194,10 +194,9 @@ public class UserController {
             @PathVariable(value = "userId") Integer userId,
             @RequestParam(value = "limit") Integer limit,
             @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "sort_by", required = false) String sortBy,
-            @RequestParam(value = "order", defaultValue = "ASC") String order
+            @RequestParam(value = "sort_by", required = false) String sortBy
     ){
-        return discussionService.getAllByUserIdInProject(userId, limit, page, (sortBy == null ? "": sortBy));
+        return discussionService.getAllByUserIdInProject(userId, limit, page);
     }
 
 }

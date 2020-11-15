@@ -14,9 +14,9 @@ public interface DiscussionService {
 
     void delete(Integer discussionId);
 
-    List<DiscussionDTO> getAllByProjectId(Integer projectId);
+    List<DiscussionDTO> getAllByProjectId(Integer projectId, Integer limit, Integer page, String sortBy, String order);
 
-    List<DiscussionDTO> getAllByProjectIdAndType(Integer projectId, Integer type);
+    List<DiscussionDTO> getAllByProjectIdAndType(Integer projectId, Integer type,Integer limit, Integer page, String sortBy, String order);
 
-    List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page, String sortBy);
+    List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page);
 }
