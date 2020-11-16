@@ -76,13 +76,14 @@ public class DiscussionServiceImpl implements DiscussionService {
     }
 
     @Override
-    public DiscussionDTO update(DiscussionRequest input, Integer discussionId, Integer userId) {
+    public DiscussionDTO update(DiscussionRequest input, Integer discussionId, Integer userId) throws Exception {
         DiscussionEntity discussionEntity = discussionRepository
                 .findById(discussionId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name()));
 
         discussionEntity.setContent(input.getContent());
-        discussionEntity.setType(input.getType());
+        Integer newType = Classifications.classifyType(input.getContent());
+        discussionEntity.setType(newType);
         discussionEntity.setModifyAt(new Date());
         discussionEntity.setModifiedBy(userId);
         return modelMapper.map(discussionRepository.save(discussionEntity), DiscussionDTO.class);

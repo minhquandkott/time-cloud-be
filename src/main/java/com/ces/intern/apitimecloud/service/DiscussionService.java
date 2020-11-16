@@ -10,7 +10,7 @@ public interface DiscussionService {
 
     DiscussionDTO create(DiscussionRequest input) throws Exception;
 
-    DiscussionDTO update(DiscussionRequest input, Integer discussionId, Integer userId);
+    DiscussionDTO update(DiscussionRequest input, Integer discussionId, Integer userId) throws Exception;
 
     void delete(Integer discussionId);
 
