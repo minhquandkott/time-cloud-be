@@ -8,6 +8,7 @@ import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.DiscussionRequest;
 import com.ces.intern.apitimecloud.repository.DiscussionRepository;
+import com.ces.intern.apitimecloud.repository.InteractRepository;
 import com.ces.intern.apitimecloud.repository.ProjectRepository;
 import com.ces.intern.apitimecloud.repository.UserRepository;
 import com.ces.intern.apitimecloud.service.DiscussionService;
@@ -31,16 +32,19 @@ public class DiscussionServiceImpl implements DiscussionService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final InteractRepository interactRepository;
 
 
     DiscussionServiceImpl(DiscussionRepository discussionRepository,
                           ModelMapper modelMapper,
                           ProjectRepository projectRepository,
-                          UserRepository userRepository){
+                          UserRepository userRepository,
+                          InteractRepository interactRepository){
         this.discussionRepository = discussionRepository;
         this.projectRepository = projectRepository;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.interactRepository = interactRepository;
     }
     @Override
     public DiscussionDTO create(DiscussionRequest input) throws Exception {
@@ -88,6 +92,7 @@ public class DiscussionServiceImpl implements DiscussionService {
         DiscussionEntity discussionEntity = discussionRepository
                 .findById(discussionId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name()));
+        interactRepository.deleteAllByIdDiscussionId(discussionId);
         discussionRepository.delete(discussionEntity);
     }
 

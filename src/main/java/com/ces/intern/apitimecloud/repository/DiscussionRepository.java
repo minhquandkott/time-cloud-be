@@ -16,7 +16,6 @@ public interface DiscussionRepository extends JpaRepository<DiscussionEntity, In
 
     Page<DiscussionEntity> getAllByProjectId(Integer projectId, Pageable pageable);
 
-
     Page<DiscussionEntity> getAllByProjectIdAndType(Integer projectId, Integer type, Pageable pageable);
 
     @Query(value = "select * from discussion where  project_id in (select project_id from project_user where project_user.user_id =:userId) order by create_at DESC limit :limit offset :offset",nativeQuery = true)
@@ -24,4 +23,7 @@ public interface DiscussionRepository extends JpaRepository<DiscussionEntity, In
                                     @Param(value = "userId")Integer userId,
                                     @Param(value = "limit")Integer limit,
                                     @Param(value = "offset") Integer offset);
+
+
+
 }
