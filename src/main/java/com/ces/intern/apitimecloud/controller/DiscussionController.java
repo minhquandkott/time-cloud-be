@@ -49,7 +49,7 @@ public class DiscussionController {
     @PutMapping("/{discussionId}")
     private DiscussionDTO update(@RequestBody DiscussionRequest discussionRequest,
                                  @PathVariable("discussionId") Integer discussionId,
-                                 @RequestHeader("userId") Integer userId){
+                                 @RequestHeader("userId") Integer userId) throws Exception {
         return discussionService.update(discussionRequest, discussionId, userId);
     }
 
