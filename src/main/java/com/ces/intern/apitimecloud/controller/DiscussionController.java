@@ -2,22 +2,21 @@ package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.CommentDTO;
 import com.ces.intern.apitimecloud.dto.DiscussionDTO;
-import com.ces.intern.apitimecloud.dto.TimeDTO;
+import com.ces.intern.apitimecloud.dto.InteractDTO;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.DiscussionRequest;
-import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.service.CommentService;
 import com.ces.intern.apitimecloud.service.DiscussionService;
+import com.ces.intern.apitimecloud.service.InteractService;
 import com.ces.intern.apitimecloud.service.impl.CommentServiceImpl;
 import com.ces.intern.apitimecloud.service.impl.DiscussionServiceImpl;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
-import com.ces.intern.apitimecloud.util.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/discussions")
@@ -26,14 +25,17 @@ public class DiscussionController {
     private final DiscussionService discussionService;
     private final CommentService commentService;
     private final ModelMapper modelMapper;
+    private final InteractService interactService;
 
     DiscussionController(DiscussionServiceImpl discussionService,
                          CommentServiceImpl commentService,
-                         ModelMapper modelMapper
+                         ModelMapper modelMapper,
+                         InteractService interactService
                          ){
         this.discussionService = discussionService;
         this.commentService = commentService;
         this.modelMapper = modelMapper;
+        this.interactService = interactService;
     }
 
     @PostMapping("")
@@ -61,6 +63,12 @@ public class DiscussionController {
     private List<CommentDTO> getAllCommentByDiscussionId(@PathVariable("discussionId")Integer discussionId){
         if(discussionId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "discussionId");
         return commentService.getAllCommentByDiscussionId(discussionId);
+    }
+
+    @GetMapping("/{discussionId}/interacts")
+    private List<InteractDTO> getAllInteractByDiscussionId(@PathVariable("discussionId")Integer discussionId){
+        if(discussionId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "discussionId");
+        return interactService.getAllByDiscussionId(discussionId);
     }
 
 }

@@ -39,6 +39,7 @@ public class UserController {
     private final TimeService timeService;
     private final TaskService taskService;
     private final DiscussionService discussionService;
+    private final InteractService interactService;
 
     @Autowired
     public UserController(UserService userService,
@@ -46,13 +47,15 @@ public class UserController {
                           ModelMapper modelMapper,
                           TimeService timeService,
                           TaskService taskService,
-                          DiscussionService discussionService){
+                          DiscussionService discussionService,
+                          InteractService interactService){
         this.userService = userService;
         this.projectService = projectService;
         this.modelMapper = modelMapper;
         this.timeService = timeService;
         this.taskService = taskService;
         this.discussionService = discussionService;
+        this.interactService = interactService;
     }
 
     @PostMapping(value ="")
@@ -197,6 +200,12 @@ public class UserController {
             @RequestParam(value = "sort_by", required = false) String sortBy
     ){
         return discussionService.getAllByUserIdInProject(userId, limit, page);
+    }
+
+    @GetMapping("/{userId}/interacts")
+    private List<InteractDTO> getAllInteractByUserId(@PathVariable("userId") Integer userId){
+        if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId");
+        return interactService.getAllByUserId(userId);
     }
 
 }
