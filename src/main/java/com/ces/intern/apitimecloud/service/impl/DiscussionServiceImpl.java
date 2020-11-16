@@ -7,10 +7,7 @@ import com.ces.intern.apitimecloud.entity.UserEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.DiscussionRequest;
-import com.ces.intern.apitimecloud.repository.DiscussionRepository;
-import com.ces.intern.apitimecloud.repository.InteractRepository;
-import com.ces.intern.apitimecloud.repository.ProjectRepository;
-import com.ces.intern.apitimecloud.repository.UserRepository;
+import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.service.DiscussionService;
 import com.ces.intern.apitimecloud.util.Classifications;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
@@ -33,18 +30,21 @@ public class DiscussionServiceImpl implements DiscussionService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final InteractRepository interactRepository;
+    private final CommentRepository commentRepository;
 
 
     DiscussionServiceImpl(DiscussionRepository discussionRepository,
                           ModelMapper modelMapper,
                           ProjectRepository projectRepository,
                           UserRepository userRepository,
-                          InteractRepository interactRepository){
+                          InteractRepository interactRepository,
+                          CommentRepository commentRepository){
         this.discussionRepository = discussionRepository;
         this.projectRepository = projectRepository;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.interactRepository = interactRepository;
+        this.commentRepository = commentRepository;
     }
     @Override
     public DiscussionDTO create(DiscussionRequest input) throws Exception {
@@ -93,6 +93,7 @@ public class DiscussionServiceImpl implements DiscussionService {
                 .findById(discussionId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name()));
         interactRepository.deleteAllByIdDiscussionId(discussionId);
+        commentRepository.deleteAllByDiscussionId(discussionId);
         discussionRepository.delete(discussionEntity);
     }
 

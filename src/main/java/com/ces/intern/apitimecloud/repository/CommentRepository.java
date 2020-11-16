@@ -11,4 +11,5 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
 
     List<CommentEntity> getAllByDiscussionId(Integer discussionId);
+    void deleteAllByDiscussionId(Integer discussionId);
 }
