@@ -162,12 +162,13 @@ public class TaskServiceImpl implements TaskService {
         List<TaskEntity> taskDidEntities = taskRepository.getAllDidDoingByUserAndProjectId(userId, projectId);
         List<TaskEntity> taskDoingEntities = taskRepository.getAllByUserIdAndProjectId(userId, projectId);
 
-        taskDidEntities.forEach(element->taskEntities.add(element));
-        taskDoingEntities.forEach(element->taskEntities.add(element));
+        for(int i = 0; i < taskDidEntities.size(); i++){
+            if(!taskDoingEntities.contains(taskDidEntities.get(i))){
+                taskEntities.add(taskDidEntities.get(i));
+            }
+        }
 
-        taskEntities.stream().distinct().collect(Collectors.toList());
-
-        return taskEntities.stream().filter(distinctByKey(TaskEntity::getName)).map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+        return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -196,11 +197,6 @@ public class TaskServiceImpl implements TaskService {
                 .setParameter(1, userId)
                 .setParameter(2, projectId)
                 .getResultList();
-    }
-
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
     }
 
 }
