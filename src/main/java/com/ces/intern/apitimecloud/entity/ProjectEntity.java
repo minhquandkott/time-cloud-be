@@ -25,6 +25,8 @@ public class ProjectEntity extends BaseEntity {
     @Column(name = "project_color")
     private String color;
 
+    @Column(name = "done")
+    private Boolean done;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,

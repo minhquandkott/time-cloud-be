@@ -51,7 +51,7 @@ public class CompanyController {
     }
 
     @GetMapping(value = "/{id}")
-    public CompanyResponse getCompany(@PathVariable Integer id, @RequestHeader(SecurityContact.HEADER_STRING) String userId ) throws Exception  {
+    public CompanyResponse getCompany(@PathVariable Integer id) throws Exception  {
 
         CompanyDTO company = companyService.getCompany(id);
 
