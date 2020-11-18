@@ -20,8 +20,10 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -148,10 +150,24 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDTO> getAllByUserIdAndProjectId(Integer userId, Integer projectId) {
+    public List<TaskDTO> getAllByUserIdAndProjectId(Integer userId, Integer projectId){
         List<TaskEntity> taskEntities = taskRepository.getAllByUserIdAndProjectId(userId, projectId);
 
         return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> getAllDidDoingByUserIdAndProjectId(Integer userId, Integer projectId) {
+        List<TaskEntity> taskEntities = new ArrayList<>();
+        List<TaskEntity> taskDidEntities = taskRepository.getAllDidDoingByUserAndProjectId(userId, projectId);
+        List<TaskEntity> taskDoingEntities = taskRepository.getAllByUserIdAndProjectId(userId, projectId);
+
+        taskDidEntities.forEach(element->taskEntities.add(element));
+        taskDoingEntities.forEach(element->taskEntities.add(element));
+
+        taskEntities.stream().distinct().collect(Collectors.toList());
+
+        return taskEntities.stream().filter(distinctByKey(TaskEntity::getName)).map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -181,5 +197,11 @@ public class TaskServiceImpl implements TaskService {
                 .setParameter(2, projectId)
                 .getResultList();
     }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
+
 }
 
