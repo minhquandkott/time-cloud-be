@@ -15,4 +15,5 @@ public class ProjectResponse extends BaseResponse{
     private String clientName;
     private CompanyDTO company;
     private String color;
+    private Boolean done;
 }
