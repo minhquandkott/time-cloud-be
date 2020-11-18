@@ -28,6 +28,8 @@ public interface TaskService {
 
     List<TaskDTO> getAllByUserIdAndProjectId(Integer userId, Integer projectId);
 
+    List<TaskDTO> getAllDidDoingByUserIdAndProjectId(Integer userId, Integer projectId);
+
     void deleteUserOfAllTaskOfProject(Integer projectId, Integer userId);
 
     void deleteUsersOfAllTaskOfProject(Integer projectId);

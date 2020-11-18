@@ -21,8 +21,14 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Integer>
     @Query(value = "select * from task where task.task_id in (select task_user.task_id from task_user where task_user.user_id = :taskId)",nativeQuery = true)
     List<TaskEntity> getAllByUserId(@Param(value = "taskId") Integer task_id);
 
-    @Query(value = "select * from task where task.task_id in (select task_user.task_id from task_user where task_user.user_id = :taskId) and task.project_id =:projectId",nativeQuery = true)
-    List<TaskEntity> getAllByUserIdAndProjectId(@Param(value = "taskId") Integer task_id, @Param(value = "projectId") Integer projectId);
+    @Query(value = "select * from task where task.task_id in (select task_user.task_id from task_user where task_user.user_id = :userId) and task.project_id =:projectId",nativeQuery = true)
+    List<TaskEntity> getAllByUserIdAndProjectId(@Param(value = "userId") Integer userId, @Param(value = "projectId") Integer projectId);
+
+    @Query(value = "select distinct task.task_id,task_name,task.create_at,task.modify_at,project_id,task.created_by,task.modified_by \n" +
+            "from task join time on time.task_id = task.task_id \n" +
+            "where time.user_id = :userId\n" +
+            "and task.project_id = :projectId",nativeQuery = true)
+    List<TaskEntity> getAllDidDoingByUserAndProjectId(@Param(value = "userId") Integer userId, @Param(value = "projectId") Integer projectId);
 
     @Modifying
     @Query(value = "delete from task_user where task_user.task_id = :taskId", nativeQuery = true)
