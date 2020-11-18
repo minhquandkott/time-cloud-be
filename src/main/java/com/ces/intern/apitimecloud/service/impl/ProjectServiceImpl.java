@@ -129,6 +129,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public boolean checkProjectAvailable(Integer projectId) {
         int count = projectRepository.checkProjectAvailable(projectId);
+        System.out.println(projectId + "--" + count);
         if(count == 0){
             return false;
         }
