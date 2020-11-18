@@ -129,6 +129,12 @@ public class ProjectController {
         return taskDTOS.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }
 
+    @GetMapping("{projectId}/users/{userId}/tasks-did")
+    public List<TaskResponse> getAllTaskDidDoingByProjectIdAndUserId(@PathVariable Integer projectId, @PathVariable Integer userId){
+        List<TaskDTO> taskDTOS= taskService.getAllDidDoingByUserIdAndProjectId(userId, projectId);
+        return taskDTOS.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
+    }
+
     @DeleteMapping("{projectId}/users/{userId}")
     public String deleteUserOfProject(@PathVariable Integer projectId, @PathVariable Integer userId){
         projectService.deleteUserOfProject(projectId, userId);
