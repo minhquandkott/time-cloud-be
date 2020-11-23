@@ -159,6 +159,17 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     }
 
     @Override
+    public List<UserDTO> getAllDidByTaskId(Integer taskId) {
+        taskRepository.findById(taskId)
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId"+taskId));
+        return userRepository
+                .getUserDidDoingByTaskId(taskId)
+                .stream()
+                .map(userEntity -> modelMapper.map(userEntity, UserDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Not Found"));
 

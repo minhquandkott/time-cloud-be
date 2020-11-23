@@ -117,6 +117,15 @@ public class TaskController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{taskId}/users-did")
+    public List<UserResponse> getAllUserDidByTaskId(@PathVariable("taskId") Integer taskId){
+        if(taskId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId");
+        return userService.getAllDidByTaskId(taskId)
+                .stream()
+                .map(user -> modelMapper.map(user, UserResponse.class))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/{taskId}/users/{userId}/total-times")
     public Float getSumTimeByUserTask(@PathVariable("userId") Integer userId,@PathVariable("taskId") Integer taskId){
         if(taskId==null||userId==null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "taskId" +"or"+"userId");
