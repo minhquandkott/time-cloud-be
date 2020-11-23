@@ -10,4 +10,5 @@ public class ProjectUserDTO {
     private ProjectDTO project;
     private UserDTO user;
     private Boolean isDoing;
+    private Integer index;
 }

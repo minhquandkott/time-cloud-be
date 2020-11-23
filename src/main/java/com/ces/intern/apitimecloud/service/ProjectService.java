@@ -40,4 +40,6 @@ public interface ProjectService {
     boolean checkProjectAvailable(Integer projectId);
 
     List<ProjectUserDTO> getAllUserByIsDoing(Integer projectId, boolean isDoing);
+
+
 }

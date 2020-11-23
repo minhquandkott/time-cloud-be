@@ -35,6 +35,9 @@ public class ProjectUserEntity implements Serializable {
     @Column(name = "is_doing", nullable = false)
     private Boolean isDoing;
 
+    @Column(name="index")
+    private Integer index;
+
     @Embeddable
     @Getter
     @Setter

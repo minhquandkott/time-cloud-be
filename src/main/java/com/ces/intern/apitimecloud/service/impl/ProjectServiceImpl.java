@@ -129,7 +129,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public boolean checkProjectAvailable(Integer projectId) {
         int count = projectRepository.checkProjectAvailable(projectId);
-        System.out.println(projectId + "--" + count);
         if(count == 0){
             return false;
         }
@@ -146,6 +145,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(projectUser -> modelMapper.map(projectUser, ProjectUserDTO.class))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     @Transactional
@@ -182,29 +182,6 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
-// old method - keep it
-//    @Override
-//    public List<ProjectDTO> getAllStillDoingByCompanyId(Integer companyId) {
-//        boolean stillDoing = false;
-//        List<ProjectDTO> listProjects = getAllByCompanyId(companyId);
-//        List<ProjectDTO> listProjectNews = new ArrayList<>();
-//        List<ProjectUserDTO> listProjectUsers;
-//        for(int i = 0; i < listProjects.size(); i++){
-//            listProjectUsers = userService.getAllByProjectId(listProjects.get(i).getId());
-//            for(int j = 0; j < listProjectUsers.size(); j++){
-//                if(listProjectUsers.get(j).getIsDoing() == true){
-//                    stillDoing = true;
-//                    break;
-//                }
-//            }
-//            if( stillDoing == true ){
-//                listProjectNews.add(listProjects.get(i));
-//                stillDoing = false;
-//            }
-//            listProjectUsers.clear();
-//        }
-//        return  listProjectNews;
-//    }
 
     @Override
     public List<ProjectDTO> getAllStillDoingByCompanyId(Integer companyId) {
@@ -295,6 +272,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(projectUser -> modelMapper.map(projectUser,ProjectUserDTO.class))
                 .collect(Collectors.toList());
     }
+
+
 
 
 }
