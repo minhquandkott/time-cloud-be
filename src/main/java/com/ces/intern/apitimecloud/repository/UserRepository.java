@@ -18,5 +18,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query(value = "select * from public.user where user_id in (select user_id from task_user where task_id=:taskId)", nativeQuery = true)
     List<UserEntity> getUserByTaskId(@Param(value = "taskId") Integer taskId);
 
+    @Query(value = "select distinct public.user.user_id,user_name,email,password,gender,address,phone_number,avatar,is_active\n" +
+            "\t\t,public.user.create_at,public.user.created_by,public.user.modify_at,public.user.modified_by\n" +
+            "from time join public.user on public.user.user_id = time.user_id where task_id = :taskId", nativeQuery = true)
+    List<UserEntity> getUserDidDoingByTaskId(@Param(value = "taskId") Integer taskId);
+
     Integer countByEmail(String email);
 }
