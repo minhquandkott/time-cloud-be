@@ -70,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectEntity.setCompany(company);
         Date date = new Date();
         projectEntity.setBasicInfo(date, userId, date, userId);
-
+        projectEntity.setDone(true);
         projectEntity = projectRepository.save(projectEntity);
         this.addUserToProject(userId, projectEntity.getId());
 
@@ -129,11 +129,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean checkProjectAvailable(Integer projectId) {
-        int count = projectRepository.checkProjectAvailable(projectId);
-        if(count == 0){
-            return false;
+        ProjectEntity projectEntity =  projectRepository.findById(projectId).orElseThrow(() ->
+                new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId "+ projectId));
+        try {
+            if(projectEntity.getDone()) {
+                return true;
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     @Override
