@@ -39,6 +39,7 @@ public class ProjectController {
     private final UserService userService;
     private final DiscussionService discussionService;
 
+
     @Autowired
     public ProjectController(ProjectService projectService,
                              ModelMapper modelMapper,
@@ -216,4 +217,13 @@ public class ProjectController {
         }
 
     }
+
+    @PutMapping("/{projectId}/users/{userId}/{newIndex}")
+    public ProjectUserDTO changeIndexOfProjectUser(@PathVariable(value = "projectId")Integer projectId,
+                                               @PathVariable(value = "userId")Integer userId,
+                                                   @PathVariable(value = "newIndex")Integer newIndex){
+        if(newIndex == null) throw  new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage());
+        return projectService.changeIndexOfProjectUser(projectId, userId, newIndex);
+    }
+
 }

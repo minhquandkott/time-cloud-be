@@ -1,6 +1,7 @@
 package com.ces.intern.apitimecloud.controller;
 
 import com.ces.intern.apitimecloud.dto.*;
+import com.ces.intern.apitimecloud.entity.ProjectUserEntity;
 import com.ces.intern.apitimecloud.entity.TimeEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
@@ -40,6 +41,7 @@ public class UserController {
     private final TaskService taskService;
     private final DiscussionService discussionService;
     private final InteractService interactService;
+    private final ProjectUserRepository projectUserRepository;
 
     @Autowired
     public UserController(UserService userService,
@@ -48,7 +50,8 @@ public class UserController {
                           TimeService timeService,
                           TaskService taskService,
                           DiscussionService discussionService,
-                          InteractService interactService){
+                          InteractService interactService,
+                          ProjectUserRepository projectUserRepository){
         this.userService = userService;
         this.projectService = projectService;
         this.modelMapper = modelMapper;
@@ -56,6 +59,7 @@ public class UserController {
         this.taskService = taskService;
         this.discussionService = discussionService;
         this.interactService = interactService;
+        this.projectUserRepository = projectUserRepository;
     }
 
     @PostMapping(value ="")
@@ -106,6 +110,15 @@ public class UserController {
     public List<ProjectResponse> getAllProjectsByUserIdAndIsDoing(@PathVariable("id") Integer userId){
         List<ProjectDTO> projects = projectService.getAllByUserIdAndIsDoing(userId);
         return projects.stream().map(project->modelMapper.map(project,ProjectResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/project-user-available")
+    public List<ProjectUserDTO> getAllProjectUserByUserId(@PathVariable("id")Integer userId){
+        List<ProjectUserEntity> projectUserEntities = projectUserRepository.getAllByIsDoingAndEmbedId_UserId(true, userId);
+        return projectUserEntities
+                .stream()
+                .map(projectUserEntity -> modelMapper.map(projectUserEntity, ProjectUserDTO.class))
                 .collect(Collectors.toList());
     }
 

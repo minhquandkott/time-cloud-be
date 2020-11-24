@@ -10,6 +10,7 @@ import com.ces.intern.apitimecloud.service.TaskService;
 import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,6 +147,19 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ProjectUserDTO changeIndexOfProjectUser(Integer projectId, Integer userId, Integer newIndex) {
+
+        ProjectUserEntity projectUserEntity = projectUserRepository
+                .findById(new ProjectUserEntity.EmbedId(projectId, userId))
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with projectId and userId : " +projectId + " " + userId));
+        if(newIndex != projectUserEntity.getIndex()){
+            projectUserEntity.setIndex(newIndex);
+            projectUserRepository.save(projectUserEntity);
+        }
+        return modelMapper.map(projectUserEntity, ProjectUserDTO.class);
+    }
+
 
     @Override
     @Transactional
@@ -157,6 +171,7 @@ public class ProjectServiceImpl implements ProjectService {
             taskService.deleteUserOfAllTaskOfProject(projectId,userId);
 
             projectUserEntity.setIsDoing(false);
+            projectUserEntity.setIndex(-1);
             projectUserRepository.save(projectUserEntity);
     }
 
@@ -168,8 +183,6 @@ public class ProjectServiceImpl implements ProjectService {
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
         taskService.deleteUsersOfAllTaskOfProject(projectId);
-
-        projectUserRepository.deleteProjectById(projectId);
     }
 
 
@@ -225,6 +238,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectUserDTO addUserToProject(Integer userId, Integer projectId) {
         Optional<ProjectUserEntity> optional = projectUserRepository.findById(new ProjectUserEntity.EmbedId(projectId, userId));
         ProjectUserEntity projectUserEntity;
+        int length  = projectUserRepository.countByIsDoingAndEmbedId_UserId(true, userId);
 
         if(optional.isPresent()){
             projectUserEntity = optional.get();
@@ -244,7 +258,7 @@ public class ProjectServiceImpl implements ProjectService {
             projectUserEntity.setUser(userEntity);
             projectUserEntity.setIsDoing(true);
         }
-
+        projectUserEntity.setIndex(length);
         projectUserRepository.save(projectUserEntity);
         return modelMapper.map(projectUserEntity,ProjectUserDTO.class);
 

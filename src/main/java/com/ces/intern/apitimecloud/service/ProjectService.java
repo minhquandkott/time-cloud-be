@@ -41,5 +41,6 @@ public interface ProjectService {
 
     List<ProjectUserDTO> getAllUserByIsDoing(Integer projectId, boolean isDoing);
 
+    ProjectUserDTO changeIndexOfProjectUser(Integer projectId, Integer userId, Integer newIndex);
 
 }
