@@ -219,9 +219,11 @@ public class UserController {
             @PathVariable(value = "userId") Integer userId,
             @RequestParam(value = "limit") Integer limit,
             @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "sort_by", required = false) String sortBy
+            @RequestParam(value = "sort_by", required = false) String sortBy,
+            @RequestParam(value = "type", required = false) Integer type
     ){
-        return discussionService.getAllByUserIdInProject(userId, limit, page);
+
+        return discussionService.getAllByUserIdInProject(userId, limit, page, type);
     }
 
     @GetMapping("/{userId}/interacts")

@@ -24,6 +24,13 @@ public interface DiscussionRepository extends JpaRepository<DiscussionEntity, In
                                     @Param(value = "limit")Integer limit,
                                     @Param(value = "offset") Integer offset);
 
+    @Query(value = "select * from discussion where type =:type and project_id in (select project_id from project_user where project_user.user_id =:userId) order by create_at DESC limit :limit offset :offset",nativeQuery = true)
+    List<DiscussionEntity> getAllByUserIdAndTypeInProject(
+            @Param(value = "userId")Integer userId,
+            @Param(value = "limit")Integer limit,
+            @Param(value = "offset") Integer offset,
+            @Param(value = "type")Integer type);
+
 
 
 }

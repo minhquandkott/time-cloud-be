@@ -147,10 +147,16 @@ public class DiscussionServiceImpl implements DiscussionService {
     }
 
     @Override
-    public List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page) {
+    public List<DiscussionDTO> getAllByUserIdInProject(Integer userId, Integer limit, Integer page, Integer type) {
+        List<DiscussionEntity> discussionEntities;
+        if(type == null){
+            discussionEntities = discussionRepository
+                    .getAllByUserIdInProject(userId, limit, page * limit);
+        }else{
+            discussionEntities = discussionRepository
+                    .getAllByUserIdAndTypeInProject(userId, limit, page * limit, type);
+        }
 
-        List<DiscussionEntity> discussionEntities = discussionRepository
-                .getAllByUserIdInProject(userId, limit, page * limit);
 
         return discussionEntities
                 .stream()
