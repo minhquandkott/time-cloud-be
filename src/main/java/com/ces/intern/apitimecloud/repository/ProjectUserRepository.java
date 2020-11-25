@@ -24,7 +24,8 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUserEntity, 
         @Query(value = "update project_user set is_doing = false where project_id = :projectId", nativeQuery = true)
         void deleteProjectById(@Param("projectId") Integer projectId);
 
-        @Query(value = "", nativeQuery = true)
+        @Query(value = "select project_user.project_id,user_id,is_doing,index,is_show from project_user join project on project_user.project_id = project.project_id\n" +
+                "where user_id = :userId and done = false;", nativeQuery = true)
         List<ProjectUserEntity> getAllByUserIdAndNotDone(@Param("userId") Integer userId);
 
 

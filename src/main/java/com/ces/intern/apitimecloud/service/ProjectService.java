@@ -32,6 +32,8 @@ public interface ProjectService {
 
     List<ProjectUserDTO> getAllByProjectUserId(Integer userId);
 
+    List<ProjectUserDTO> getAllByUserIdAndNotDone(Integer userId);
+
     ProjectDTO changeStatusProject(Integer projectId, Boolean done);
 
     void deleteUserOfProject(Integer projectId, Integer userId);

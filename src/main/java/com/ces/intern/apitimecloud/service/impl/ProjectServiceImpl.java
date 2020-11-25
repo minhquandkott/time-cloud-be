@@ -296,4 +296,15 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProjectUserDTO> getAllByUserIdAndNotDone(Integer userId) {
+        UserEntity userEntity = userRepository
+                .findById(userId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with user " + userId));
+        List<ProjectUserEntity> projectUserEntities = projectUserRepository.getAllByUserIdAndNotDone(userId);
+        return projectUserEntities.stream()
+                .map(projectUser -> modelMapper.map(projectUser,ProjectUserDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
