@@ -11,4 +11,5 @@ public class ProjectUserDTO {
     private UserDTO user;
     private Boolean isDoing;
     private Integer index;
+    private Boolean isShow;
 }
