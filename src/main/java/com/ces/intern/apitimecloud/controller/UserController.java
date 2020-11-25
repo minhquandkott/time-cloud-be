@@ -122,6 +122,10 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
+    public List<ProjectUserResponse> getAllProjectsByUserIdAndNotDone(@PathVariable("id") Integer userId){
+        return null;
+    }
+
     @GetMapping("{id}/times")
     public List<TimeResponse> getTimesByUserId(@PathVariable("id") Integer userId,
                                                @RequestParam(required = false) String date,

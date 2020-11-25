@@ -70,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectEntity.setCompany(company);
         Date date = new Date();
         projectEntity.setBasicInfo(date, userId, date, userId);
-        projectEntity.setDone(true);
+        projectEntity.setDone(false);
         projectEntity = projectRepository.save(projectEntity);
         this.addUserToProject(userId, projectEntity.getId());
 
@@ -131,12 +131,8 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean checkProjectAvailable(Integer projectId) {
         ProjectEntity projectEntity =  projectRepository.findById(projectId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId "+ projectId));
-        try {
-            if(projectEntity.getDone()) {
-                return true;
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
+        if(projectEntity.getDone()) {
+            return true;
         }
         return false;
     }
@@ -183,11 +179,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public void deleteProject(Integer projectId) {
+    public ProjectDTO changeStatusProject(Integer projectId, Boolean done) {
         ProjectEntity projectEntity = projectRepository.findById(projectId).
                 orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
-        taskService.deleteUsersOfAllTaskOfProject(projectId);
+        projectEntity.setDone(done);
+
+        projectRepository.save(projectEntity);
+
+        return modelMapper.map(projectEntity,ProjectDTO.class);
     }
 
 
@@ -206,7 +206,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectDTO> listProjects = getAllByCompanyId(companyId);
         List<ProjectDTO> listProjectNews = new ArrayList<>();
         for(int i = 0; i < listProjects.size(); i++){
-            if(checkProjectAvailable(listProjects.get(i).getId())){
+            if(!checkProjectAvailable(listProjects.get(i).getId())){
                 listProjectNews.add(listProjects.get(i));
             }
         }
