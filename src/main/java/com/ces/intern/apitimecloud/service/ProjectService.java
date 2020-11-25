@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.service;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
+import com.ces.intern.apitimecloud.http.request.ProjectUserRequest;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public interface ProjectService {
 
     List<ProjectUserDTO> getAllUserByIsDoing(Integer projectId, boolean isDoing);
 
-    ProjectUserDTO changeIndexOfProjectUser(Integer projectId, Integer userId, Integer newIndex);
+    ProjectUserDTO editProjectUser(Integer projectId, Integer userId, ProjectUserRequest projectUserRequest);
+
 
 }

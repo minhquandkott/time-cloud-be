@@ -4,13 +4,12 @@ import com.ces.intern.apitimecloud.dto.*;
 import com.ces.intern.apitimecloud.entity.TaskUserEntity;
 import com.ces.intern.apitimecloud.http.exception.BadRequestException;
 import com.ces.intern.apitimecloud.http.request.ProjectRequest;
+import com.ces.intern.apitimecloud.http.request.ProjectUserRequest;
 import com.ces.intern.apitimecloud.http.request.TaskRequest;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectUserResponse;
 import com.ces.intern.apitimecloud.http.response.TaskResponse;
-import com.ces.intern.apitimecloud.http.response.TimeResponse;
 import com.ces.intern.apitimecloud.service.*;
-import com.ces.intern.apitimecloud.util.Classifications;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import com.ces.intern.apitimecloud.util.Utils;
@@ -219,12 +218,14 @@ public class ProjectController {
 
     }
 
-    @PutMapping("/{projectId}/users/{userId}/{newIndex}")
-    public ProjectUserDTO changeIndexOfProjectUser(@PathVariable(value = "projectId")Integer projectId,
-                                               @PathVariable(value = "userId")Integer userId,
-                                                   @PathVariable(value = "newIndex")Integer newIndex){
-        if(newIndex == null) throw  new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage());
-        return projectService.changeIndexOfProjectUser(projectId, userId, newIndex);
+    @PutMapping("/{projectId}/users/{userId}")
+    public ProjectUserDTO editProjectUser(@PathVariable(value = "projectId")Integer projectId,
+                                                   @PathVariable(value = "userId")Integer userId,
+                                                   @RequestBody ProjectUserRequest projectUserRequest){
+
+        return projectService.editProjectUser(projectId, userId, projectUserRequest);
     }
+
+
 
 }

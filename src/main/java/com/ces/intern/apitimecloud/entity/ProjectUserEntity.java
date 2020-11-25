@@ -38,6 +38,9 @@ public class ProjectUserEntity implements Serializable {
     @Column(name="index")
     private Integer index;
 
+    @Column(name="is_show")
+    private Boolean isShow;
+
     @Embeddable
     @Getter
     @Setter

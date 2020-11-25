@@ -4,13 +4,12 @@ import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
+import com.ces.intern.apitimecloud.http.request.ProjectUserRequest;
 import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.TaskService;
-import com.ces.intern.apitimecloud.service.TimeService;
 import com.ces.intern.apitimecloud.service.UserService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
-import jdk.nashorn.internal.runtime.options.Option;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,15 +148,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectUserDTO changeIndexOfProjectUser(Integer projectId, Integer userId, Integer newIndex) {
+    @Transactional
+    public ProjectUserDTO editProjectUser(Integer projectId, Integer userId, ProjectUserRequest projectUserRequest) {
 
         ProjectUserEntity projectUserEntity = projectUserRepository
                 .findById(new ProjectUserEntity.EmbedId(projectId, userId))
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+ " with projectId and userId : " +projectId + " " + userId));
-        if(newIndex != projectUserEntity.getIndex()){
-            projectUserEntity.setIndex(newIndex);
-            projectUserRepository.save(projectUserEntity);
+        if(projectUserRequest.getIsDoing() != null){
+            projectUserEntity.setIsDoing(projectUserRequest.getIsDoing());
+        }if(projectUserRequest.getIsShow() != null){
+            projectUserEntity.setIsShow(projectUserRequest.getIsShow());
+        }if(projectUserRequest.getIndex() != null){
+            projectUserEntity.setIndex(projectUserRequest.getIndex());
         }
+        projectUserRepository.save(projectUserEntity);
         return modelMapper.map(projectUserEntity, ProjectUserDTO.class);
     }
 
@@ -291,8 +295,5 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(projectUser -> modelMapper.map(projectUser,ProjectUserDTO.class))
                 .collect(Collectors.toList());
     }
-
-
-
 
 }
