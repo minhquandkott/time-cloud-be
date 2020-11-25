@@ -106,19 +106,28 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}/projects-available")
-    public List<ProjectResponse> getAllProjectsByUserIdAndIsDoing(@PathVariable("id") Integer userId){
-        List<ProjectDTO> projects = projectService.getAllByUserIdAndIsDoing(userId);
-        return projects.stream().map(project->modelMapper.map(project,ProjectResponse.class))
-                .collect(Collectors.toList());
-    }
+//    @GetMapping("/{id}/projects-available")
+//    public List<ProjectResponse> getAllProjectsByUserIdAndIsDoing(@PathVariable("id") Integer userId){
+//        List<ProjectDTO> projects = projectService.getAllByUserIdAndIsDoing(userId);
+//        return projects.stream().map(project->modelMapper.map(project,ProjectResponse.class))
+//                .collect(Collectors.toList());
+//    }
+//
+//    @GetMapping("/{id}/project-user-available")
+//    public List<ProjectUserDTO> getAllProjectUserByUserId(@PathVariable("id")Integer userId){
+//        List<ProjectUserEntity> projectUserEntities = projectUserRepository.getAllByIsDoingAndEmbedId_UserId(true, userId);
+//        return projectUserEntities
+//                .stream()
+//                .map(projectUserEntity -> modelMapper.map(projectUserEntity, ProjectUserDTO.class))
+//                .collect(Collectors.toList());
+//    }
 
-    @GetMapping("/{id}/project-user-available")
-    public List<ProjectUserDTO> getAllProjectUserByUserId(@PathVariable("id")Integer userId){
-        List<ProjectUserEntity> projectUserEntities = projectUserRepository.getAllByIsDoingAndEmbedId_UserId(true, userId);
-        return projectUserEntities
+    @GetMapping("{id}/project-user-available")
+    public List<ProjectUserResponse> getAllProjectsByUserIdAndNotDone(@PathVariable("id") Integer userId){
+        List<ProjectUserDTO> projectUsers = projectService.getAllByUserIdAndNotDone(userId);
+        return  projectUsers
                 .stream()
-                .map(projectUserEntity -> modelMapper.map(projectUserEntity, ProjectUserDTO.class))
+                .map(projectUser->modelMapper.map(projectUser,ProjectUserResponse.class))
                 .collect(Collectors.toList());
     }
 

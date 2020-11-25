@@ -149,6 +149,7 @@ public class CompanyController {
     public UserResponse addUserToCompany(@PathVariable Integer companyId, @PathVariable Integer userId ){
         return modelMapper.map(userRoleService.addUserToCompany(userId, companyId), UserResponse.class);
     }
+
     @PostMapping("/{companyId}/role/{roleId}/users/{userId}")
     public UserRoleResponse addUserToCompanyWithRole(@PathVariable Integer companyId, @PathVariable Integer userId, @PathVariable Integer roleId ){
         return modelMapper.map(userRoleService.addRoleUserInCompany(userId, companyId, roleId), UserRoleResponse.class);

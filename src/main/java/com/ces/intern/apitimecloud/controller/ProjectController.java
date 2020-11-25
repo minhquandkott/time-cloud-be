@@ -92,10 +92,11 @@ public class ProjectController {
     }
 
 
-    @DeleteMapping("/{projectId}")
-    public String deleteProject(@PathVariable Integer projectId){
-        projectService.deleteProject(projectId);
-        return ResponseMessage.DELETE_SUCCESS;
+    @PutMapping("/change-status/{projectId}")
+    public ProjectResponse changeStatusProject(@PathVariable Integer projectId,
+                                @RequestParam(value = "done") Boolean done){
+        ProjectDTO projectDTO = projectService.changeStatusProject(projectId,done);
+        return modelMapper.map(projectDTO,ProjectResponse.class);
     }
 
 
