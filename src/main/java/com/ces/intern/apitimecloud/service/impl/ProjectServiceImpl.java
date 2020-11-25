@@ -207,7 +207,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectDTO> listProjects = getAllByCompanyId(companyId);
         List<ProjectDTO> listProjectNews = new ArrayList<>();
         for(int i = 0; i < listProjects.size(); i++){
-            if(!checkProjectAvailable(listProjects.get(i).getId())){
+            if(listProjects.get(i).getDone()==false){
                 listProjectNews.add(listProjects.get(i));
             }
         }
