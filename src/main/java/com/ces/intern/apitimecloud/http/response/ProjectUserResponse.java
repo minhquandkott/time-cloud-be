@@ -11,5 +11,5 @@ public class ProjectUserResponse {
     private UserResponse user;
     private Boolean isDoing;
     private Integer index;
-    private Integer isShow;
+    private Boolean isShow;
 }

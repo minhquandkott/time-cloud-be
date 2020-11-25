@@ -130,10 +130,7 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean checkProjectAvailable(Integer projectId) {
         ProjectEntity projectEntity =  projectRepository.findById(projectId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with projectId "+ projectId));
-        if(projectEntity.getDone()) {
-            return true;
-        }
-        return false;
+        return !projectEntity.getDone();
     }
 
     @Override
