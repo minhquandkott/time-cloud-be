@@ -13,4 +13,5 @@ public class ProjectRequest {
     private String clientName;
     private String color;
     private Boolean done;
+    private Integer projectManagerId;
 }

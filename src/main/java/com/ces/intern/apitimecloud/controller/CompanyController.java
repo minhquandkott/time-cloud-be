@@ -11,7 +11,6 @@ import com.ces.intern.apitimecloud.http.response.CompanyResponse;
 import com.ces.intern.apitimecloud.http.response.ProjectResponse;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.http.response.UserRoleResponse;
-import com.ces.intern.apitimecloud.security.config.SecurityContact;
 import com.ces.intern.apitimecloud.service.CompanyService;
 import com.ces.intern.apitimecloud.service.ProjectService;
 import com.ces.intern.apitimecloud.service.UserRoleService;
@@ -138,9 +137,8 @@ public class CompanyController {
     public ProjectResponse createProject(@RequestBody ProjectRequest request, @PathVariable Integer id,
                                          @RequestHeader("userId") Integer userId){
 
-        ProjectDTO project = modelMapper.map(request, ProjectDTO.class);
 
-        ProjectDTO projectDTO = projectService.createProject(id,project,userId);
+        ProjectDTO projectDTO = projectService.createProject(id ,request,userId);
         return modelMapper.map(projectDTO, ProjectResponse.class);
     }
 

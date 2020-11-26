@@ -81,12 +81,12 @@ public class ProjectController {
 
 
     @PutMapping("/{id}")
-    public ProjectResponse updateProject(@RequestBody ProjectRequest projectRequest, @PathVariable Integer id
-            ,@RequestHeader("userId") Integer userId){
+    public ProjectResponse updateProject(@RequestBody ProjectRequest request,
+                                         @PathVariable(value = "id") Integer projectId
+                                        ,@RequestHeader("userId") Integer modifiedBy
+    ){
 
-        ProjectDTO project = modelMapper.map(projectRequest,ProjectDTO.class);
-
-        ProjectDTO projectDTO = projectService.updateProject(id,project,userId);
+        ProjectDTO projectDTO = projectService.updateProject(projectId,request,modifiedBy);
 
         return  modelMapper.map(projectDTO,ProjectResponse.class);
     }

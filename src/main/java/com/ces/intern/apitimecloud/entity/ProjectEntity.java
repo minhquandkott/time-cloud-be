@@ -28,13 +28,15 @@ public class ProjectEntity extends BaseEntity {
     @Column(name = "done")
     private Boolean done;
 
+    @OneToOne()
+    @JoinColumn(name = "project_manager")
+    private UserEntity projectManager;
+
     @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
-
-
 
 }

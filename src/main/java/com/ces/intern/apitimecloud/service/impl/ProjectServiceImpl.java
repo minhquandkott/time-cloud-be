@@ -4,6 +4,7 @@ import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.entity.*;
 import com.ces.intern.apitimecloud.http.exception.NotFoundException;
+import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.ProjectUserRequest;
 import com.ces.intern.apitimecloud.repository.*;
 import com.ces.intern.apitimecloud.service.ProjectService;
@@ -59,17 +60,22 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId) {
+    public ProjectDTO createProject(Integer companyId, ProjectRequest request, Integer userId) {
         CompanyEntity company= companyRepository.findById(companyId).
                 orElseThrow(()
                         -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +companyId ));
+        UserEntity user = userRepository.findById(request.getProjectManagerId())
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +request.getProjectManagerId() ));
 
-        ProjectEntity projectEntity = modelMapper.map(projectDTO, ProjectEntity.class);
+        ProjectEntity projectEntity = modelMapper.map(request, ProjectEntity.class);
 
         projectEntity.setCompany(company);
         Date date = new Date();
         projectEntity.setBasicInfo(date, userId, date, userId);
         projectEntity.setDone(false);
+        projectEntity.setProjectManager(user);
+
         projectEntity = projectRepository.save(projectEntity);
         this.addUserToProject(userId, projectEntity.getId());
 
@@ -103,17 +109,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, Integer userId) {
+    public ProjectDTO updateProject(Integer projectId, ProjectRequest request, Integer modifiedBy) {
 
-        ProjectEntity projectEntity = projectRepository.findById(projectId).
-                orElseThrow(()-> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
+        ProjectEntity projectEntity = projectRepository
+                .findById(projectId).
+                orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()+" with "+projectId));
 
-        projectEntity.setName(projectDTO.getName());
-        projectEntity.setClientName(projectDTO.getClientName());
-        projectEntity.setColor(projectDTO.getColor());
+        UserEntity user = userRepository.findById(request.getProjectManagerId())
+                .orElseThrow(()
+                        -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + " with " +request.getProjectManagerId() ));
 
+        projectEntity.setName(request.getName());
+        projectEntity.setClientName(request.getClientName());
+        projectEntity.setColor(request.getColor());
+        projectEntity.setProjectManager(user);
         projectEntity.setModifyAt(new Date());
-        projectEntity.setModifiedBy(userId);
+        projectEntity.setModifiedBy(modifiedBy);
 
         projectEntity = projectRepository.save(projectEntity);
 

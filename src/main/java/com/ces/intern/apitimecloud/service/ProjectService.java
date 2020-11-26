@@ -3,6 +3,7 @@ package com.ces.intern.apitimecloud.service;
 import com.ces.intern.apitimecloud.dto.ProjectDTO;
 import com.ces.intern.apitimecloud.dto.ProjectUserDTO;
 import com.ces.intern.apitimecloud.entity.ProjectEntity;
+import com.ces.intern.apitimecloud.http.request.ProjectRequest;
 import com.ces.intern.apitimecloud.http.request.ProjectUserRequest;
 
 import java.util.List;
@@ -10,13 +11,13 @@ import java.util.List;
 
 public interface ProjectService {
 
-    ProjectDTO createProject(Integer companyId, ProjectDTO projectDTO, Integer userId);
+    ProjectDTO createProject(Integer companyId, ProjectRequest request, Integer userId);
 
     ProjectDTO getProject(Integer projectId);
 
     List getAllProject();
 
-    ProjectDTO updateProject(Integer projectId, ProjectDTO projectDTO, Integer userId);
+    ProjectDTO updateProject(Integer projectId, ProjectRequest request, Integer userId);
 
     List<ProjectDTO> getAllByCompanyId(Integer companyId);
 

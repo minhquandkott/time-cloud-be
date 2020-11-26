@@ -12,13 +12,8 @@ public class Classifications {
 //    private static String bugModel = new File("").getAbsolutePath()+""+"\\data\\bug.model";;
 //    private static String featureModel = new File("").getAbsolutePath()+""+"\\data\\feature.model";
     private static InputStream[] getPathModel () {
-
         InputStream bug =null, feature=null, approve=null;
-
-
-
         try {
-
             bug = new ClassPathResource("bug.model").getInputStream();
             feature = new ClassPathResource("feature.model").getInputStream();
             approve = new ClassPathResource("approve.model").getInputStream();
