@@ -12,6 +12,8 @@ public interface DiscussionService {
 
     DiscussionDTO update(DiscussionRequest input, Integer discussionId, Integer userId) throws Exception;
 
+    DiscussionDTO updateType(Integer discussionId, Integer newType, Integer modifiedBy);
+
     void delete(Integer discussionId);
 
     List<DiscussionDTO> getAllByProjectId(Integer projectId, Integer limit, Integer page, String sortBy, String order);

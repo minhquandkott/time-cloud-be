@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,6 +86,20 @@ public class DiscussionServiceImpl implements DiscussionService {
         discussionEntity.setModifyAt(new Date());
         discussionEntity.setModifiedBy(userId);
         return modelMapper.map(discussionRepository.save(discussionEntity), DiscussionDTO.class);
+    }
+
+    @Override
+    public DiscussionDTO updateType(Integer discussionId, Integer newType, Integer modifiedBy) {
+        DiscussionEntity discussionEntity = discussionRepository
+                .findById(discussionId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.name()));
+
+
+        discussionEntity.setType(newType);
+        discussionEntity.setModifyAt(new Date());
+        discussionEntity.setModifiedBy(modifiedBy);
+        return modelMapper.map(discussionRepository.save(discussionEntity), DiscussionDTO.class);
+
     }
 
     @Override

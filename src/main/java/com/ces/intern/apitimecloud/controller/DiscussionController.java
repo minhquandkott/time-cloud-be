@@ -53,6 +53,13 @@ public class DiscussionController {
         return discussionService.update(discussionRequest, discussionId, userId);
     }
 
+    @PutMapping("/{discussionId}/type/{type}")
+    private DiscussionDTO updateType(@PathVariable("type")Integer type,
+                                 @PathVariable("discussionId") Integer discussionId,
+                                 @RequestHeader("userId") Integer userId) throws Exception {
+        return discussionService.updateType(discussionId, type, userId);
+    }
+
     @DeleteMapping(value = "/{discussionId}")
     private String delete(@PathVariable("discussionId")Integer discussionId){
         discussionService.delete(discussionId);
