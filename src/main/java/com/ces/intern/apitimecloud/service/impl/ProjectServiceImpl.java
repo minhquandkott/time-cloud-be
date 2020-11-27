@@ -174,6 +174,14 @@ public class ProjectServiceImpl implements ProjectService {
         return modelMapper.map(projectUserEntity, ProjectUserDTO.class);
     }
 
+    @Override
+    public List<ProjectDTO> getProjectManagedByUserId(Integer userId) {
+        List<ProjectEntity> projectEntities = projectRepository.getAllByProjectManager_Id(userId);
+        return projectEntities.stream()
+                .map(projectEntity -> modelMapper.map(projectEntity, ProjectDTO.class))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     @Transactional

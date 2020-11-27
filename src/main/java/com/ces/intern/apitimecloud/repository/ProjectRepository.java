@@ -14,6 +14,7 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<ProjectEntity,Integer> {
 
     List<ProjectEntity> getAllByCompanyId(Integer companyId);
+    List<ProjectEntity> getAllByProjectManager_Id(Integer projectManagerId);
 
     @Modifying
     @Query(value = "update project_user set is_doing = false", nativeQuery = true)

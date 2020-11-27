@@ -215,7 +215,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/discussions")
-    private List<DiscussionDTO> getDiscussion(
+    public List<DiscussionDTO> getDiscussion(
             @PathVariable(value = "userId") Integer userId,
             @RequestParam(value = "limit") Integer limit,
             @RequestParam(value = "page") Integer page,
@@ -227,9 +227,15 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/interacts")
-    private List<InteractDTO> getAllInteractByUserId(@PathVariable("userId") Integer userId){
+    public List<InteractDTO> getAllInteractByUserId(@PathVariable("userId") Integer userId){
         if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId");
         return interactService.getAllByUserId(userId);
+    }
+
+    @GetMapping("{userId}/manage_project")
+    public List<ProjectDTO> getAllProjectManagedByUserId(@PathVariable("userId")Integer userId){
+        if(userId == null) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId");
+        return projectService.getProjectManagedByUserId(userId);
     }
 
 }
