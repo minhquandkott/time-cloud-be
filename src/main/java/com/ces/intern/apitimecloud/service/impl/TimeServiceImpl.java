@@ -185,9 +185,9 @@ public class TimeServiceImpl implements TimeService {
     }
 
     @Override
-    public Float sumTimeByUserDescription(Integer userId, String description) {
+    public Float sumTimeByUserDescription(Integer userId, Integer projectId, String description) {
 
-        return timeRepository.sumTimeByUserDescription(userId,description);
+        return timeRepository.sumTimeByUserDescription(userId,projectId,description);
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface TimeService {
     Float sumTimeByUserTask(Integer userId, Integer taskId);
     void deleteAllTimeByTaskId(Integer taskId);
     Float sumTimeByUserProject(Integer userId, Integer projectId);
-    Float sumTimeByUserDescription(Integer userId, String description);
+    Float sumTimeByUserDescription(Integer userId,Integer projectId, String description);
     Float sumTimeByDayOfUser(Integer userId, String dateStart, String dateEnd);
     Float sumTimeByWeekOfUser(Integer userId, String date) throws ParseException;
     Float sumTimeByDayOfProject(Integer projectId, String dateStart, String dateEnd);

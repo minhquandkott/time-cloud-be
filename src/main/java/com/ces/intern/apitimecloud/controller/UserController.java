@@ -189,10 +189,10 @@ public class UserController {
         return tasks.stream().map(task->modelMapper.map(task,TaskResponse.class)).collect(Collectors.toList());
     }
 
-    @GetMapping("/{userId}/description/{description}/total-times")
-    public Float getSumTimeByUserDescription(@PathVariable("userId") Integer userId,@PathVariable("description") String description){
+    @GetMapping("/{userId}/project/{projectId}/description/{description}/total-times")
+    public Float getSumTimeByUserDescription(@PathVariable("userId") Integer userId,@PathVariable("projectId") Integer projectId,@PathVariable("description") String description){
         if(userId == null || description == null ) throw new BadRequestException(ExceptionMessage.MISSING_REQUIRE_FIELD.getMessage() + "userId" +" or "+"description");
-        return timeService.sumTimeByUserDescription(userId,description);
+        return timeService.sumTimeByUserDescription(userId,projectId,description);
     }
 
     @GetMapping("/{userId}/date/{date}/total-times")

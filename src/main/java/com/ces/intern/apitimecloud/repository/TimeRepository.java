@@ -37,8 +37,8 @@ public interface TimeRepository extends JpaRepository<TimeEntity, Integer> {
     @Query(value = "select extract(epoch from sum(end_time-start_time)) as totalTime from time join task on time.task_id = task.task_id where user_id = :userId and project_id = :projectId",nativeQuery = true)
     Float sumTimeByUserProject(@Param(value = "userId") Integer userId, @Param(value = "projectId") Integer projectId);
 
-    @Query(value = "select extract(epoch from sum(end_time-start_time)) as totalTime from time join task on time.task_id = task.task_id where user_id = :userId and description = :description",nativeQuery = true)
-    Float sumTimeByUserDescription(@Param(value = "userId") Integer userId, @Param(value = "description") String description);
+    @Query(value = "select extract(epoch from sum(end_time-start_time)) as totalTime from time join task on time.task_id = task.task_id where user_id = :userId and description = :description and project_id = :projectId",nativeQuery = true)
+    Float sumTimeByUserDescription(@Param(value = "userId") Integer userId,@Param(value = "projectId") Integer projectId, @Param(value = "description") String description);
 
     @Query(value = "select extract(epoch from sum(end_time-start_time)) as totalTime from time join task on time.task_id = task.task_id where  user_id = :userId and end_time >= TO_TIMESTAMP( :dateStart, 'yyyy-mm-dd' ) and end_time < TO_TIMESTAMP( :dateEnd, 'yyyy-mm-dd')",nativeQuery = true)
     Float sumTimeByDayOfUser(@Param(value = "userId") Integer userId, @Param(value = "dateStart") String dateStart, @Param(value = "dateEnd") String dateEnd);
