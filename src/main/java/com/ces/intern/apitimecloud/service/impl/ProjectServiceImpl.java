@@ -208,6 +208,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectRepository.save(projectEntity);
 
+        deleteAllProjectUser(projectId);
+        taskService.deleteUsersOfAllTaskOfProject(projectId);
+
         return modelMapper.map(projectEntity,ProjectDTO.class);
     }
 
