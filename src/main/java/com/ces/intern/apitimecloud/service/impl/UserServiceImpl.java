@@ -10,6 +10,7 @@ import com.ces.intern.apitimecloud.http.exception.NotFoundException;
 import com.ces.intern.apitimecloud.http.request.UserRequest;
 import com.ces.intern.apitimecloud.http.response.UserResponse;
 import com.ces.intern.apitimecloud.repository.*;
+import com.ces.intern.apitimecloud.service.UserRoleService;
 import com.ces.intern.apitimecloud.util.ExceptionMessage;
 import com.ces.intern.apitimecloud.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final ProjectUserRepository projectUserRepository;
+    private final UserRoleService userRoleService;
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper modelMapper,
@@ -42,7 +44,8 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
                            UserRoleRepository userRoleRepository,
                            ProjectRepository projectRepository,
                            TaskRepository taskRepository,
-                           ProjectUserRepository projectUserRepository){
+                           ProjectUserRepository projectUserRepository,
+                           UserRoleService userRoleService){
         this.userRepository= userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
@@ -50,6 +53,7 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.projectUserRepository = projectUserRepository;
+        this.userRoleService = userRoleService;
     }
 
     @Override
@@ -72,6 +76,8 @@ public class UserServiceImpl implements com.ces.intern.apitimecloud.service.User
             userEntity.setCreatedBy(userEntity.getId());
             userEntity.setModifiedBy(userEntity.getId());
             userRepository.save(userEntity);
+
+            userRoleService.addUserToCompany(userEntity.getId(),52);
 
             return ResponseMessage.CREATE_SUCCESS;
         }
