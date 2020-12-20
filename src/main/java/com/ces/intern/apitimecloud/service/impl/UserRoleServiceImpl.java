@@ -50,7 +50,10 @@ public class UserRoleServiceImpl implements UserRoleService {
                 .findById(companyId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage() + "with company " + companyId));
 
-        RoleEntity roleEntity = Role.values()[roleId-1].getRoleEntity();
+        RoleEntity roleEntity = Arrays.stream(Role.values())
+                .map(role -> role.getRoleEntity())
+                .filter(roleEntity1 -> roleEntity1.getId() == roleId)
+                .findFirst().get();
 
         Date date = new Date();
         UserRoleEntity userRoleEntity = new UserRoleEntity(userEntity, companyEntity, roleEntity);
